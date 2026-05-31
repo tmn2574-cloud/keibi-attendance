@@ -76,14 +76,14 @@
     .history-time { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
     .history-photo { width: 42px; height: 42px; border-radius: 7px; object-fit: cover; cursor: pointer; border: 1px solid #2a3a5a; flex-shrink: 0; }
     .history-empty { text-align: center; color: #444; font-size: 14px; padding: 30px 0; }
-    #camera-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 500; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px 20px calc(20px + var(--safe-bottom)); }
+    #camera-modal { display: none; position: fixed; inset: 0; height: 100dvh; background: #000; z-index: 500; flex-direction: column; align-items: center; gap: 12px; padding: calc(12px + var(--safe-top)) 12px calc(12px + var(--safe-bottom)); overflow: hidden; }
     #camera-modal.active { display: flex; }
     .camera-header { width: 100%; text-align: center; color: #fff; }
     .camera-header .cam-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
     .camera-header .cam-sub { font-size: 13px; color: #aaa; }
-    #video { width: 100%; max-width: 500px; border-radius: 14px; border: 2px solid var(--red); object-fit: cover; }
+    #video { width: 100%; max-width: 500px; min-height: 0; flex: 1 1 auto; border-radius: 14px; border: 2px solid var(--red); object-fit: contain; background: #000; }
     #canvas { display: none; }
-    .camera-controls { display: flex; gap: 18px; align-items: center; }
+    .camera-controls { display: flex; flex: 0 0 auto; gap: 18px; align-items: center; padding-bottom: 2px; }
     .btn-shutter { width: 76px; height: 76px; border-radius: 50%; background: #fff; border: 5px solid var(--red); cursor: pointer; font-size: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px rgba(233,69,96,0.6); flex-shrink: 0; }
     .btn-shutter:active { transform: scale(0.9); }
     .btn-cancel-cam { background: #222; border: none; color: #ccc; padding: 13px 18px; border-radius: 12px; font-size: 14px; cursor: pointer; }
