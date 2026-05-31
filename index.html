@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="出退勤">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#1a1a2e">
+  <link rel="manifest" href="./manifest.json">
+  <title>警備 出退勤管理</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    :root {
+      --bg: #1a1a2e; --card: #16213e; --accent-blue: #0f3460;
+      --green: #1db954; --red: #e94560; --text: #eee; --text-muted: #888;
+      --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    html, body { height: 100%; overflow-x: hidden; }
+    body { font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Yu Gothic', sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; padding-top: var(--safe-top); padding-bottom: var(--safe-bottom); }
+    header { background: var(--card); padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--accent-blue); box-shadow: 0 2px 10px rgba(0,0,0,0.5); position: sticky; top: 0; z-index: 100; }
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .shield { font-size: 24px; }
+    header h1 { font-size: 17px; font-weight: 700; letter-spacing: 1px; }
+    .header-right { display: flex; align-items: center; gap: 8px; }
+    #clock { font-size: 12px; color: var(--text-muted); }
+    .btn-settings-toggle { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; padding: 4px 6px; border-radius: 8px; }
+    .btn-settings-toggle:active { background: var(--accent-blue); }
+    .scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 24px; }
+    .card { margin: 12px 14px 0; background: var(--card); border-radius: 16px; padding: 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
+    .section-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    #settings-panel { display: none; }
+    #settings-panel.active { display: block; }
+    #settings-panel h3 { font-size: 13px; color: #aaa; margin-bottom: 14px; letter-spacing: 1px; }
+    .setting-row { margin-bottom: 12px; }
+    .setting-row label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
+    input[type="text"], select { width: 100%; background: var(--accent-blue); border: 1px solid #1a4a7a; color: var(--text); padding: 11px 13px; border-radius: 10px; font-size: 15px; appearance: none; -webkit-appearance: none; }
+    input[type="text"]:focus, select:focus { outline: none; border-color: var(--red); }
+    .btn-save-settings { width: 100%; background: var(--accent-blue); border: 1px solid #1a5a9a; color: #88aadd; padding: 12px; border-radius: 10px; font-size: 14px; cursor: pointer; font-weight: 600; margin-top: 4px; }
+    .btn-save-settings:active { opacity: 0.7; }
+    .staff-row { display: flex; gap: 10px; align-items: center; }
+    .datetime-display { text-align: center; margin: 18px 0 14px; }
+    .datetime-display .date { font-size: 14px; color: #aaa; margin-bottom: 4px; }
+    .datetime-display .time { font-size: 46px; font-weight: 800; color: #fff; letter-spacing: 3px; font-variant-numeric: tabular-nums; line-height: 1; }
+    .status-wrap { text-align: center; margin-bottom: 16px; }
+    .status-badge { display: inline-flex; align-items: center; gap: 7px; background: var(--accent-blue); border-radius: 20px; padding: 6px 16px; font-size: 13px; }
+    .status-dot { width: 9px; height: 9px; border-radius: 50%; background: #555; }
+    .status-dot.on { background: var(--green); box-shadow: 0 0 7px var(--green); animation: pulse 1.5s infinite; }
+    .status-dot.off { background: var(--red); }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
+    .btn-row { display: flex; gap: 12px; margin-bottom: 12px; }
+    .btn-punch { flex: 1; border: none; border-radius: 16px; padding: 24px 8px; font-size: 22px; font-weight: 900; cursor: pointer; letter-spacing: 3px; transition: transform 0.1s; -webkit-user-select: none; user-select: none; }
+    .btn-punch:active { transform: scale(0.94); }
+    .btn-checkin { background: linear-gradient(135deg, #1db954, #15803d); color: #fff; box-shadow: 0 5px 20px rgba(29,185,84,0.45); }
+    .btn-checkin:disabled { background: #1e3a26; color: #3a6a45; box-shadow: none; cursor: default; }
+    .btn-checkout { background: linear-gradient(135deg, #e94560, #991b1b); color: #fff; box-shadow: 0 5px 20px rgba(233,69,96,0.45); }
+    .btn-checkout:disabled { background: #3a1520; color: #6a3040; box-shadow: none; cursor: default; }
+    .latest-info { background: var(--accent-blue); border-radius: 10px; padding: 11px 14px; font-size: 13px; color: #ccc; min-height: 38px; line-height: 1.5; }
+    .latest-info strong { color: #fff; }
+    .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .history-header h2 { font-size: 13px; font-weight: 700; color: #ccc; letter-spacing: 1px; }
+    .export-btns { display: flex; gap: 8px; }
+    .btn-export { background: var(--accent-blue); border: 1px solid #1a4a7a; color: #88aadd; padding: 7px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    .btn-export:active { opacity: 0.7; }
+    .btn-export-xl { background: #163a16; border: 1px solid #2a6a2a; color: #5dbb5d; }
+    .history-list { max-height: 320px; overflow-y: auto; }
+    .history-item { display: flex; align-items: center; gap: 10px; padding: 11px 2px; border-bottom: 1px solid #0f2a50; }
+    .history-item:last-child { border-bottom: none; }
+    .history-badge { width: 52px; text-align: center; padding: 5px 0; border-radius: 7px; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .badge-in { background: #163a20; color: #1db954; }
+    .badge-out { background: #3a1520; color: #e94560; }
+    .history-detail { flex: 1; min-width: 0; }
+    .history-name { font-size: 14px; font-weight: 600; color: #ddd; }
+    .history-time { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .history-photo { width: 42px; height: 42px; border-radius: 7px; object-fit: cover; cursor: pointer; border: 1px solid #2a3a5a; flex-shrink: 0; }
+    .history-empty { text-align: center; color: #444; font-size: 14px; padding: 30px 0; }
+    #camera-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 500; flex-direction: column; align-items: center; justify-content: space-between; padding: 20px 20px calc(20px + var(--safe-bottom)); }
+    #camera-modal.active { display: flex; }
+    .camera-header { width: 100%; text-align: center; color: #fff; }
+    .camera-header .cam-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .camera-header .cam-sub { font-size: 13px; color: #aaa; }
+    #video { width: 100%; max-width: 500px; border-radius: 14px; border: 2px solid var(--red); object-fit: cover; }
+    #canvas { display: none; }
+    .camera-controls { display: flex; gap: 18px; align-items: center; }
+    .btn-shutter { width: 76px; height: 76px; border-radius: 50%; background: #fff; border: 5px solid var(--red); cursor: pointer; font-size: 30px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px rgba(233,69,96,0.6); flex-shrink: 0; }
+    .btn-shutter:active { transform: scale(0.9); }
+    .btn-cancel-cam { background: #222; border: none; color: #ccc; padding: 13px 18px; border-radius: 12px; font-size: 14px; cursor: pointer; }
+    .btn-skip-cam { background: #162030; border: 1px solid #1a4a7a; color: #88aadd; padding: 13px 18px; border-radius: 12px; font-size: 14px; cursor: pointer; }
+    #preview-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.96); z-index: 600; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 20px; }
+    #preview-modal.active { display: flex; }
+    #preview-img { max-width: 100%; max-height: 75vh; border-radius: 12px; }
+    .btn-close-preview { background: var(--red); border: none; color: #fff; padding: 13px 32px; border-radius: 12px; font-size: 15px; cursor: pointer; }
+    #sending-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.72); z-index: 700; align-items: center; justify-content: center; flex-direction: column; gap: 14px; }
+    #sending-overlay.active { display: flex; }
+    .spinner { width: 50px; height: 50px; border: 4px solid #333; border-top: 4px solid var(--red); border-radius: 50%; animation: spin 0.75s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .sending-text { color: #fff; font-size: 15px; font-weight: 600; }
+    #toast { position: fixed; bottom: calc(30px + var(--safe-bottom)); left: 50%; transform: translateX(-50%) translateY(70px); background: var(--red); color: #fff; padding: 12px 22px; border-radius: 30px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 20px rgba(0,0,0,0.45); transition: transform 0.3s ease; z-index: 800; white-space: nowrap; max-width: 90vw; text-overflow: ellipsis; overflow: hidden; }
+    #toast.show { transform: translateX(-50%) translateY(0); }
+    #toast.success { background: var(--green); }
+    #toast.info { background: #0f3460; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-left"><span class="shield">🛡</span><h1>警備 出退勤管理</h1></div>
+  <div class="header-right"><span id="clock">--:--:--</span><button class="btn-settings-toggle" onclick="toggleSettings()">⚙️</button></div>
+</header>
+<div class="scroll-area">
+  <div class="card" id="settings-panel">
+    <h3>⚙ 設定</h3>
+    <div class="setting-row"><label>Google Apps Script URL（スプレッドシート連携）</label><input type="text" id="gas-url" placeholder="https://script.google.com/macros/s/..."/></div>
+    <div class="setting-row"><label>社員名（カンマ区切りで入力）</label><input type="text" id="staff-names-input" placeholder="例: 山田太郎,佐藤次郎,鈴木三郎"/></div>
+    <button class="btn-save-settings" onclick="saveSettings()">💾 設定を保存</button>
+  </div>
+  <div class="card">
+    <div class="section-label">担当者を選択</div>
+    <div class="staff-row"><select id="staff-select"><option value="">-- 氏名を選択 --</option></select></div>
+    <div class="datetime-display">
+      <div class="date" id="date-display">----年--月--日（-）</div>
+      <div class="time" id="time-display">--:--:--</div>
+    </div>
+    <div class="status-wrap"><span class="status-badge"><span class="status-dot" id="status-dot"></span><span id="status-text">未選択</span></span></div>
+    <div class="btn-row">
+      <button class="btn-punch btn-checkin" id="btn-checkin" onclick="handleCheckin()">出　勤</button>
+      <button class="btn-punch btn-checkout" id="btn-checkout" onclick="handleCheckout()" disabled>退　勤</button>
+    </div>
+    <div class="latest-info" id="latest-info">担当者を選択してください</div>
+  </div>
+  <div class="card">
+    <div class="history-header">
+      <h2>📋 打刻履歴</h2>
+      <div class="export-btns">
+        <button class="btn-export btn-export-xl" onclick="exportExcel()">📊 Excel</button>
+        <button class="btn-export" onclick="exportCSV()">CSV</button>
+      </div>
+    </div>
+    <div class="history-list" id="history-list"><div class="history-empty">打刻履歴がありません</div></div>
+  </div>
+</div>
+<div id="camera-modal">
+  <div class="camera-header"><div class="cam-title">📷 伝票を撮影してください</div><div class="cam-sub">退勤時の伝票・書類をカメラで撮影します</div></div>
+  <video id="video" autoplay playsinline></video>
+  <canvas id="canvas"></canvas>
+  <div class="camera-controls">
+    <button class="btn-cancel-cam" onclick="cancelCamera()">キャンセル</button>
+    <button class="btn-shutter" onclick="takePhoto()">📸</button>
+    <button class="btn-skip-cam" onclick="skipPhoto()">スキップ</button>
+  </div>
+</div>
+<div id="preview-modal"><img id="preview-img" src="" alt="伝票写真"><button class="btn-close-preview" onclick="closePreview()">✕ 閉じる</button></div>
+<div id="sending-overlay"><div class="spinner"></div><div class="sending-text" id="sending-text">データを送信中...</div></div>
+<div id="toast"></div>
+<script>
+const STORAGE_KEY='keibi_attendance_v2', SETTINGS_KEY='keibi_settings_v2';
+const WEEKDAYS=['日','月','火','水','木','金','土'];
+let settings={gasUrl:'',staffNames:['山田太郎','佐藤次郎','鈴木三郎','高橋四郎','田中五郎']};
+let currentStream=null, pendingCheckout=null;
+
+function init(){
+  loadSettings(); renderStaffSelect(); renderHistory(); updateClock();
+  setInterval(updateClock,1000);
+  document.getElementById('staff-select').addEventListener('change',e=>updateButtonStatus(e.target.value));
+  if('serviceWorker'in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+
+function loadSettings(){
+  try{const s=JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}');settings={...settings,...s};}catch(e){}
+  document.getElementById('gas-url').value=settings.gasUrl||'';
+  document.getElementById('staff-names-input').value=settings.staffNames.join(',');
+}
+
+function saveSettings(){
+  settings.gasUrl=document.getElementById('gas-url').value.trim();
+  settings.staffNames=document.getElementById('staff-names-input').value.split(',').map(s=>s.trim()).filter(Boolean);
+  localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));
+  renderStaffSelect();
+  document.getElementById('settings-panel').classList.remove('active');
+  showToast('設定を保存しました ✓','success');
+}
+
+function toggleSettings(){document.getElementById('settings-panel').classList.toggle('active');}
+
+function renderStaffSelect(){
+  const sel=document.getElementById('staff-select'),cur=sel.value;
+  sel.innerHTML='<option value="">-- 氏名を選択 --</option>';
+  settings.staffNames.forEach(n=>{const o=document.createElement('option');o.value=o.textContent=n;sel.appendChild(o);});
+  if(cur)sel.value=cur;
+}
+
+function updateClock(){
+  const now=new Date();
+  const hms=pad2(now.getHours())+':'+pad2(now.getMinutes())+':'+pad2(now.getSeconds());
+  document.getElementById('time-display').textContent=hms;
+  document.getElementById('clock').textContent=hms;
+  document.getElementById('date-display').textContent=`${now.getFullYear()}年${pad2(now.getMonth()+1)}月${pad2(now.getDate())}日（${WEEKDAYS[now.getDay()]}）`;
+}
+
+function updateButtonStatus(name){
+  const isIn=name?localStorage.getItem('st_'+name)==='in':false;
+  document.getElementById('btn-checkin').disabled=!name||isIn;
+  document.getElementById('btn-checkout').disabled=!name||!isIn;
+  document.getElementById('status-dot').className='status-dot '+(!name?'':isIn?'on':'off');
+  document.getElementById('status-text').textContent=!name?'未選択':isIn?'勤務中':'退勤済み';
+  if(name){
+    const staffHistory=getHistory().filter(h=>h.name===name);
+    const last=staffHistory[staffHistory.length-1];
+    document.getElementById('latest-info').innerHTML=last
+      ?`<strong>${esc(name)}</strong> 最終打刻：<strong>${last.type==='in'?'出勤':'退勤'}</strong> ${esc(last.datetime)}`
+      :`${name} の打刻記録はありません`;
+  }else{document.getElementById('latest-info').textContent='担当者を選択してください';}
+}
+
+async function handleCheckin(){
+  const name=document.getElementById('staff-select').value;
+  if(!name){showToast('担当者を選択してください');return;}
+  const rec=makeRecord('in',name,new Date(),null);
+  saveRecord(rec);localStorage.setItem('st_'+name,'in');
+  updateButtonStatus(name);renderHistory();
+  showToast(`✓ 出勤打刻：${rec.time}`,'success');
+  await sendToGAS(rec);
+}
+
+async function handleCheckout(){
+  const name=document.getElementById('staff-select').value;
+  if(!name){showToast('担当者を選択してください');return;}
+  pendingCheckout={name,time:new Date()};openCamera();
+}
+
+async function finalizeCheckout(photoDataUrl){
+  const{name,time}=pendingCheckout;
+  const rec=makeRecord('out',name,time,photoDataUrl);
+  saveRecord(rec);localStorage.setItem('st_'+name,'out');
+  updateButtonStatus(name);renderHistory();
+  showToast(`✓ 退勤打刻：${rec.time}`,'success');
+  await sendToGAS(rec);pendingCheckout=null;
+}
+
+async function sendToGAS(rec){
+  if(!settings.gasUrl)return;
+  document.getElementById('sending-overlay').classList.add('active');
+  document.getElementById('sending-text').textContent=rec.type==='out'&&rec.photo?'写真をアップロード中...':'スプレッドシートに記録中...';
+  try{
+    await fetch(settings.gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type:rec.type,name:rec.name,datetime:rec.datetime,date:rec.date,time:rec.time,photo:rec.photo||''})});
+    showToast('✓ スプレッドシートに記録しました','success');
+  }catch(e){showToast('⚠ 送信エラー（履歴には保存済み）');}
+  finally{document.getElementById('sending-overlay').classList.remove('active');}
+}
+
+async function openCamera(){
+  document.getElementById('camera-modal').classList.add('active');
+  try{
+    currentStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1280}}});
+    document.getElementById('video').srcObject=currentStream;
+  }catch(e){
+    showToast('カメラを起動できません。スキップします。');
+    setTimeout(()=>{closeCamera();finalizeCheckout(null);},1500);
+  }
+}
+
+function closeCamera(){
+  if(currentStream){currentStream.getTracks().forEach(t=>t.stop());currentStream=null;}
+  document.getElementById('camera-modal').classList.remove('active');
+}
+
+function cancelCamera(){closeCamera();pendingCheckout=null;}
+function skipPhoto(){closeCamera();finalizeCheckout(null);}
+
+function takePhoto(){
+  const v=document.getElementById('video'),c=document.getElementById('canvas');
+  c.width=v.videoWidth;c.height=v.videoHeight;
+  const ctx=c.getContext('2d');ctx.drawImage(v,0,0);
+  const stamp=`${pendingCheckout.name}  ${formatDatetime(pendingCheckout.time)}`;
+  const barH=Math.max(36,c.height*0.05);
+  ctx.fillStyle='rgba(0,0,0,0.65)';ctx.fillRect(0,c.height-barH,c.width,barH);
+  ctx.fillStyle='#fff';ctx.font=`bold ${Math.max(14,barH*0.55)}px sans-serif`;
+  ctx.fillText('📷 '+stamp,10,c.height-barH*0.2);
+  closeCamera();finalizeCheckout(c.toDataURL('image/jpeg',0.75));
+}
+
+function showPhotoPreview(src){document.getElementById('preview-img').src=src;document.getElementById('preview-modal').classList.add('active');}
+function closePreview(){document.getElementById('preview-modal').classList.remove('active');}
+
+function getHistory(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');}catch(e){return[];}}
+function saveRecord(rec){const h=getHistory();h.push(rec);localStorage.setItem(STORAGE_KEY,JSON.stringify(h));}
+
+function renderHistory(){
+  const history=getHistory(),el=document.getElementById('history-list');
+  if(!history.length){el.innerHTML='<div class="history-empty">打刻履歴がありません</div>';return;}
+  el.innerHTML=[...history].reverse().map(r=>`
+    <div class="history-item">
+      <span class="history-badge ${r.type==='in'?'badge-in':'badge-out'}">${r.type==='in'?'出　勤':'退　勤'}</span>
+      <div class="history-detail"><div class="history-name">${esc(r.name)}</div><div class="history-time">${esc(r.datetime)}</div></div>
+      ${r.photo?`<img class="history-photo" src="${r.photo}" onclick="showPhotoPreview(this.src)">`:'<span style="width:42px;flex-shrink:0"></span>'}
+    </div>`).join('');
+}
+
+function exportExcel(){
+  const history=getHistory();
+  if(!history.length){showToast('打刻データがありません');return;}
+  const pairMap={};
+  history.forEach(r=>{
+    const key=r.name+'::'+r.date;
+    if(!pairMap[key])pairMap[key]={name:r.name,date:r.date,inTime:'',outTime:''};
+    if(r.type==='in')pairMap[key].inTime=r.time;
+    if(r.type==='out')pairMap[key].outTime=r.time;
+  });
+  const pairs=Object.values(pairMap).sort((a,b)=>(a.date+a.name)<(b.date+b.name)?-1:1);
+  const wb=XLSX.utils.book_new();
+
+  // シート1: 日別集計
+  const colH=['日付','曜日','氏名','出勤時刻','退勤時刻','備考'];
+  const rows=pairs.map(p=>[p.date,getWeekday(p.date),p.name,p.inTime,p.outTime,'']);
+  const ws1=XLSX.utils.aoa_to_sheet([colH,...rows]);
+  ws1['!cols']=[{wch:13},{wch:6},{wch:12},{wch:10},{wch:10},{wch:16}];
+  const r1=XLSX.utils.decode_range(ws1['!ref']);
+  for(let C=r1.s.c;C<=r1.e.c;C++){
+    const a=XLSX.utils.encode_cell({r:0,c:C});if(!ws1[a])continue;
+    ws1[a].s={fill:{fgColor:{rgb:'1A1A2E'}},font:{color:{rgb:'FFFFFF'},bold:true,sz:11},alignment:{horizontal:'center'},border:{bottom:{style:'medium',color:{rgb:'E94560'}}}};
+  }
+  rows.forEach((row,i)=>{
+    const ri=i+1,bg=ri%2===0?'F0F4FF':'FFFFFF';
+    for(let C=0;C<colH.length;C++){
+      const a=XLSX.utils.encode_cell({r:ri,c:C});
+      if(!ws1[a])ws1[a]={t:'s',v:''};
+      ws1[a].s={fill:{fgColor:{rgb:bg}},alignment:{horizontal:C===2?'left':'center'},font:{sz:11},border:{top:{style:'thin',color:{rgb:'DDDDDD'}},bottom:{style:'thin',color:{rgb:'DDDDDD'}},left:{style:'thin',color:{rgb:'DDDDDD'}},right:{style:'thin',color:{rgb:'DDDDDD'}}}};
+      if(C===3&&ws1[a].v)ws1[a].s.font={sz:11,color:{rgb:'15803D'},bold:true};
+      if(C===4&&ws1[a].v)ws1[a].s.font={sz:11,color:{rgb:'B91C1C'},bold:true};
+    }
+  });
+  XLSX.utils.book_append_sheet(wb,ws1,'日別集計');
+
+  // シート2: 打刻ログ
+  const logH=['種別','氏名','日付','時刻','日時'];
+  const logR=[...history].map(r=>[r.type==='in'?'出勤':'退勤',r.name,r.date,r.time,r.datetime]);
+  const ws2=XLSX.utils.aoa_to_sheet([logH,...logR]);
+  ws2['!cols']=[{wch:8},{wch:12},{wch:13},{wch:10},{wch:20}];
+  for(let C=0;C<logH.length;C++){
+    const a=XLSX.utils.encode_cell({r:0,c:C});if(!ws2[a])continue;
+    ws2[a].s={fill:{fgColor:{rgb:'0F3460'}},font:{color:{rgb:'FFFFFF'},bold:true,sz:11},alignment:{horizontal:'center'}};
+  }
+  logR.forEach((row,i)=>{
+    const ri=i+1,isIn=row[0]==='出勤',bg=isIn?'E8F5E9':'FCE4EC';
+    for(let C=0;C<logH.length;C++){
+      const a=XLSX.utils.encode_cell({r:ri,c:C});
+      if(!ws2[a])ws2[a]={t:'s',v:''};
+      ws2[a].s={fill:{fgColor:{rgb:bg}},alignment:{horizontal:'center'},font:{sz:11}};
+      if(C===0)ws2[a].s.font={sz:11,bold:true,color:{rgb:isIn?'2E7D32':'C62828'}};
+    }
+  });
+  XLSX.utils.book_append_sheet(wb,ws2,'打刻ログ');
+
+  const now=new Date();
+  XLSX.writeFile(wb,`出退勤_${now.getFullYear()}${pad2(now.getMonth()+1)}${pad2(now.getDate())}.xlsx`);
+  showToast('✓ Excelファイルを出力しました','success');
+}
+
+function exportCSV(){
+  const history=getHistory();if(!history.length){showToast('打刻データがありません');return;}
+  let csv='﻿種別,氏名,日付,時刻,日時\n';
+  history.forEach(r=>{csv+=`"${r.type==='in'?'出勤':'退勤'}","${r.name}","${r.date}","${r.time}","${r.datetime}"\n`;});
+  const a=document.createElement('a'),now=new Date();
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  a.download=`出退勤_${now.getFullYear()}${pad2(now.getMonth()+1)}${pad2(now.getDate())}.csv`;
+  a.click();showToast('CSVを出力しました','success');
+}
+
+function makeRecord(type,name,date,photo){return{type,name,photo,datetime:formatDatetime(date),date:formatDate(date),time:formatTime(date)};}
+function formatDatetime(d){return`${d.getFullYear()}/${pad2(d.getMonth()+1)}/${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;}
+function formatDate(d){return`${d.getFullYear()}/${pad2(d.getMonth()+1)}/${pad2(d.getDate())}`;}
+function formatTime(d){return`${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;}
+function pad2(n){n=String(n);return n.length<2?'0'+n:n;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function getWeekday(ds){try{const[y,m,d]=ds.split('/').map(Number);return WEEKDAYS[new Date(y,m-1,d).getDay()];}catch(e){return '';}}
+
+let toastTimer=null;
+function showToast(msg,type=''){
+  const el=document.getElementById('toast');el.textContent=msg;
+  el.className='show'+(type?' '+type:'');
+  if(toastTimer)clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{el.className='';},3200);
+}
+
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>
