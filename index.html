@@ -10,6 +10,7 @@
   <meta name="theme-color" content="#1a1a2e">
   <link rel="manifest" href="./manifest.json">
   <title>警備 出退勤管理</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -36,8 +37,9 @@
     #settings-panel h3 { font-size: 13px; color: #aaa; margin-bottom: 14px; letter-spacing: 1px; }
     .setting-row { margin-bottom: 12px; }
     .setting-row label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
-    input[type="text"], select { width: 100%; background: var(--accent-blue); border: 1px solid #1a4a7a; color: var(--text); padding: 11px 13px; border-radius: 10px; font-size: 15px; appearance: none; -webkit-appearance: none; }
-    input[type="text"]:focus, select:focus { outline: none; border-color: var(--red); }
+    input[type="text"], input[type="date"], textarea, select { width: 100%; background: var(--accent-blue); border: 1px solid #1a4a7a; color: var(--text); padding: 11px 13px; border-radius: 10px; font-size: 15px; appearance: none; -webkit-appearance: none; }
+    input[type="text"]:focus, input[type="date"]:focus, textarea:focus, select:focus { outline: none; border-color: var(--red); }
+    textarea { min-height: 78px; resize: vertical; font-family: inherit; }
     .btn-save-settings { width: 100%; background: var(--accent-blue); border: 1px solid #1a5a9a; color: #88aadd; padding: 12px; border-radius: 10px; font-size: 14px; cursor: pointer; font-weight: 600; margin-top: 4px; }
     .btn-save-settings:active { opacity: 0.7; }
     .staff-row { display: flex; gap: 10px; align-items: center; }
@@ -59,6 +61,8 @@
     .btn-checkout:disabled { background: #3a1520; color: #6a3040; box-shadow: none; cursor: default; }
     .latest-info { background: var(--accent-blue); border-radius: 10px; padding: 11px 14px; font-size: 13px; color: #ccc; min-height: 38px; line-height: 1.5; }
     .latest-info strong { color: #fff; }
+    .line-info { margin-top: 10px; font-size: 12px; color: #9fd7a8; line-height: 1.5; }
+    .line-info.warn { color: #ffd166; }
     .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .history-header h2 { font-size: 13px; font-weight: 700; color: #ccc; letter-spacing: 1px; }
     .export-btns { display: flex; gap: 8px; }
@@ -101,6 +105,19 @@
     #toast.show { transform: translateX(-50%) translateY(0); }
     #toast.success { background: var(--green); }
     #toast.info { background: #0f3460; }
+    .grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .field { margin-top: 10px; }
+    .field label { display: block; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; }
+    .readonly { color: #b6d2ff; font-size: 13px; background: #102d52; border-radius: 8px; padding: 9px 11px; min-height: 34px; }
+    .tabs { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin: 12px 14px 0; }
+    .tab { border: 1px solid #1a4a7a; background: #102d52; color: #aaa; border-radius: 10px; padding: 10px 4px; font-size: 13px; font-weight: 700; }
+    .tab.active { background: var(--accent-blue); color: white; border-color: var(--red); }
+    .page { display: none; }
+    .page.active { display: block; }
+    .btn-wide { width: 100%; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; color: white; background: var(--accent-blue); margin-top: 12px; }
+    .reply-item { border-top: 1px solid #0f2a50; padding: 12px 0; font-size: 13px; line-height: 1.6; }
+    .reply-new { color: #ffd166; }
+    .small-note { color: var(--text-muted); font-size: 11px; margin-top: 6px; line-height: 1.5; }
   </style>
 </head>
 <body>
@@ -112,12 +129,29 @@
   <div class="card" id="settings-panel">
     <h3>⚙ 設定</h3>
     <div class="setting-row"><label>Google Apps Script URL（スプレッドシート連携）</label><input type="text" id="gas-url" placeholder="https://script.google.com/macros/s/..."/></div>
+    <div class="setting-row"><label>LIFF ID（LINE Developersで発行）</label><input type="text" id="liff-id" placeholder="例: 1234567890-AbCdEfGh"/></div>
     <div class="setting-row"><label>社員名（カンマ区切りで入力）</label><input type="text" id="staff-names-input" placeholder="例: 山田太郎,佐藤次郎,鈴木三郎"/></div>
+    <div class="setting-row"><label>隊員マスタ（社員番号:氏名:所属 をカンマ区切り）</label><input type="text" id="guard-master-input" placeholder="例: 001:山田太郎:警備部,002:佐藤次郎:警備部"/></div>
+    <div class="setting-row"><label>現場マスタ（現場コード:現場名 をカンマ区切り）</label><input type="text" id="site-master-input" placeholder="例: S001:本社ビル,S002:中央工事現場"/></div>
+    <div class="setting-row"><label>Power Automate HTTP URL（将来のSharePoint連携）</label><input type="text" id="flow-url" placeholder="https://..."/></div>
     <button class="btn-save-settings" onclick="saveSettings()">💾 設定を保存</button>
   </div>
+  <div class="tabs">
+    <button class="tab active" data-page="attendance" onclick="switchPage('attendance')">打刻</button>
+    <button class="tab" data-page="daily" onclick="switchPage('daily')">日報</button>
+    <button class="tab" data-page="replies" onclick="switchPage('replies')">返信</button>
+  </div>
+  <div class="page active" id="page-attendance">
   <div class="card">
     <div class="section-label">担当者を選択</div>
     <div class="staff-row"><select id="staff-select"><option value="">-- 氏名を選択 --</option></select></div>
+    <div class="grid-two">
+      <div class="field"><label>社員番号</label><div class="readonly" id="employee-number">未選択</div></div>
+      <div class="field"><label>所属</label><div class="readonly" id="department">未選択</div></div>
+    </div>
+    <div class="field"><label>現場名</label><select id="site-select"><option value="">-- 現場を選択 --</option></select></div>
+    <div class="field"><label>備考</label><input type="text" id="attendance-note" placeholder="連絡事項がある場合に入力"/></div>
+    <div class="field"><label>GPS</label><div class="readonly" id="gps-info">打刻時に自動取得します</div></div>
     <div class="datetime-display">
       <div class="date" id="date-display">----年--月--日（-）</div>
       <div class="time" id="time-display">--:--:--</div>
@@ -127,6 +161,7 @@
       <button class="btn-punch btn-checkin" id="btn-checkin" onclick="handleCheckin()">出　勤</button>
       <button class="btn-punch btn-checkout" id="btn-checkout" onclick="handleCheckout()" disabled>退　勤</button>
     </div>
+    <div class="line-info warn" id="line-info">LINE連携: 未接続</div>
     <div class="latest-info" id="latest-info">担当者を選択してください</div>
   </div>
   <div class="card">
@@ -139,6 +174,26 @@
     </div>
     <div class="history-list" id="history-list"><div class="history-empty">打刻履歴がありません</div></div>
   </div>
+  </div>
+  <div class="page" id="page-daily">
+    <div class="card">
+      <div class="section-label">日報入力</div>
+      <div class="field"><label>勤務日</label><input type="date" id="report-date"/></div>
+      <div class="field"><label>氏名</label><select id="report-staff"><option value="">-- 氏名を選択 --</option></select></div>
+      <div class="field"><label>社員番号</label><div class="readonly" id="report-employee-number">未選択</div></div>
+      <div class="field"><label>現場名</label><select id="report-site"><option value="">-- 現場を選択 --</option></select></div>
+      <div class="field"><label>勤務区分</label><select id="report-shift"><option>日勤</option><option>夜勤</option><option>当務</option><option>その他</option></select></div>
+      <div class="field"><label>業務内容</label><textarea id="report-work" placeholder="巡回、受付、誘導など"></textarea></div>
+      <div class="field"><label>異常有無</label><select id="report-incident"><option value="なし">なし</option><option value="あり">あり</option></select></div>
+      <div class="field"><label>異常内容</label><textarea id="report-incident-detail" placeholder="異常があった場合に入力"></textarea></div>
+      <div class="field"><label>引継ぎ事項</label><textarea id="report-handover" placeholder="次の担当者への引継ぎ"></textarea></div>
+      <button class="btn-wide" onclick="submitDailyReport()">日報を送信</button>
+    </div>
+    <div class="card"><div class="history-header"><h2>日報履歴</h2></div><div id="report-history" class="history-list"></div></div>
+  </div>
+  <div class="page" id="page-replies">
+    <div class="card"><div class="history-header"><h2>管理者からの返信</h2></div><div id="reply-list"></div></div>
+  </div>
 </div>
 <div id="camera-modal">
   <div class="camera-header"><div class="cam-title">📷 伝票を撮影してください</div><div class="cam-sub">退勤時の伝票・書類をカメラで撮影します</div></div>
@@ -149,45 +204,118 @@
     <button class="btn-shutter" onclick="takePhoto()">📸</button>
     <button class="btn-skip-cam" onclick="skipPhoto()">スキップ</button>
   </div>
+  <label class="btn-skip-cam">ファイル添付<input type="file" accept=".jpg,.jpeg,.png,.pdf" hidden onchange="attachCheckoutFile(this.files[0])"></label>
 </div>
 <div id="preview-modal"><img id="preview-img" src="" alt="伝票写真"><button class="btn-close-preview" onclick="closePreview()">✕ 閉じる</button></div>
 <div id="sending-overlay"><div class="spinner"></div><div class="sending-text" id="sending-text">データを送信中...</div></div>
 <div id="toast"></div>
 <script>
-const STORAGE_KEY='keibi_attendance_v2', SETTINGS_KEY='keibi_settings_v2';
+const STORAGE_KEY='keibi_attendance_v3', SETTINGS_KEY='keibi_settings_v3', REPORT_KEY='keibi_daily_reports_v1', REPLY_KEY='keibi_admin_replies_v1';
 const WEEKDAYS=['日','月','火','水','木','金','土'];
-let settings={gasUrl:'',staffNames:['山田太郎','佐藤次郎','鈴木三郎','高橋四郎','田中五郎']};
+let settings={gasUrl:'',flowUrl:'',liffId:'',staffNames:['山田太郎','佐藤次郎','鈴木三郎'],guards:[{employeeNumber:'001',name:'山田太郎',department:'警備部'},{employeeNumber:'002',name:'佐藤次郎',department:'警備部'},{employeeNumber:'003',name:'鈴木三郎',department:'警備部'}],sites:[{siteCode:'S001',name:'本社ビル'},{siteCode:'S002',name:'中央工事現場'}]};
 let currentStream=null, pendingCheckout=null;
+let lineProfile=null;
 
 function init(){
-  loadSettings(); renderStaffSelect(); renderHistory(); updateClock();
+  loadSettings(); renderMasters(); renderHistory(); renderReports(); renderReplies(); updateClock();
   setInterval(updateClock,1000);
-  document.getElementById('staff-select').addEventListener('change',e=>updateButtonStatus(e.target.value));
+  document.getElementById('report-date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('staff-select').addEventListener('change',e=>{updateButtonStatus(e.target.value);fillGuardInfo(e.target.value);});
+  document.getElementById('report-staff').addEventListener('change',e=>fillReportGuardInfo(e.target.value));
+  initLIFF();
   if('serviceWorker'in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 }
 
 function loadSettings(){
   try{const s=JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}');settings={...settings,...s};}catch(e){}
   document.getElementById('gas-url').value=settings.gasUrl||'';
+  document.getElementById('liff-id').value=settings.liffId||'';
   document.getElementById('staff-names-input').value=settings.staffNames.join(',');
+  document.getElementById('guard-master-input').value=(settings.guards||[]).map(g=>`${g.employeeNumber}:${g.name}:${g.department||''}`).join(',');
+  document.getElementById('site-master-input').value=(settings.sites||[]).map(s=>`${s.siteCode}:${s.name}`).join(',');
+  document.getElementById('flow-url').value=settings.flowUrl||'';
 }
 
 function saveSettings(){
   settings.gasUrl=document.getElementById('gas-url').value.trim();
+  settings.liffId=document.getElementById('liff-id').value.trim();
+  settings.flowUrl=document.getElementById('flow-url').value.trim();
   settings.staffNames=document.getElementById('staff-names-input').value.split(',').map(s=>s.trim()).filter(Boolean);
+  settings.guards=parseMaster(document.getElementById('guard-master-input').value,parts=>({employeeNumber:parts[0],name:parts[1],department:parts[2]||''}));
+  settings.sites=parseMaster(document.getElementById('site-master-input').value,parts=>({siteCode:parts[0],name:parts[1]}));
+  settings.staffNames=[...new Set([...settings.staffNames,...settings.guards.map(g=>g.name)])];
   localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));
-  renderStaffSelect();
+  renderMasters();
+  initLIFF();
   document.getElementById('settings-panel').classList.remove('active');
   showToast('設定を保存しました ✓','success');
 }
 
 function toggleSettings(){document.getElementById('settings-panel').classList.toggle('active');}
 
-function renderStaffSelect(){
-  const sel=document.getElementById('staff-select'),cur=sel.value;
-  sel.innerHTML='<option value="">-- 氏名を選択 --</option>';
-  settings.staffNames.forEach(n=>{const o=document.createElement('option');o.value=o.textContent=n;sel.appendChild(o);});
-  if(cur)sel.value=cur;
+function parseMaster(text,mapper){return text.split(',').map(v=>v.trim()).filter(Boolean).map(v=>mapper(v.split(':').map(x=>x.trim()))).filter(v=>Object.values(v).some(Boolean));}
+function renderMasters(){
+  fillSelect('staff-select',settings.staffNames,'-- 氏名を選択 --',true);
+  fillSelect('report-staff',settings.staffNames,'-- 氏名を選択 --',true);
+  fillSelect('site-select',(settings.sites||[]).map(s=>s.name),'-- 現場を選択 --',true);
+  fillSelect('report-site',(settings.sites||[]).map(s=>s.name),'-- 現場を選択 --',true);
+}
+function fillSelect(id,items,placeholder,manual){
+  const sel=document.getElementById(id),cur=sel.value;
+  sel.innerHTML=`<option value="">${placeholder}</option>`+items.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('')+(manual?'<option value="__manual__">手動入力</option>':'');
+  if(items.includes(cur))sel.value=cur;
+  sel.onchange=()=>{if(sel.value==='__manual__'){const value=prompt('手動入力してください');if(value){const option=document.createElement('option');option.value=option.textContent=value;sel.insertBefore(option,sel.lastChild);sel.value=value;}else sel.value='';}if(id==='staff-select'){fillGuardInfo(sel.value);updateButtonStatus(sel.value);}if(id==='report-staff')fillReportGuardInfo(sel.value);};
+}
+function fillGuardInfo(name){
+  const guard=(settings.guards||[]).find(g=>g.name===name);
+  document.getElementById('employee-number').textContent=guard?guard.employeeNumber:'手動入力';
+  document.getElementById('department').textContent=guard?guard.department||'未登録':'未登録';
+}
+function fillReportGuardInfo(name){
+  const guard=(settings.guards||[]).find(g=>g.name===name);
+  document.getElementById('report-employee-number').textContent=guard?guard.employeeNumber:'手動入力';
+}
+
+async function initLIFF(){
+  const info=document.getElementById('line-info');
+  if(!settings.liffId){
+    info.textContent='LINE連携: LIFF ID未設定';
+    info.className='line-info warn';
+    return;
+  }
+  if(!window.liff){
+    info.textContent='LINE連携: LIFF SDKを読み込めません';
+    info.className='line-info warn';
+    return;
+  }
+  try{
+    await liff.init({liffId:settings.liffId});
+    if(!liff.isLoggedIn()){
+      info.textContent='LINE連携: ログイン待ち';
+      info.className='line-info warn';
+      liff.login();
+      return;
+    }
+    lineProfile=await liff.getProfile();
+    info.textContent=`LINE連携: ${lineProfile.displayName}`;
+    info.className='line-info';
+    applyLineProfileToStaff(lineProfile.displayName);
+  }catch(e){
+    info.textContent='LINE連携: 初期化できません';
+    info.className='line-info warn';
+  }
+}
+
+function applyLineProfileToStaff(displayName){
+  if(!displayName)return;
+  const sel=document.getElementById('staff-select');
+  if(settings.staffNames.indexOf(displayName) === -1){
+    settings.staffNames.push(displayName);
+    localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));
+    renderMasters();
+  }
+  sel.value=displayName;
+  updateButtonStatus(displayName);
 }
 
 function updateClock(){
@@ -216,7 +344,10 @@ function updateButtonStatus(name){
 async function handleCheckin(){
   const name=document.getElementById('staff-select').value;
   if(!name){showToast('担当者を選択してください');return;}
-  const rec=makeRecord('in',name,new Date(),null);
+  const site=document.getElementById('site-select').value;
+  if(!site){showToast('現場名を選択してください');return;}
+  const gps=await getGps();
+  const rec=makeRecord('in',name,new Date(),null,gps);
   saveRecord(rec);localStorage.setItem('st_'+name,'in');
   updateButtonStatus(name);renderHistory();
   showToast(`✓ 出勤打刻：${rec.time}`,'success');
@@ -226,12 +357,14 @@ async function handleCheckin(){
 async function handleCheckout(){
   const name=document.getElementById('staff-select').value;
   if(!name){showToast('担当者を選択してください');return;}
-  pendingCheckout={name,time:new Date()};openCamera();
+  const site=document.getElementById('site-select').value;
+  if(!site){showToast('現場名を選択してください');return;}
+  pendingCheckout={name,time:new Date(),gps:await getGps()};openCamera();
 }
 
 async function finalizeCheckout(photoDataUrl){
   const{name,time}=pendingCheckout;
-  const rec=makeRecord('out',name,time,photoDataUrl);
+  const rec=makeRecord('out',name,time,photoDataUrl,pendingCheckout.gps);
   saveRecord(rec);localStorage.setItem('st_'+name,'out');
   updateButtonStatus(name);renderHistory();
   showToast(`✓ 退勤打刻：${rec.time}`,'success');
@@ -239,13 +372,13 @@ async function finalizeCheckout(photoDataUrl){
 }
 
 async function sendToGAS(rec){
-  if(!settings.gasUrl)return;
+  if(!settings.gasUrl&&!settings.flowUrl)return;
   document.getElementById('sending-overlay').classList.add('active');
   document.getElementById('sending-text').textContent=rec.type==='out'&&rec.photo?'写真をアップロード中...':'スプレッドシートに記録中...';
   try{
-    await fetch(settings.gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({type:rec.type,name:rec.name,datetime:rec.datetime,date:rec.date,time:rec.time,photo:rec.photo||''})});
-    showToast('✓ スプレッドシートに記録しました','success');
+    if(settings.gasUrl)await fetch(settings.gasUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)});
+    if(settings.flowUrl&&settings.flowUrl!==settings.gasUrl)await fetch(settings.flowUrl,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(rec)});
+    showToast('✓ 勤怠を記録しました','success');
   }catch(e){showToast('⚠ 送信エラー（履歴には保存済み）');}
   finally{document.getElementById('sending-overlay').classList.remove('active');}
 }
@@ -268,6 +401,14 @@ function closeCamera(){
 
 function cancelCamera(){closeCamera();pendingCheckout=null;}
 function skipPhoto(){closeCamera();finalizeCheckout(null);}
+
+function attachCheckoutFile(file){
+  if(!file)return;
+  if(!/\.(jpg|jpeg|png|pdf)$/i.test(file.name)){showToast('jpg、png、pdfを選択してください');return;}
+  const reader=new FileReader();
+  reader.onload=()=>{closeCamera();finalizeCheckout(reader.result);};
+  reader.readAsDataURL(file);
+}
 
 function takePhoto(){
   const v=document.getElementById('video'),c=document.getElementById('canvas');
@@ -293,7 +434,7 @@ function renderHistory(){
   el.innerHTML=[...history].reverse().map(r=>`
     <div class="history-item">
       <span class="history-badge ${r.type==='in'?'badge-in':'badge-out'}">${r.type==='in'?'出　勤':'退　勤'}</span>
-      <div class="history-detail"><div class="history-name">${esc(r.name)}</div><div class="history-time">${esc(r.datetime)}</div></div>
+      <div class="history-detail"><div class="history-name">${esc(r.name)}　${esc(r.siteName||'')}</div><div class="history-time">${esc(r.datetime)}　${esc(r.gpsStatus||'')}</div></div>
       ${r.photo?`<img class="history-photo" src="${r.photo}" onclick="showPhotoPreview(this.src)">`:'<span style="width:42px;flex-shrink:0"></span>'}
     </div>`).join('');
 }
@@ -360,15 +501,75 @@ function exportExcel(){
 
 function exportCSV(){
   const history=getHistory();if(!history.length){showToast('打刻データがありません');return;}
-  let csv='﻿種別,氏名,日付,時刻,日時\n';
-  history.forEach(r=>{csv+=`"${r.type==='in'?'出勤':'退勤'}","${r.name}","${r.date}","${r.time}","${r.datetime}"\n`;});
+  let csv='﻿種別,社員番号,氏名,現場名,日付,時刻,日時,GPS緯度,GPS経度,GPS状況,備考\n';
+  history.forEach(r=>{csv+=`"${r.type==='in'?'出勤':'退勤'}","${r.employeeNumber||''}","${r.name}","${r.siteName||''}","${r.date}","${r.time}","${r.datetime}","${r.latitude||''}","${r.longitude||''}","${r.gpsStatus||''}","${r.note||''}"\n`;});
   const a=document.createElement('a'),now=new Date();
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
   a.download=`出退勤_${now.getFullYear()}${pad2(now.getMonth()+1)}${pad2(now.getDate())}.csv`;
   a.click();showToast('CSVを出力しました','success');
 }
 
-function makeRecord(type,name,date,photo){return{type,name,photo,datetime:formatDatetime(date),date:formatDate(date),time:formatTime(date)};}
+function switchPage(page){
+  document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id==='page-'+page));
+  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.dataset.page===page));
+  if(page==='daily')renderReports();
+  if(page==='replies')renderReplies();
+}
+
+function getReports(){try{return JSON.parse(localStorage.getItem(REPORT_KEY)||'[]');}catch(e){return[];}}
+function saveReports(items){localStorage.setItem(REPORT_KEY,JSON.stringify(items));}
+function getReplies(){try{return JSON.parse(localStorage.getItem(REPLY_KEY)||'[]');}catch(e){return[];}}
+function saveReplies(items){localStorage.setItem(REPLY_KEY,JSON.stringify(items));}
+
+async function submitDailyReport(){
+  const name=document.getElementById('report-staff').value,siteName=document.getElementById('report-site').value;
+  if(!name||!siteName){showToast('氏名と現場名を選択してください');return;}
+  const guard=(settings.guards||[]).find(g=>g.name===name)||{};
+  const report={action:'dailyReport',id:'report-'+Date.now(),workDate:document.getElementById('report-date').value,name,employeeNumber:guard.employeeNumber||'',siteName,shift:document.getElementById('report-shift').value,work:document.getElementById('report-work').value,incident:document.getElementById('report-incident').value,incidentDetail:document.getElementById('report-incident-detail').value,handover:document.getElementById('report-handover').value,submittedAt:formatDatetime(new Date()),lineUserId:lineProfile?lineProfile.userId:'',reply:'',replyRead:false};
+  const reports=getReports();reports.push(report);saveReports(reports);renderReports();
+  await sendGeneric(report);
+  showToast('日報を保存しました','success');
+}
+
+function renderReports(){
+  const el=document.getElementById('report-history'),reports=getReports();
+  if(!reports.length){el.innerHTML='<div class="history-empty">日報履歴がありません</div>';return;}
+  el.innerHTML=[...reports].reverse().map(r=>`<div class="reply-item"><strong>${esc(r.workDate)}　${esc(r.siteName)}</strong><div>${esc(r.name)} ／ ${esc(r.shift)}</div><div class="small-note">${esc(r.work||'業務内容なし')}</div>${r.reply?`<div class="${r.replyRead?'':'reply-new'}">管理者返信: ${esc(r.reply)}</div>`:''}</div>`).join('');
+}
+
+function renderReplies(){
+  const reports=getReports().filter(r=>r.reply),extra=getReplies(),el=document.getElementById('reply-list');
+  const replies=[...reports.map(r=>({id:r.id,reportId:r.id,siteName:r.siteName,message:r.reply,replier:r.replier||'管理者',repliedAt:r.repliedAt||'',read:r.replyRead})),...extra];
+  if(!replies.length){el.innerHTML='<div class="history-empty">管理者からの返信はありません</div>';return;}
+  el.innerHTML=replies.map(r=>`<div class="reply-item ${r.read?'':'reply-new'}"><strong>${esc(r.siteName||'日報返信')}</strong><div>${esc(r.message)}</div><div class="small-note">${esc(r.replier||'管理者')}　${esc(r.repliedAt||'')}</div>${r.read?'<span class="small-note">確認済み</span>':`<button class="btn-wide" onclick="confirmReply('${esc(r.reportId||r.id)}')">確認しました</button>`}</div>`).join('');
+}
+
+async function confirmReply(reportId){
+  const reports=getReports().map(r=>r.id===reportId?{...r,replyRead:true,replyReadAt:formatDatetime(new Date())}:r);saveReports(reports);
+  const replies=getReplies().map(r=>(r.reportId||r.id)===reportId?{...r,read:true}:r);saveReplies(replies);
+  await sendGeneric({action:'confirmReply',reportId,confirmedAt:formatDatetime(new Date())});
+  renderReports();renderReplies();showToast('返信を確認済みにしました','success');
+}
+
+async function sendGeneric(data){
+  const url=settings.flowUrl||settings.gasUrl;if(!url)return;
+  try{await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});}catch(e){showToast('送信できませんでした。端末内には保存済みです');}
+}
+
+async function getGps(){
+  const info=document.getElementById('gps-info');
+  info.textContent='GPSを取得中...';
+  if(!navigator.geolocation){info.textContent='GPS非対応';return{latitude:'',longitude:'',gpsStatus:'非対応'};}
+  return new Promise(resolve=>navigator.geolocation.getCurrentPosition(
+    pos=>{const gps={latitude:pos.coords.latitude.toFixed(6),longitude:pos.coords.longitude.toFixed(6),gpsStatus:'取得済み'};info.textContent=`${gps.latitude}, ${gps.longitude}`;resolve(gps);},
+    ()=>{info.textContent='GPSを取得できませんでした';resolve({latitude:'',longitude:'',gpsStatus:'取得失敗'});},
+    {enableHighAccuracy:true,timeout:8000,maximumAge:60000}
+  ));
+}
+function makeRecord(type,name,date,photo,gps={}){
+  const guard=(settings.guards||[]).find(g=>g.name===name)||{};
+  return{action:'attendance',type,name,employeeNumber:guard.employeeNumber||'',department:guard.department||'',siteName:document.getElementById('site-select').value,note:document.getElementById('attendance-note').value,photo,datetime:formatDatetime(date),date:formatDate(date),time:formatTime(date),...gps,lineUserId:lineProfile?lineProfile.userId:'',lineDisplayName:lineProfile?lineProfile.displayName:''};
+}
 function formatDatetime(d){return`${d.getFullYear()}/${pad2(d.getMonth()+1)}/${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;}
 function formatDate(d){return`${d.getFullYear()}/${pad2(d.getMonth()+1)}/${pad2(d.getDate())}`;}
 function formatTime(d){return`${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;}
