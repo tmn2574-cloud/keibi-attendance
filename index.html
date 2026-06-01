@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -16,30 +16,30 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     :root {
-      --bg: #1a1a2e; --card: #16213e; --accent-blue: #0f3460;
+      --bg: #f4f8fb; --card: #ffffff; --accent-blue: #e5f1f8;
       --green: #1db954; --red: #e94560; --text: #eee; --text-muted: #888;
       --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
     html, body { height: 100%; overflow-x: hidden; }
-    body { font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Yu Gothic', sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; padding-top: var(--safe-top); padding-bottom: var(--safe-bottom); }
-    header { background: var(--card); padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--accent-blue); box-shadow: 0 2px 10px rgba(0,0,0,0.5); position: sticky; top: 0; z-index: 100; }
+    body { font-family: 'Hiragino Kaku Gothic ProN', 'Meiryo', 'Yu Gothic', sans-serif; background: var(--bg); color: #243447; display: flex; flex-direction: column; padding-top: var(--safe-top); padding-bottom: var(--safe-bottom); }
+    header { background: #ffffff; padding: 14px 16px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #b6d7e8; box-shadow: 0 2px 10px rgba(50,90,110,0.15); position: sticky; top: 0; z-index: 100; }
     .header-left { display: flex; align-items: center; gap: 10px; }
     .shield { font-size: 24px; }
-    header h1 { font-size: 17px; font-weight: 700; letter-spacing: 1px; }
+    header h1 { font-size: 17px; font-weight: 700; letter-spacing: 1px; color: #315b6e; }
     .header-right { display: flex; align-items: center; gap: 8px; }
     #clock { font-size: 12px; color: var(--text-muted); }
     .btn-settings-toggle { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; padding: 4px 6px; border-radius: 8px; }
     .btn-settings-toggle:active { background: var(--accent-blue); }
     .scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 24px; }
-    .card { margin: 12px 14px 0; background: var(--card); border-radius: 16px; padding: 18px; box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
+    .card { margin: 12px 14px 0; background: var(--card); border: 1px solid #d7e7ef; border-radius: 16px; padding: 18px; box-shadow: 0 4px 16px rgba(50,90,110,0.10); }
     .section-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
     #settings-panel { display: none; }
     #settings-panel.active { display: block; }
     #settings-panel h3 { font-size: 13px; color: #aaa; margin-bottom: 14px; letter-spacing: 1px; }
     .setting-row { margin-bottom: 12px; }
     .setting-row label { display: block; font-size: 11px; color: var(--text-muted); margin-bottom: 5px; }
-    input[type="text"], input[type="date"], textarea, select { width: 100%; background: var(--accent-blue); border: 1px solid #1a4a7a; color: var(--text); padding: 11px 13px; border-radius: 10px; font-size: 15px; appearance: none; -webkit-appearance: none; }
-    input[type="text"]:focus, input[type="date"]:focus, textarea:focus, select:focus { outline: none; border-color: var(--red); }
+    input[type="text"], input[type="password"], input[type="date"], input[type="month"], textarea, select { width: 100%; background: #f8fcfe; border: 1px solid #b6d7e8; color: #243447; padding: 11px 13px; border-radius: 10px; font-size: 15px; appearance: none; -webkit-appearance: none; }
+    input[type="text"]:focus, input[type="date"]:focus, input[type="month"]:focus, textarea:focus, select:focus { outline: none; border-color: var(--red); }
     textarea { min-height: 78px; resize: vertical; font-family: inherit; }
     .btn-save-settings { width: 100%; background: var(--accent-blue); border: 1px solid #1a5a9a; color: #88aadd; padding: 12px; border-radius: 10px; font-size: 14px; cursor: pointer; font-weight: 600; margin-top: 4px; }
     .btn-save-settings:active { opacity: 0.7; }
@@ -109,10 +109,10 @@
     .grid-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .field { margin-top: 10px; }
     .field label { display: block; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; }
-    .readonly { color: #b6d2ff; font-size: 13px; background: #102d52; border-radius: 8px; padding: 9px 11px; min-height: 34px; }
-    .tabs { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin: 12px 14px 0; }
-    .tab { border: 1px solid #1a4a7a; background: #102d52; color: #aaa; border-radius: 10px; padding: 10px 4px; font-size: 13px; font-weight: 700; }
-    .tab.active { background: var(--accent-blue); color: white; border-color: var(--red); }
+    .readonly { color: #315b6e; font-size: 13px; background: #eef7fb; border-radius: 8px; padding: 9px 11px; min-height: 34px; }
+    .tabs { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin: 12px 14px 0; }
+    .tab { border: 1px solid #b6d7e8; background: #ffffff; color: #4b7282; border-radius: 10px; padding: 10px 4px; font-size: 13px; font-weight: 700; }
+    .tab.active { background: #d8edf5; color: #244b5d; border-color: #65a9c2; }
     .page { display: none; }
     .page.active { display: block; }
     .btn-wide { width: 100%; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; color: white; background: var(--accent-blue); margin-top: 12px; }
@@ -127,6 +127,49 @@
     .btn-mini { border: 1px solid #1a4a7a; background: #102d52; color: #b6d2ff; border-radius: 8px; padding: 7px 10px; font-size: 12px; }
     .btn-danger { border-color: #7a2636; color: #ff9bac; }
     .import-result { margin-top: 10px; color: #9fd7a8; font-size: 12px; line-height: 1.7; white-space: pre-wrap; }
+    .calendar-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+    .calendar-title { color: #315b6e; font-size: 15px; font-weight: 700; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(40px,1fr)); gap: 4px; }
+    .calendar-weekday { color: #678796; font-size: 11px; text-align: center; padding: 4px 0; }
+    .calendar-day { min-height: 58px; border: 1px solid #d7e7ef; background: #fafdff; border-radius: 8px; padding: 5px; color: #315b6e; font-size: 12px; text-align: left; }
+    .calendar-day.has-work { background: #e7f7ee; border-color: #a6d8b8; }
+    .calendar-day.selected { outline: 2px solid #65a9c2; }
+    .calendar-count { display: block; margin-top: 7px; color: #27764a; font-size: 10px; font-weight: 700; }
+    .punch-title { color: #315b6e; font-size: 20px; font-weight: 800; margin-bottom: 5px; }
+    .punch-guide { color: #678796; font-size: 13px; line-height: 1.6; margin-bottom: 14px; }
+    .punch-step { color: #315b6e; font-size: 13px; font-weight: 800; margin-top: 16px; margin-bottom: 7px; }
+    .required { color: #d7445b; font-size: 11px; margin-left: 4px; }
+    .optional { color: #678796; font-size: 11px; margin-left: 4px; font-weight: 400; }
+    .punch-card .datetime-display { background: #eef7fb; border-radius: 14px; padding: 14px 8px; margin: 16px 0 10px; }
+    .punch-card .datetime-display .date { color: #678796; }
+    .punch-card .datetime-display .time { color: #315b6e; font-size: 42px; }
+    .punch-card .latest-info { color: #4b7282; margin-top: 10px; }
+    .punch-card .latest-info strong { color: #315b6e; }
+    .diary-box { margin-top: 18px; padding-top: 14px; border-top: 1px solid #d7e7ef; }
+    .diary-box textarea { min-height: 88px; }
+    .admin-reply-box { margin-top: 10px; padding: 11px; background: #eef7fb; border: 1px solid #d7e7ef; border-radius: 10px; }
+    .admin-reply-box textarea { min-height: 70px; background: #fff; }
+    .admin-reply-meta { color: #678796; font-size: 11px; margin-top: 7px; }
+    .quick-slip-box { margin-top: 16px; padding: 14px; background: #fff8e7; border: 1px solid #f0d38a; border-radius: 12px; }
+    .quick-slip-title { color: #76551d; font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+    .quick-slip-note { color: #907039; font-size: 12px; line-height: 1.5; }
+    .btn-quick-slip { width: 100%; border: none; border-radius: 12px; padding: 14px; margin-top: 10px; background: #e99b22; color: #fff; font-size: 15px; font-weight: 800; cursor: pointer; }
+    .summary-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .summary-actions .btn-mini { flex: 1; min-width: 110px; }
+    .summary-preview { margin-top: 12px; max-height: 260px; overflow: auto; }
+    .admin-menu { display: flex; flex-wrap: wrap; gap: 8px; }
+    .admin-menu .btn-mini { flex: 1; min-width: 120px; padding: 11px 10px; }
+    .ledger-card { border: 2px solid #9bc7d8; }
+    .bulk-actions { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0; }
+    .bulk-actions .btn-mini { min-width: 105px; }
+    .admin-table input[type="text"] { min-width: 100px; padding: 7px 8px; font-size: 12px; }
+    .admin-check { width: 18px; height: 18px; }
+    .collapsible-card.collapsed > :not(.history-header) { display: none !important; }
+    .btn-collapse { margin-left: auto; border: 1px solid #9bc7d8; background: #eef7fb; color: #315b6e; border-radius: 8px; padding: 7px 10px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    @media (max-width: 767px), (pointer: coarse) {
+      .admin-only { display: none !important; }
+      .tabs { grid-template-columns: repeat(2,1fr); }
+    }
   </style>
 </head>
 <body>
@@ -143,68 +186,74 @@
     <div class="setting-row"><label>隊員マスタ（社員番号:氏名:所属 をカンマ区切り）</label><input type="text" id="guard-master-input" placeholder="例: 001:山田太郎:警備部,002:佐藤次郎:警備部"/></div>
     <div class="setting-row"><label>現場マスタ（現場コード:現場名 をカンマ区切り）</label><input type="text" id="site-master-input" placeholder="例: S001:本社ビル,S002:中央工事現場"/></div>
     <div class="setting-row"><label>Power Automate HTTP URL（将来のSharePoint連携）</label><input type="text" id="flow-url" placeholder="https://..."/></div>
+    <div class="setting-row"><label>管理画面の暗証番号</label><input type="password" id="admin-pin" placeholder="初期値: 1234"/></div>
     <button class="btn-save-settings" onclick="saveSettings()">💾 設定を保存</button>
   </div>
   <div class="tabs">
     <button class="tab active" data-page="attendance" onclick="switchPage('attendance')">打刻</button>
-    <button class="tab" data-page="daily" onclick="switchPage('daily')">日報</button>
-    <button class="tab" data-page="replies" onclick="switchPage('replies')">返信</button>
-    <button class="tab" data-page="admin" onclick="switchPage('admin')">管理</button>
+    <button class="tab" data-page="calendar" onclick="switchPage('calendar')">カレンダー</button>
+    <button class="tab" data-page="slips" onclick="switchPage('slips')">伝票</button>
+    <button class="tab admin-only" data-page="admin" onclick="switchPage('admin')">管理</button>
   </div>
   <div class="page active" id="page-attendance">
-  <div class="card">
-    <div class="section-label">担当者を選択</div>
-    <div class="staff-row"><select id="staff-select"><option value="">-- 氏名を選択 --</option></select></div>
+  <div class="card punch-card">
+    <div class="punch-title">出勤・退勤の打刻</div>
+    <div class="punch-guide">はじめに自分の名前を選び、出勤または退勤ボタンを押してください。</div>
+    <div class="punch-step">1. 所属を選ぶ <span class="optional">名前を絞り込めます</span></div>
+    <select id="department-select"><option value="">-- すべての所属 --</option></select>
+    <div class="punch-step">2. 名前を選ぶ <span class="required">必須</span></div>
+    <div class="staff-row"><select id="staff-select"><option value="">-- 自分の名前を選択 --</option></select></div>
     <div class="grid-two">
       <div class="field"><label>社員番号</label><div class="readonly" id="employee-number">未選択</div></div>
       <div class="field"><label>所属</label><div class="readonly" id="department">未選択</div></div>
     </div>
-    <div class="field"><label>現場名</label><select id="site-select"><option value="">-- 現場を選択 --</option></select></div>
-    <div class="field"><label>備考</label><input type="text" id="attendance-note" placeholder="連絡事項がある場合に入力"/></div>
-    <div class="field"><label>GPS</label><div class="readonly" id="gps-info">打刻時に自動取得します</div></div>
+    <div class="punch-step">3. 現場を選ぶ <span class="optional">省略できます</span></div>
+    <select id="site-select"><option value="">-- 現場を選択 --</option></select>
+    <div class="field"><label>備考 <span class="optional">省略できます</span></label><input type="text" id="attendance-note" placeholder="連絡事項がある場合に入力"/></div>
     <div class="datetime-display">
       <div class="date" id="date-display">----年--月--日（-）</div>
       <div class="time" id="time-display">--:--:--</div>
     </div>
     <div class="status-wrap"><span class="status-badge"><span class="status-dot" id="status-dot"></span><span id="status-text">未選択</span></span></div>
+    <div class="punch-step">4. ボタンを押す</div>
     <div class="btn-row">
       <button class="btn-punch btn-checkin" id="btn-checkin" onclick="handleCheckin()">出　勤</button>
       <button class="btn-punch btn-checkout" id="btn-checkout" onclick="handleCheckout()" disabled>退　勤</button>
     </div>
-    <div class="line-info warn" id="line-info">LINE連携: 未接続</div>
     <div class="latest-info" id="latest-info">担当者を選択してください</div>
+    <div class="diary-box">
+      <div class="punch-step">今日の感想 <span class="optional">退勤時に保存・省略できます</span></div>
+      <textarea id="attendance-diary" placeholder="今日の勤務で感じたことや、伝えたいことを書いてください"></textarea>
+    </div>
+    <div class="field"><label>GPS</label><div class="readonly" id="gps-info">打刻時に自動取得します</div></div>
+    <div class="line-info warn" id="line-info">LINE連携: 未接続</div>
+    <div class="quick-slip-box">
+      <div class="quick-slip-title">伝票の写真を送り忘れた場合</div>
+      <div class="quick-slip-note">名前と現場を選び、下のボタンを押してください。今日の現場へ写真を追加します。</div>
+      <button class="btn-quick-slip" type="button" onclick="openQuickSlipCamera()">📷 伝票をあとから撮影・追加</button>
+      <input type="file" id="quick-slip-file" accept=".jpg,.jpeg,.png" capture="environment" hidden onchange="addQuickMissedSlip(this.files[0])">
+    </div>
   </div>
-  <div class="card">
-    <div class="history-header">
-      <h2>📋 打刻履歴</h2>
-      <div class="export-btns">
-        <button class="btn-export btn-export-xl" onclick="exportExcel()">📊 Excel</button>
-        <button class="btn-export" onclick="exportCSV()">CSV</button>
+  </div>
+  <div class="page" id="page-calendar">
+    <div class="card">
+      <div class="section-label">自分の勤務カレンダー</div>
+      <p class="small-note" id="staff-calendar-note">打刻画面で氏名を選択してください。</p>
+      <div class="calendar-toolbar"><button class="btn-mini" onclick="moveStaffCalendarMonth(-1)">前の月</button><div class="calendar-title" id="staff-calendar-title"></div><button class="btn-mini" onclick="moveStaffCalendarMonth(1)">次の月</button></div>
+      <div class="calendar-grid" id="staff-calendar-grid"></div>
+      <div id="staff-calendar-detail" class="reply-item">日付を選択すると勤務時間を表示します。</div>
+    </div>
+  </div>
+  <div class="page admin-only" id="page-admin">
+    <div class="card" id="admin-menu">
+      <div class="section-label">管理メニュー</div>
+      <div class="admin-menu">
+        <button class="btn-mini" onclick="scrollAdminTo('admin-menu')">管理トップ</button>
+        <button class="btn-mini" onclick="scrollAdminTo('employee-ledger')">社員台帳</button>
+        <button class="btn-mini" onclick="scrollAdminTo('admin-attendance-area')">打刻一覧</button>
+        <button class="btn-mini" onclick="scrollAdminTo('admin-slip-area')">伝票一覧</button>
       </div>
     </div>
-    <div class="history-list" id="history-list"><div class="history-empty">打刻履歴がありません</div></div>
-  </div>
-  </div>
-  <div class="page" id="page-daily">
-    <div class="card">
-      <div class="section-label">日報入力</div>
-      <div class="field"><label>勤務日</label><input type="date" id="report-date"/></div>
-      <div class="field"><label>氏名</label><select id="report-staff"><option value="">-- 氏名を選択 --</option></select></div>
-      <div class="field"><label>社員番号</label><div class="readonly" id="report-employee-number">未選択</div></div>
-      <div class="field"><label>現場名</label><select id="report-site"><option value="">-- 現場を選択 --</option></select></div>
-      <div class="field"><label>勤務区分</label><select id="report-shift"><option>日勤</option><option>夜勤</option><option>当務</option><option>その他</option></select></div>
-      <div class="field"><label>業務内容</label><textarea id="report-work" placeholder="巡回、受付、誘導など"></textarea></div>
-      <div class="field"><label>異常有無</label><select id="report-incident"><option value="なし">なし</option><option value="あり">あり</option></select></div>
-      <div class="field"><label>異常内容</label><textarea id="report-incident-detail" placeholder="異常があった場合に入力"></textarea></div>
-      <div class="field"><label>引継ぎ事項</label><textarea id="report-handover" placeholder="次の担当者への引継ぎ"></textarea></div>
-      <button class="btn-wide" onclick="submitDailyReport()">日報を送信</button>
-    </div>
-    <div class="card"><div class="history-header"><h2>日報履歴</h2></div><div id="report-history" class="history-list"></div></div>
-  </div>
-  <div class="page" id="page-replies">
-    <div class="card"><div class="history-header"><h2>管理者からの返信</h2></div><div id="reply-list"></div></div>
-  </div>
-  <div class="page" id="page-admin">
     <div class="card">
       <div class="section-label">管理画面</div>
       <p class="small-note">Excel、CSV、テキストPDFから隊員・現場マスタを取り込めます。PDFが画像のみの場合は手動登録を使ってください。</p>
@@ -213,17 +262,103 @@
       <div class="import-result" id="admin-import-result"></div>
     </div>
     <div class="card">
-      <div class="history-header"><h2>勤務員情報</h2><button class="btn-mini" onclick="addGuardManual()">手動登録</button></div>
-      <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>社員番号</th><th>氏名</th><th>所属</th><th></th></tr></thead><tbody id="admin-guard-list"></tbody></table></div>
+      <div class="history-header"><h2>全隊員 勤務カレンダー</h2></div>
+      <div class="calendar-toolbar"><button class="btn-mini" onclick="moveAdminCalendarMonth(-1)">前の月</button><div class="calendar-title" id="admin-calendar-title"></div><button class="btn-mini" onclick="moveAdminCalendarMonth(1)">次の月</button></div>
+      <div class="calendar-grid" id="admin-calendar-grid"></div>
+      <div id="admin-calendar-detail" class="reply-item">日付を選択すると、その日に勤務した隊員を表示します。</div>
+    </div>
+    <div class="card">
+      <div class="history-header"><h2>打刻履歴</h2></div>
+      <div class="history-list" id="admin-history-list"></div>
+    </div>
+    <div class="card" id="admin-attendance-area">
+      <div class="history-header"><h2>日ごとの打刻一覧</h2></div>
+      <p class="small-note">選んだ日の勤務を現場ごとに並べます。</p>
+      <div class="field"><label>出力する日</label><input type="date" id="admin-summary-date" onchange="renderAdminAttendanceSummaries()"/></div>
+      <div class="summary-actions">
+        <button class="btn-mini" onclick="exportAdminAttendanceExcel('day')">Excel出力</button>
+        <button class="btn-mini" onclick="printAdminAttendancePdf('day')">PDF出力</button>
+      </div>
+      <div class="summary-preview admin-table-wrap"><table class="admin-table"><thead><tr><th>現場</th><th>社員番号</th><th>氏名</th><th>出勤</th><th>退勤</th><th>備考</th></tr></thead><tbody id="admin-day-summary-list"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="history-header"><h2>月ごとの打刻一覧</h2></div>
+      <p class="small-note">選んだ月の勤務を日付・現場ごとに並べます。</p>
+      <div class="field"><label>出力する月</label><input type="month" id="admin-summary-month" onchange="renderAdminAttendanceSummaries()"/></div>
+      <div class="summary-actions">
+        <button class="btn-mini" onclick="exportAdminAttendanceExcel('month')">Excel出力</button>
+        <button class="btn-mini" onclick="printAdminAttendancePdf('month')">PDF出力</button>
+      </div>
+      <div class="summary-preview admin-table-wrap"><table class="admin-table"><thead><tr><th>日付</th><th>現場</th><th>社員番号</th><th>氏名</th><th>出勤</th><th>退勤</th><th>備考</th></tr></thead><tbody id="admin-month-summary-list"></tbody></table></div>
+    </div>
+    <div class="card ledger-card" id="employee-ledger">
+      <div class="history-header"><h2>社員台帳</h2><button class="btn-mini" onclick="addGuardManual()">社員を手動登録</button></div>
+      <p class="small-note">社員一覧を取り込むと、台帳と打刻画面の名前一覧へ反映されます。列名は「社員番号、氏名、所属、電話番号、LINEユーザーID、有効無効」に対応しています。</p>
+      <label class="btn-wide" style="display:block;text-align:center">社員一覧をExcel・CSV・PDFから取込<input type="file" accept=".xlsx,.xls,.csv,.pdf" hidden onchange="importEmployeeLedgerFile(this.files[0])"></label>
+      <div class="import-result" id="employee-ledger-import-result"></div>
+      <div class="bulk-actions">
+        <button class="btn-mini" onclick="selectAllGuards(true)">すべて選択</button>
+        <button class="btn-mini" onclick="selectAllGuards(false)">選択解除</button>
+        <button class="btn-mini" onclick="bulkChangeGuardDepartment()">所属を一括変更</button>
+        <button class="btn-mini" onclick="bulkChangeGuardEnabled()">有効無効を一括変更</button>
+        <button class="btn-mini" id="guard-bulk-edit-button" onclick="toggleGuardBulkEdit()">一覧を一括編集</button>
+        <button class="btn-mini btn-danger" onclick="bulkDeleteGuards()">選択社員を一括削除</button>
+      </div>
+      <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>選択</th><th>社員番号</th><th>氏名</th><th>所属</th><th>電話番号</th><th>LINEユーザーID</th><th>有効無効</th><th></th></tr></thead><tbody id="admin-guard-list"></tbody></table></div>
     </div>
     <div class="card">
       <div class="history-header"><h2>現場マスタ</h2><button class="btn-mini" onclick="addSiteManual()">手動登録</button></div>
-      <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>現場コード</th><th>現場名</th><th></th></tr></thead><tbody id="admin-site-list"></tbody></table></div>
+      <div class="bulk-actions">
+        <button class="btn-mini" onclick="selectAllSites(true)">すべて選択</button>
+        <button class="btn-mini" onclick="selectAllSites(false)">選択解除</button>
+        <button class="btn-mini" onclick="bulkChangeSiteName()">現場名を一括変更</button>
+        <button class="btn-mini" id="site-bulk-edit-button" onclick="toggleSiteBulkEdit()">一覧を一括編集</button>
+        <button class="btn-mini btn-danger" onclick="bulkDeleteSites()">選択現場を一括削除</button>
+      </div>
+      <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>選択</th><th>現場コード</th><th>現場名</th><th></th></tr></thead><tbody id="admin-site-list"></tbody></table></div>
     </div>
     <div class="card">
-      <div class="history-header"><h2>提出された日報</h2></div>
+      <div class="history-header"><h2>今日の感想・返事</h2></div>
+      <p class="small-note">隊員が退勤時に書いた感想を確認し、返事を入力できます。</p>
       <div id="admin-report-list"></div>
     </div>
+    <div class="card" id="admin-slip-area">
+      <div class="history-header"><h2>伝票管理</h2></div>
+      <p class="small-note">退勤時の写真と、あとから追加した送り忘れ分を勤務日・現場ごとに表示します。</p>
+      <div id="admin-slip-list"></div>
+    </div>
+    <div class="card">
+      <div class="history-header"><h2>日ごとの伝票写真一覧</h2></div>
+      <p class="small-note">選んだ日の伝票を現場ごとに並べます。写真は一覧の「開く」から確認できます。</p>
+      <div class="field"><label>出力する日</label><input type="date" id="admin-slip-summary-date" onchange="renderAdminSlipSummaries()"/></div>
+      <div class="summary-actions">
+        <button class="btn-mini" onclick="exportAdminSlipExcel('day')">Excel出力</button>
+        <button class="btn-mini" onclick="printAdminSlipPdf('day')">PDF出力</button>
+      </div>
+      <div class="summary-preview admin-table-wrap"><table class="admin-table"><thead><tr><th>現場</th><th>社員番号</th><th>氏名</th><th>提出日時</th><th>写真</th></tr></thead><tbody id="admin-slip-day-list"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="history-header"><h2>月ごとの伝票写真一覧</h2></div>
+      <p class="small-note">選んだ月の伝票を日付・現場ごとに並べます。</p>
+      <div class="field"><label>出力する月</label><input type="month" id="admin-slip-summary-month" onchange="renderAdminSlipSummaries()"/></div>
+      <div class="summary-actions">
+        <button class="btn-mini" onclick="exportAdminSlipExcel('month')">Excel出力</button>
+        <button class="btn-mini" onclick="printAdminSlipPdf('month')">PDF出力</button>
+      </div>
+      <div class="summary-preview admin-table-wrap"><table class="admin-table"><thead><tr><th>勤務日</th><th>現場</th><th>社員番号</th><th>氏名</th><th>提出日時</th><th>写真</th></tr></thead><tbody id="admin-slip-month-list"></tbody></table></div>
+    </div>
+  </div>
+  <div class="page" id="page-slips">
+    <div class="card">
+      <div class="section-label">伝票の送り忘れ対応</div>
+      <div class="field"><label>勤務日</label><input type="date" id="slip-date"/></div>
+      <div class="field"><label>氏名</label><select id="slip-staff"><option value="">-- 氏名を選択 --</option></select></div>
+      <div class="field"><label>社員番号</label><div class="readonly" id="slip-employee-number">未選択</div></div>
+      <div class="field"><label>現場名</label><select id="slip-site"><option value="">-- 現場を選択 --</option></select></div>
+      <label class="btn-wide" style="display:block;text-align:center">写真・PDFを追加<input type="file" accept=".jpg,.jpeg,.png,.pdf" capture="environment" hidden onchange="addMissedSlip(this.files[0])"></label>
+      <div class="small-note">スマホではカメラ撮影または保存済みファイルの選択ができます。</div>
+    </div>
+    <div class="card"><div class="history-header"><h2>伝票履歴</h2></div><div id="slip-history"></div></div>
   </div>
 </div>
 <div id="camera-modal">
@@ -241,36 +376,50 @@
 <div id="sending-overlay"><div class="spinner"></div><div class="sending-text" id="sending-text">データを送信中...</div></div>
 <div id="toast"></div>
 <script>
-const STORAGE_KEY='keibi_attendance_v3', SETTINGS_KEY='keibi_settings_v3', REPORT_KEY='keibi_daily_reports_v1', REPLY_KEY='keibi_admin_replies_v1';
+const STORAGE_KEY='keibi_attendance_v3', SETTINGS_KEY='keibi_settings_v3', REPORT_KEY='keibi_daily_reports_v1', REPLY_KEY='keibi_admin_replies_v1', SLIP_KEY='keibi_slips_v1';
 const WEEKDAYS=['日','月','火','水','木','金','土'];
-let settings={gasUrl:'',flowUrl:'',liffId:'',staffNames:['山田太郎','佐藤次郎','鈴木三郎'],guards:[{employeeNumber:'001',name:'山田太郎',department:'警備部'},{employeeNumber:'002',name:'佐藤次郎',department:'警備部'},{employeeNumber:'003',name:'鈴木三郎',department:'警備部'}],sites:[{siteCode:'S001',name:'本社ビル'},{siteCode:'S002',name:'中央工事現場'}]};
+const IMPORTED_EMPLOYEE_LEDGER=[{"employeeNumber":"000000","name":"外注委託","department":"","enabled":"有効"},{"employeeNumber":"000001","name":"ニットーケイビ株式会社","department":"","enabled":"有効"},{"employeeNumber":"000002","name":"黒仁田 孝","department":"営業部","enabled":"有効"},{"employeeNumber":"000008","name":"川口 時男","department":"","enabled":"有効"},{"employeeNumber":"000015","name":"佐藤 昭浩","department":"","enabled":"有効"},{"employeeNumber":"000019","name":"酒井 昱雄","department":"","enabled":"有効"},{"employeeNumber":"000020","name":"成宮 義則","department":"","enabled":"有効"},{"employeeNumber":"000021","name":"村瀬 重樹","department":"","enabled":"有効"},{"employeeNumber":"000026","name":"尾関 喜朗","department":"","enabled":"有効"},{"employeeNumber":"000063","name":"加賀井 洋市","department":"","enabled":"有効"},{"employeeNumber":"000068","name":"岩永 耕造","department":"","enabled":"有効"},{"employeeNumber":"000069","name":"松本 一夫","department":"","enabled":"有効"},{"employeeNumber":"000082","name":"田中 恵","department":"","enabled":"有効"},{"employeeNumber":"000109","name":"出口 利明","department":"","enabled":"有効"},{"employeeNumber":"000119","name":"塩澤 実佳","department":"現場課","enabled":"有効"},{"employeeNumber":"000141","name":"山口 義隆","department":"","enabled":"有効"},{"employeeNumber":"000154","name":"福田 幸男","department":"","enabled":"有効"},{"employeeNumber":"000159","name":"松井 賢作","department":"","enabled":"有効"},{"employeeNumber":"000182","name":"佐久間 令人","department":"","enabled":"有効"},{"employeeNumber":"000188","name":"小出 裕清","department":"","enabled":"有効"},{"employeeNumber":"000202","name":"町屋敷 長生","department":"","enabled":"有効"},{"employeeNumber":"000209","name":"鈴木 寿一","department":"施設課","enabled":"有効"},{"employeeNumber":"000231","name":"森 健一郎","department":"","enabled":"有効"},{"employeeNumber":"000233","name":"北村 大樹","department":"","enabled":"有効"},{"employeeNumber":"000240","name":"萩原 孝司","department":"","enabled":"有効"},{"employeeNumber":"000244","name":"杉本 泰司","department":"現場課","enabled":"有効"},{"employeeNumber":"000247","name":"小橋 甲二","department":"","enabled":"有効"},{"employeeNumber":"000257","name":"河村 民雄","department":"","enabled":"有効"},{"employeeNumber":"000260","name":"落合 敦史","department":"施設課","enabled":"有効"},{"employeeNumber":"000282","name":"村上 理香","department":"","enabled":"有効"},{"employeeNumber":"000284","name":"蓑田 祐也","department":"現場課","enabled":"有効"},{"employeeNumber":"000285","name":"森 真人","department":"施設課","enabled":"有効"},{"employeeNumber":"000297","name":"代田 彰弘","department":"","enabled":"有効"},{"employeeNumber":"000301","name":"鍋島 慶","department":"","enabled":"有効"},{"employeeNumber":"000305","name":"奥村 高志","department":"施設課","enabled":"有効"},{"employeeNumber":"000307","name":"杉浦 信光","department":"","enabled":"有効"},{"employeeNumber":"000310","name":"水野 善夫","department":"","enabled":"有効"},{"employeeNumber":"000311","name":"山中 博","department":"施設課","enabled":"有効"},{"employeeNumber":"000315","name":"平内 秀貴","department":"現場課","enabled":"有効"},{"employeeNumber":"000317","name":"川口 健太","department":"","enabled":"有効"},{"employeeNumber":"000319","name":"細谷 純一","department":"","enabled":"有効"},{"employeeNumber":"000321","name":"佐藤 茂樹","department":"施設課","enabled":"有効"},{"employeeNumber":"000323","name":"下木原 和幸","department":"","enabled":"有効"},{"employeeNumber":"000330","name":"加藤 薫","department":"","enabled":"有効"},{"employeeNumber":"000337","name":"北野 政弘","department":"","enabled":"有効"},{"employeeNumber":"000342","name":"酒井 昇","department":"","enabled":"有効"},{"employeeNumber":"000345","name":"松葉 浩男","department":"現場課","enabled":"有効"},{"employeeNumber":"000349","name":"塚本 典昭","department":"","enabled":"有効"},{"employeeNumber":"000367","name":"新田 和明","department":"","enabled":"有効"},{"employeeNumber":"000370","name":"川合 浩彦","department":"","enabled":"有効"},{"employeeNumber":"000371","name":"近藤 辰巳","department":"","enabled":"有効"},{"employeeNumber":"000373","name":"日置 清光","department":"","enabled":"有効"},{"employeeNumber":"000374","name":"村瀬 幸夫","department":"","enabled":"有効"},{"employeeNumber":"000375","name":"笹山 信一","department":"","enabled":"有効"},{"employeeNumber":"000376","name":"髙橋 亜也加","department":"","enabled":"有効"},{"employeeNumber":"000377","name":"井上 秀樹","department":"","enabled":"有効"},{"employeeNumber":"000381","name":"磯村 啓太","department":"施設課","enabled":"有効"},{"employeeNumber":"000383","name":"深谷 彰","department":"","enabled":"有効"},{"employeeNumber":"000384","name":"春日井 良男","department":"","enabled":"有効"},{"employeeNumber":"000385","name":"小林 三郎","department":"","enabled":"有効"},{"employeeNumber":"000386","name":"玉田 善裕","department":"","enabled":"有効"},{"employeeNumber":"000387","name":"照屋 力郎","department":"","enabled":"有効"},{"employeeNumber":"000388","name":"横江 奈恵子","department":"","enabled":"有効"},{"employeeNumber":"000389","name":"鈴村 拓馬","department":"","enabled":"有効"},{"employeeNumber":"000392","name":"西戸 正好","department":"","enabled":"有効"},{"employeeNumber":"000394","name":"德田 誠","department":"","enabled":"有効"},{"employeeNumber":"000396","name":"田中 敏文","department":"","enabled":"有効"},{"employeeNumber":"000397","name":"森下 盛","department":"","enabled":"有効"},{"employeeNumber":"000399","name":"大友 年也","department":"","enabled":"有効"},{"employeeNumber":"000400","name":"渡辺 好美","department":"","enabled":"有効"},{"employeeNumber":"000401","name":"久田 資尉","department":"","enabled":"有効"},{"employeeNumber":"000403","name":"中村 浩司","department":"","enabled":"有効"},{"employeeNumber":"000405","name":"飯塚 健二","department":"","enabled":"有効"},{"employeeNumber":"000406","name":"冨田 健一","department":"","enabled":"有効"},{"employeeNumber":"000409","name":"石内 智也","department":"","enabled":"有効"},{"employeeNumber":"000410","name":"鶴田 勇基","department":"","enabled":"有効"},{"employeeNumber":"000411","name":"鈴木 裕正","department":"","enabled":"有効"},{"employeeNumber":"000413","name":"林 弘幸","department":"","enabled":"有効"},{"employeeNumber":"000414","name":"稲垣 隆","department":"","enabled":"有効"},{"employeeNumber":"000415","name":"安村 典之","department":"","enabled":"有効"},{"employeeNumber":"000416","name":"三浦 博之","department":"","enabled":"有効"},{"employeeNumber":"000418","name":"佐藤 肇","department":"","enabled":"有効"},{"employeeNumber":"000419","name":"柴田 竜也","department":"現場課","enabled":"有効"},{"employeeNumber":"000420","name":"三戸田 光二","department":"","enabled":"有効"},{"employeeNumber":"000421","name":"松村 学","department":"","enabled":"有効"},{"employeeNumber":"000422","name":"坂 秀彦","department":"","enabled":"有効"},{"employeeNumber":"000423","name":"尾崎 典子","department":"","enabled":"有効"},{"employeeNumber":"000424","name":"安田 信秀","department":"","enabled":"有効"},{"employeeNumber":"000425","name":"名和 茂明","department":"","enabled":"有効"},{"employeeNumber":"000426","name":"川上 実","department":"","enabled":"有効"},{"employeeNumber":"000427","name":"鈴木 敬太","department":"","enabled":"有効"},{"employeeNumber":"000428","name":"川口 博貴","department":"","enabled":"有効"},{"employeeNumber":"000429","name":"加藤 正雄","department":"","enabled":"有効"},{"employeeNumber":"000430","name":"木村 信幸","department":"","enabled":"有効"},{"employeeNumber":"000431","name":"岡田 翔","department":"","enabled":"有効"},{"employeeNumber":"000432","name":"浅井 一浩","department":"","enabled":"有効"},{"employeeNumber":"000433","name":"勝川 博道","department":"","enabled":"有効"},{"employeeNumber":"000435","name":"後藤 叔功","department":"","enabled":"有効"},{"employeeNumber":"000436","name":"岡部 秀一","department":"","enabled":"有効"},{"employeeNumber":"000437","name":"山竹 公比己","department":"","enabled":"有効"},{"employeeNumber":"000438","name":"久保 弘祐","department":"","enabled":"有効"},{"employeeNumber":"000440","name":"山内 良雄","department":"","enabled":"有効"},{"employeeNumber":"000441","name":"日比 力男","department":"","enabled":"有効"},{"employeeNumber":"000442","name":"山口 松男","department":"","enabled":"有効"},{"employeeNumber":"000443","name":"成田 博志","department":"施設課","enabled":"有効"},{"employeeNumber":"000444","name":"後藤 康之","department":"","enabled":"有効"},{"employeeNumber":"000445","name":"小出 戦治","department":"","enabled":"有効"},{"employeeNumber":"000446","name":"宮本 美明","department":"","enabled":"有効"},{"employeeNumber":"000447","name":"三浦 茂広","department":"","enabled":"有効"},{"employeeNumber":"000448","name":"尾関 正紘","department":"施設課","enabled":"有効"},{"employeeNumber":"000449","name":"須藤 拓朗","department":"","enabled":"有効"},{"employeeNumber":"000450","name":"源川 大助","department":"","enabled":"有効"},{"employeeNumber":"000451","name":"安藤 彰宏","department":"","enabled":"有効"},{"employeeNumber":"000452","name":"村瀬 光昭","department":"","enabled":"有効"},{"employeeNumber":"000453","name":"折畑 愛","department":"","enabled":"有効"},{"employeeNumber":"000454","name":"佐藤 素通","department":"","enabled":"有効"},{"employeeNumber":"000455","name":"安永 昂史","department":"","enabled":"有効"},{"employeeNumber":"000456","name":"淺上 仁","department":"","enabled":"有効"},{"employeeNumber":"000457","name":"三輪 浩彦","department":"","enabled":"有効"},{"employeeNumber":"000458","name":"玉田 春香","department":"","enabled":"有効"},{"employeeNumber":"000459","name":"小﨑 隆雄","department":"","enabled":"有効"},{"employeeNumber":"000460","name":"西村 俊治","department":"","enabled":"有効"},{"employeeNumber":"000461","name":"宇佐美 智一","department":"","enabled":"有効"},{"employeeNumber":"000462","name":"藤井 修","department":"","enabled":"有効"},{"employeeNumber":"000463","name":"吉川 輝夫","department":"現場課","enabled":"有効"},{"employeeNumber":"000464","name":"前川 貴幸","department":"","enabled":"有効"},{"employeeNumber":"000465","name":"算用子 養一","department":"","enabled":"有効"},{"employeeNumber":"000466","name":"細野 純一","department":"","enabled":"有効"},{"employeeNumber":"000467","name":"森 一範","department":"","enabled":"有効"},{"employeeNumber":"000468","name":"鈴木 親房","department":"","enabled":"有効"},{"employeeNumber":"000469","name":"服部 明彦","department":"","enabled":"有効"},{"employeeNumber":"000470","name":"木下 修往","department":"","enabled":"有効"},{"employeeNumber":"000471","name":"田村 寛","department":"","enabled":"有効"},{"employeeNumber":"000472","name":"田路 廣行","department":"","enabled":"有効"},{"employeeNumber":"000473","name":"殿谷 隆俊","department":"","enabled":"有効"},{"employeeNumber":"000474","name":"中室 雅幸","department":"","enabled":"有効"},{"employeeNumber":"000475","name":"渡辺 好美","department":"","enabled":"有効"},{"employeeNumber":"000476","name":"畠山 弘志","department":"","enabled":"有効"},{"employeeNumber":"000477","name":"水谷 登","department":"","enabled":"有効"},{"employeeNumber":"000478","name":"荻野 廣見","department":"","enabled":"有効"},{"employeeNumber":"000479","name":"新村 英樹","department":"","enabled":"有効"},{"employeeNumber":"000480","name":"大平 渡","department":"","enabled":"有効"},{"employeeNumber":"000481","name":"黒木 岳史","department":"","enabled":"有効"},{"employeeNumber":"000482","name":"鈴木 史登","department":"","enabled":"有効"},{"employeeNumber":"000483","name":"山崎 直樹","department":"","enabled":"有効"},{"employeeNumber":"000484","name":"帆引 義晴","department":"","enabled":"有効"},{"employeeNumber":"000485","name":"宮原 京輔","department":"","enabled":"有効"},{"employeeNumber":"000486","name":"村山 貴俊","department":"現場課","enabled":"有効"},{"employeeNumber":"000487","name":"山際 雅稔","department":"","enabled":"有効"},{"employeeNumber":"000488","name":"小林 啓治","department":"","enabled":"有効"},{"employeeNumber":"000489","name":"筧 良幸","department":"","enabled":"有効"},{"employeeNumber":"000490","name":"山下 徹","department":"","enabled":"有効"},{"employeeNumber":"000491","name":"福田 利信","department":"","enabled":"有効"},{"employeeNumber":"000492","name":"後藤 文夫","department":"","enabled":"有効"},{"employeeNumber":"000493","name":"園部 郁男","department":"","enabled":"有効"},{"employeeNumber":"000494","name":"北條 和茂","department":"","enabled":"有効"},{"employeeNumber":"000495","name":"田中 佳二","department":"","enabled":"有効"},{"employeeNumber":"000496","name":"大田 海人","department":"","enabled":"有効"},{"employeeNumber":"000497","name":"茅原 一範","department":"","enabled":"有効"},{"employeeNumber":"000498","name":"松永 良夫","department":"","enabled":"有効"},{"employeeNumber":"000499","name":"滝 肇","department":"","enabled":"有効"},{"employeeNumber":"000500","name":"後藤 幸一","department":"","enabled":"有効"},{"employeeNumber":"000501","name":"吉田 清","department":"","enabled":"有効"},{"employeeNumber":"000502","name":"藤田 一雄","department":"","enabled":"有効"},{"employeeNumber":"000503","name":"児玉 勝久","department":"","enabled":"有効"},{"employeeNumber":"000504","name":"押野 匠","department":"","enabled":"有効"},{"employeeNumber":"000505","name":"桐山 広太","department":"","enabled":"有効"},{"employeeNumber":"000506","name":"大井 義樹","department":"","enabled":"有効"},{"employeeNumber":"000507","name":"丸山 育男","department":"","enabled":"有効"},{"employeeNumber":"000509","name":"西尾 雅好","department":"","enabled":"有効"},{"employeeNumber":"000510","name":"吉谷 真二","department":"","enabled":"有効"},{"employeeNumber":"000511","name":"吉井 清","department":"","enabled":"有効"},{"employeeNumber":"000512","name":"平野 光洋","department":"","enabled":"有効"},{"employeeNumber":"000513","name":"鳥川 幸二","department":"","enabled":"有効"},{"employeeNumber":"000514","name":"河合 智","department":"","enabled":"有効"},{"employeeNumber":"000515","name":"中村 将太","department":"","enabled":"有効"},{"employeeNumber":"000516","name":"長谷川 一貴","department":"現場課","enabled":"有効"},{"employeeNumber":"000517","name":"山城 勇太","department":"","enabled":"有効"},{"employeeNumber":"000518","name":"伊藤 正雄","department":"","enabled":"有効"},{"employeeNumber":"000519","name":"大坪 瞳","department":"","enabled":"有効"},{"employeeNumber":"000520","name":"伊与田 博文","department":"","enabled":"有効"},{"employeeNumber":"000521","name":"神谷 俊輝","department":"","enabled":"有効"},{"employeeNumber":"000522","name":"鈴村 直規","department":"","enabled":"有効"},{"employeeNumber":"000523","name":"高塚 進一","department":"","enabled":"有効"},{"employeeNumber":"000524","name":"坂口 秀二","department":"","enabled":"有効"},{"employeeNumber":"000525","name":"秩父 篤","department":"現場課","enabled":"有効"},{"employeeNumber":"000526","name":"渡邉 茉琳","department":"","enabled":"有効"},{"employeeNumber":"000527","name":"天野昇","department":"","enabled":"有効"},{"employeeNumber":"000528","name":"大矢信行","department":"","enabled":"有効"},{"employeeNumber":"000529","name":"鎌倉 泰成","department":"","enabled":"有効"},{"employeeNumber":"000530","name":"伊藤 道弘","department":"","enabled":"有効"},{"employeeNumber":"000531","name":"𠮷川 昌克","department":"","enabled":"有効"},{"employeeNumber":"000532","name":"上原 隆","department":"","enabled":"有効"},{"employeeNumber":"000533","name":"今枝 裕雅","department":"","enabled":"有効"},{"employeeNumber":"000534","name":"吉田 知典","department":"","enabled":"有効"},{"employeeNumber":"000535","name":"甲斐 正人","department":"","enabled":"有効"},{"employeeNumber":"000536","name":"三鍋 正幸","department":"","enabled":"有効"},{"employeeNumber":"000537","name":"丹羽 由夫","department":"","enabled":"有効"},{"employeeNumber":"000538","name":"加藤 光延","department":"","enabled":"有効"},{"employeeNumber":"000539","name":"引地 浩二","department":"","enabled":"有効"},{"employeeNumber":"000540","name":"阿部 元晴","department":"","enabled":"有効"},{"employeeNumber":"000541","name":"島田 賢治","department":"","enabled":"有効"},{"employeeNumber":"000542","name":"中島 幹彦","department":"","enabled":"有効"},{"employeeNumber":"000543","name":"藤山 敏治","department":"","enabled":"有効"},{"employeeNumber":"000544","name":"大原 泰一郎","department":"","enabled":"有効"},{"employeeNumber":"000545","name":"日美 直樹","department":"","enabled":"有効"},{"employeeNumber":"000546","name":"毛利 寛司","department":"","enabled":"有効"},{"employeeNumber":"000547","name":"木村 武広","department":"","enabled":"有効"},{"employeeNumber":"000548","name":"原 圭吾","department":"","enabled":"有効"},{"employeeNumber":"000549","name":"加藤 保","department":"","enabled":"有効"},{"employeeNumber":"000550","name":"坪井 哲志","department":"","enabled":"有効"},{"employeeNumber":"000551","name":"本多 吉明","department":"","enabled":"有効"},{"employeeNumber":"000552","name":"安藤 健三郎","department":"","enabled":"有効"},{"employeeNumber":"000553","name":"小山 成鐘","department":"","enabled":"有効"},{"employeeNumber":"000554","name":"渡邉 訓","department":"","enabled":"有効"},{"employeeNumber":"000555","name":"中島 政美","department":"","enabled":"有効"},{"employeeNumber":"000556","name":"長谷川 幹夫","department":"","enabled":"有効"},{"employeeNumber":"000557","name":"宇野 峻規","department":"","enabled":"有効"},{"employeeNumber":"000558","name":"木村 文昭","department":"","enabled":"有効"},{"employeeNumber":"000559","name":"加藤 那央也","department":"","enabled":"有効"},{"employeeNumber":"000560","name":"杉浦 富夫","department":"","enabled":"有効"},{"employeeNumber":"000561","name":"猪瀨 哲幸","department":"","enabled":"有効"},{"employeeNumber":"000562","name":"奥村 成子","department":"","enabled":"有効"},{"employeeNumber":"000563","name":"浅野 雅道","department":"","enabled":"有効"},{"employeeNumber":"000564","name":"堀田  康弘","department":"","enabled":"有効"},{"employeeNumber":"000565","name":"中屋敷 拓海","department":"","enabled":"有効"},{"employeeNumber":"000566","name":"甲斐 正成","department":"","enabled":"有効"},{"employeeNumber":"000567","name":"中西 敬郎","department":"","enabled":"有効"},{"employeeNumber":"000568","name":"鎌倉 秀治","department":"","enabled":"有効"},{"employeeNumber":"000569","name":"山内 敏通","department":"","enabled":"有効"},{"employeeNumber":"000570","name":"岡田 賢実","department":"","enabled":"有効"},{"employeeNumber":"000571","name":"荒木 昭年","department":"","enabled":"有効"},{"employeeNumber":"000572","name":"森田 直人","department":"","enabled":"有効"},{"employeeNumber":"000573","name":"伊藤 忠義","department":"","enabled":"有効"},{"employeeNumber":"000574","name":"成田 光男","department":"","enabled":"有効"},{"employeeNumber":"000575","name":"石田 知弘","department":"","enabled":"有効"},{"employeeNumber":"000576","name":"小岸 良光","department":"","enabled":"有効"},{"employeeNumber":"000577","name":"西村 圭介","department":"","enabled":"有効"},{"employeeNumber":"000578","name":"小林 三郎","department":"","enabled":"有効"},{"employeeNumber":"000579","name":"竹村 有作","department":"","enabled":"有効"},{"employeeNumber":"000580","name":"安田 伸行","department":"施設課","enabled":"有効"},{"employeeNumber":"000581","name":"樋江井 好弘","department":"","enabled":"有効"},{"employeeNumber":"000582","name":"北嶋 啓人","department":"","enabled":"有効"},{"employeeNumber":"000583","name":"鍋島 将人","department":"現場課","enabled":"有効"},{"employeeNumber":"000584","name":"板倉 隆","department":"","enabled":"有効"},{"employeeNumber":"000585","name":"前田 透","department":"","enabled":"有効"},{"employeeNumber":"000586","name":"木村 忠載","department":"","enabled":"有効"},{"employeeNumber":"000587","name":"赤瀬 絵美","department":"","enabled":"有効"},{"employeeNumber":"000588","name":"小林 伸一","department":"","enabled":"有効"},{"employeeNumber":"000589","name":"大野 悟","department":"","enabled":"有効"},{"employeeNumber":"000590","name":"鹿野 義一","department":"","enabled":"有効"},{"employeeNumber":"000591","name":"田中 秀明","department":"施設課","enabled":"有効"},{"employeeNumber":"000592","name":"崔 雄貴","department":"","enabled":"有効"},{"employeeNumber":"000593","name":"犬塚 一彦","department":"","enabled":"有効"},{"employeeNumber":"000594","name":"安達 康裕","department":"","enabled":"有効"},{"employeeNumber":"000595","name":"加藤 正浩","department":"","enabled":"有効"},{"employeeNumber":"000596","name":"段下 伸吾","department":"","enabled":"有効"},{"employeeNumber":"000597","name":"寺崎 雅弘","department":"","enabled":"有効"},{"employeeNumber":"000598","name":"新實 誠一郎","department":"","enabled":"有効"},{"employeeNumber":"000599","name":"鈴木 亨","department":"","enabled":"有効"},{"employeeNumber":"000600","name":"古江 伸行","department":"","enabled":"有効"},{"employeeNumber":"000601","name":"万田 敦司","department":"","enabled":"有効"},{"employeeNumber":"000602","name":"迫 洋一","department":"","enabled":"有効"},{"employeeNumber":"000603","name":"柿村 勝利","department":"","enabled":"有効"},{"employeeNumber":"000604","name":"澤田 亮太","department":"","enabled":"有効"},{"employeeNumber":"000605","name":"水野 美沙","department":"","enabled":"有効"},{"employeeNumber":"000606","name":"井手 浩太朗","department":"","enabled":"有効"},{"employeeNumber":"000607","name":"榊原 睦夫","department":"","enabled":"有効"},{"employeeNumber":"000608","name":"有賀 敏雄","department":"","enabled":"有効"},{"employeeNumber":"000609","name":"佐藤 大介","department":"","enabled":"有効"},{"employeeNumber":"000610","name":"小河 義彦","department":"","enabled":"有効"},{"employeeNumber":"000611","name":"小川 勝己","department":"","enabled":"有効"},{"employeeNumber":"000612","name":"坂本 伸一","department":"","enabled":"有効"},{"employeeNumber":"000613","name":"村中 雄二","department":"","enabled":"有効"},{"employeeNumber":"000614","name":"出塚 翔栄","department":"現場課","enabled":"有効"},{"employeeNumber":"000615","name":"榊原 彩夏","department":"","enabled":"有効"},{"employeeNumber":"000616","name":"鈴木 光博","department":"","enabled":"有効"},{"employeeNumber":"000617","name":"中村 武夫","department":"","enabled":"有効"},{"employeeNumber":"000618","name":"岡本 進一郎","department":"","enabled":"有効"},{"employeeNumber":"000619","name":"近藤 泰尚","department":"","enabled":"有効"},{"employeeNumber":"000620","name":"村松 和俊","department":"","enabled":"有効"},{"employeeNumber":"000621","name":"一柳 忠男","department":"","enabled":"有効"},{"employeeNumber":"000622","name":"須田 義信","department":"","enabled":"有効"},{"employeeNumber":"000623","name":"髙岡 克行","department":"","enabled":"有効"},{"employeeNumber":"000624","name":"後藤 しおり","department":"","enabled":"有効"},{"employeeNumber":"000625","name":"木下 徹朗","department":"","enabled":"有効"},{"employeeNumber":"000626","name":"村田 達哉","department":"","enabled":"有効"},{"employeeNumber":"000627","name":"與那嶺 政英","department":"","enabled":"有効"},{"employeeNumber":"000628","name":"山内 貴博","department":"","enabled":"有効"},{"employeeNumber":"000629","name":"長谷部 均","department":"","enabled":"有効"},{"employeeNumber":"000630","name":"伊東 英治","department":"","enabled":"有効"},{"employeeNumber":"000631","name":"境 大雅","department":"","enabled":"有効"},{"employeeNumber":"000632","name":"田嶋 謙一","department":"","enabled":"有効"},{"employeeNumber":"000633","name":"塩野 安広","department":"","enabled":"有効"},{"employeeNumber":"000635","name":"今川一博","department":"","enabled":"有効"},{"employeeNumber":"000636","name":"榊原和則","department":"","enabled":"有効"},{"employeeNumber":"000637","name":"前田和三","department":"","enabled":"有効"},{"employeeNumber":"000638","name":"船津 欣史","department":"","enabled":"有効"},{"employeeNumber":"000639","name":"櫻井義久","department":"","enabled":"有効"},{"employeeNumber":"000640","name":"細井 康浩","department":"","enabled":"有効"},{"employeeNumber":"000641","name":"熊谷 裕之","department":"","enabled":"有効"},{"employeeNumber":"000642","name":"竹内重人","department":"","enabled":"有効"},{"employeeNumber":"000643","name":"新山幹太","department":"","enabled":"有効"},{"employeeNumber":"000644","name":"吉野道子","department":"","enabled":"有効"},{"employeeNumber":"000645","name":"小宮山 和美","department":"","enabled":"有効"},{"employeeNumber":"000646","name":"植地 美歩","department":"","enabled":"有効"},{"employeeNumber":"000647","name":"島田 修一","department":"","enabled":"有効"},{"employeeNumber":"000648","name":"江端 良紀","department":"","enabled":"有効"},{"employeeNumber":"000649","name":"荒巻 公彦","department":"","enabled":"有効"},{"employeeNumber":"000650","name":"福本 敏夫","department":"","enabled":"有効"},{"employeeNumber":"000651","name":"横井 豊彦","department":"","enabled":"有効"},{"employeeNumber":"000653","name":"安井 直樹","department":"","enabled":"有効"},{"employeeNumber":"000654","name":"梅田 陽一","department":"","enabled":"有効"},{"employeeNumber":"000655","name":"荒川 寛之","department":"","enabled":"有効"},{"employeeNumber":"000656","name":"松下 武司","department":"","enabled":"有効"},{"employeeNumber":"000657","name":"曽根 幸男","department":"","enabled":"有効"},{"employeeNumber":"000658","name":"上田 誉治","department":"","enabled":"有効"},{"employeeNumber":"000659","name":"木村 雅彦","department":"","enabled":"有効"},{"employeeNumber":"000660","name":"岡崎 伸司","department":"","enabled":"有効"},{"employeeNumber":"000661","name":"内野 裕夫","department":"","enabled":"有効"},{"employeeNumber":"000662","name":"小池 周之助","department":"","enabled":"有効"},{"employeeNumber":"000663","name":"熊谷 哲郎","department":"","enabled":"有効"},{"employeeNumber":"000664","name":"神之田 康二","department":"","enabled":"有効"},{"employeeNumber":"000665","name":"永井 和尋","department":"","enabled":"有効"},{"employeeNumber":"000666","name":"山下 菊治","department":"","enabled":"有効"},{"employeeNumber":"000667","name":"各務 正一","department":"","enabled":"有効"},{"employeeNumber":"000668","name":"片岡 大介","department":"施設課","enabled":"有効"},{"employeeNumber":"000669","name":"江刈内 満","department":"","enabled":"有効"},{"employeeNumber":"000670","name":"白井 実","department":"","enabled":"有効"},{"employeeNumber":"000671","name":"北川 武彦","department":"","enabled":"有効"},{"employeeNumber":"000672","name":"藤田 茂","department":"","enabled":"有効"},{"employeeNumber":"000673","name":"畦地 文紀","department":"","enabled":"有効"},{"employeeNumber":"000674","name":"大石 豊喜","department":"","enabled":"有効"},{"employeeNumber":"000675","name":"小島 征也","department":"","enabled":"有効"},{"employeeNumber":"000676","name":"武居 義則","department":"","enabled":"有効"},{"employeeNumber":"000677","name":"小野木 大将","department":"","enabled":"有効"},{"employeeNumber":"000678","name":"山川 大輔","department":"","enabled":"有効"},{"employeeNumber":"000679","name":"萩原 昭夫","department":"","enabled":"有効"},{"employeeNumber":"000680","name":"伊藤 浩一","department":"","enabled":"有効"},{"employeeNumber":"000681","name":"杉原 直博","department":"","enabled":"有効"},{"employeeNumber":"000682","name":"井村 誠","department":"","enabled":"有効"},{"employeeNumber":"000683","name":"江口 真","department":"","enabled":"有効"},{"employeeNumber":"000684","name":"岡村信男","department":"","enabled":"有効"},{"employeeNumber":"000685","name":"池田 武司","department":"","enabled":"有効"},{"employeeNumber":"000686","name":"龍野 零武","department":"","enabled":"有効"},{"employeeNumber":"000687","name":"美和 利江","department":"","enabled":"有効"},{"employeeNumber":"000688","name":"田中 志典","department":"","enabled":"有効"},{"employeeNumber":"000689","name":"木村 直司","department":"","enabled":"有効"},{"employeeNumber":"000690","name":"大坪 瞳","department":"現場課","enabled":"有効"},{"employeeNumber":"000691","name":"吉田 浩章","department":"","enabled":"有効"},{"employeeNumber":"000692","name":"奥原 孝幸","department":"","enabled":"有効"},{"employeeNumber":"000693","name":"中川 具文","department":"","enabled":"有効"},{"employeeNumber":"000694","name":"原 充諭","department":"","enabled":"有効"},{"employeeNumber":"000695","name":"中岡 昇","department":"","enabled":"有効"},{"employeeNumber":"000696","name":"石川 鉄也","department":"施設課","enabled":"有効"},{"employeeNumber":"000697","name":"本江 雅樹","department":"施設課","enabled":"有効"},{"employeeNumber":"000698","name":"牧野","department":"","enabled":"有効"},{"employeeNumber":"000699","name":"犬飼 健喜","department":"","enabled":"有効"},{"employeeNumber":"000700","name":"山本","department":"","enabled":"有効"},{"employeeNumber":"000701","name":"斉藤 代司徳","department":"","enabled":"有効"},{"employeeNumber":"000702","name":"村中 講詩朗","department":"","enabled":"有効"},{"employeeNumber":"000703","name":"滝田 愛子","department":"","enabled":"有効"},{"employeeNumber":"000704","name":"大木 正一","department":"","enabled":"有効"},{"employeeNumber":"000705","name":"花植 広樹","department":"","enabled":"有効"},{"employeeNumber":"000706","name":"鈴木 孝宏","department":"施設課","enabled":"有効"},{"employeeNumber":"000707","name":"奥田 湧基","department":"","enabled":"有効"},{"employeeNumber":"000708","name":"富田 耕司","department":"","enabled":"有効"},{"employeeNumber":"000709","name":"上瀬戸 勇樹","department":"","enabled":"有効"},{"employeeNumber":"000710","name":"加藤 勲","department":"","enabled":"有効"},{"employeeNumber":"000711","name":"佐藤 邦彦","department":"現場課","enabled":"有効"},{"employeeNumber":"000712","name":"張 磊","department":"","enabled":"有効"},{"employeeNumber":"000713","name":"柿崎 禎","department":"","enabled":"有効"},{"employeeNumber":"000714","name":"渡辺 真言","department":"","enabled":"有効"},{"employeeNumber":"000715","name":"仲川 浩一","department":"施設課","enabled":"有効"},{"employeeNumber":"000716","name":"足立 修一","department":"","enabled":"有効"},{"employeeNumber":"000717","name":"中島 泰光","department":"","enabled":"有効"},{"employeeNumber":"000718","name":"榊原 守一","department":"","enabled":"有効"},{"employeeNumber":"000719","name":"船戸 祐子","department":"","enabled":"有効"},{"employeeNumber":"000720","name":"舟橋 明宏","department":"","enabled":"有効"},{"employeeNumber":"000721","name":"大嶋 健","department":"","enabled":"有効"},{"employeeNumber":"000722","name":"濱津 誠二","department":"","enabled":"有効"},{"employeeNumber":"000723","name":"中島 秀二","department":"施設課","enabled":"有効"},{"employeeNumber":"000724","name":"林田 才生","department":"","enabled":"有効"},{"employeeNumber":"000725","name":"成田 勝彦","department":"現場課","enabled":"有効"},{"employeeNumber":"000726","name":"秋本 昇吾","department":"","enabled":"有効"},{"employeeNumber":"000727","name":"三輪 芳久","department":"施設課","enabled":"有効"},{"employeeNumber":"000728","name":"市脇 勝彦","department":"","enabled":"有効"},{"employeeNumber":"000729","name":"小林 裕二","department":"","enabled":"有効"},{"employeeNumber":"000730","name":"髙畑 一憲","department":"","enabled":"有効"},{"employeeNumber":"000731","name":"中田 剛","department":"","enabled":"有効"},{"employeeNumber":"000732","name":"松元 奈津子","department":"","enabled":"有効"},{"employeeNumber":"000733","name":"片岡 善行","department":"","enabled":"有効"},{"employeeNumber":"000734","name":"鈴木 和之","department":"","enabled":"有効"},{"employeeNumber":"000735","name":"山田 力男","department":"","enabled":"有効"},{"employeeNumber":"000736","name":"坂本 晃一","department":"","enabled":"有効"},{"employeeNumber":"000737","name":"長江 常善","department":"","enabled":"有効"},{"employeeNumber":"000738","name":"高安 正信","department":"","enabled":"有効"},{"employeeNumber":"000739","name":"須田 正巳","department":"","enabled":"有効"},{"employeeNumber":"000740","name":"井村 隆太","department":"","enabled":"有効"},{"employeeNumber":"000741","name":"野田 俊司","department":"施設課","enabled":"有効"},{"employeeNumber":"000742","name":"前田 吉輝","department":"","enabled":"有効"},{"employeeNumber":"000743","name":"近藤 直希","department":"","enabled":"有効"},{"employeeNumber":"000744","name":"杉浦 康藏","department":"","enabled":"有効"},{"employeeNumber":"000745","name":"佐藤 慶","department":"施設課","enabled":"有効"},{"employeeNumber":"000746","name":"伊藤 智輝","department":"","enabled":"有効"},{"employeeNumber":"000747","name":"井川 智仁","department":"","enabled":"有効"},{"employeeNumber":"000748","name":"木下 翔太","department":"","enabled":"有効"},{"employeeNumber":"000749","name":"金平 哲太郎","department":"","enabled":"有効"},{"employeeNumber":"000750","name":"山本 みどり","department":"","enabled":"有効"},{"employeeNumber":"000751","name":"中務 忠夫","department":"","enabled":"有効"},{"employeeNumber":"000752","name":"森野 正","department":"","enabled":"有効"},{"employeeNumber":"000753","name":"川西 浩一","department":"","enabled":"有効"},{"employeeNumber":"000754","name":"奥川 英明","department":"","enabled":"有効"},{"employeeNumber":"000755","name":"田岡 康敏","department":"","enabled":"有効"},{"employeeNumber":"000756","name":"川合 浩二","department":"","enabled":"有効"},{"employeeNumber":"000757","name":"鈴木 哲夫","department":"","enabled":"有効"},{"employeeNumber":"000758","name":"土田 正信","department":"","enabled":"有効"},{"employeeNumber":"000759","name":"梅村 保夫","department":"","enabled":"有効"},{"employeeNumber":"000760","name":"河邉 魁斗","department":"","enabled":"有効"},{"employeeNumber":"000761","name":"伊藤 準矢","department":"","enabled":"有効"},{"employeeNumber":"000762","name":"一柳 弘勝","department":"","enabled":"有効"},{"employeeNumber":"000763","name":"勝 清孝","department":"営業部","enabled":"有効"},{"employeeNumber":"000764","name":"坂野 晃史","department":"","enabled":"有効"},{"employeeNumber":"000765","name":"幸光 都弥","department":"","enabled":"有効"},{"employeeNumber":"000766","name":"長瀬 賢広","department":"現場課","enabled":"有効"},{"employeeNumber":"000767","name":"永野 一也","department":"","enabled":"有効"},{"employeeNumber":"000768","name":"森本 真吾","department":"","enabled":"有効"},{"employeeNumber":"000769","name":"内田 英和","department":"","enabled":"有効"},{"employeeNumber":"000770","name":"星野 恵二郎","department":"","enabled":"有効"},{"employeeNumber":"000771","name":"安井 政孝","department":"","enabled":"有効"},{"employeeNumber":"000772","name":"横地 浩人","department":"","enabled":"有効"},{"employeeNumber":"000773","name":"米山 雅浩","department":"","enabled":"有効"},{"employeeNumber":"000774","name":"大館 正和","department":"","enabled":"有効"},{"employeeNumber":"000775","name":"只野 哲良","department":"","enabled":"有効"},{"employeeNumber":"000776","name":"平野 明","department":"","enabled":"有効"},{"employeeNumber":"000777","name":"長谷川 正幸","department":"","enabled":"有効"},{"employeeNumber":"000778","name":"三矢 英人","department":"","enabled":"有効"},{"employeeNumber":"000779","name":"若師 裕司","department":"","enabled":"有効"},{"employeeNumber":"000780","name":"水谷 道徳","department":"","enabled":"有効"},{"employeeNumber":"000781","name":"酒井 和也","department":"","enabled":"有効"},{"employeeNumber":"000782","name":"遠藤","department":"","enabled":"有効"},{"employeeNumber":"000783","name":"伊藤 嘉奈子","department":"","enabled":"有効"},{"employeeNumber":"000784","name":"小澤 和文","department":"","enabled":"有効"},{"employeeNumber":"000785","name":"西島 靖博","department":"","enabled":"有効"},{"employeeNumber":"000786","name":"山元 伸","department":"","enabled":"有効"},{"employeeNumber":"000787","name":"松下 洋一","department":"","enabled":"有効"},{"employeeNumber":"000788","name":"竹中 雄二","department":"","enabled":"有効"},{"employeeNumber":"000789","name":"加藤 公一","department":"","enabled":"有効"},{"employeeNumber":"000790","name":"岡村 一夫","department":"","enabled":"有効"},{"employeeNumber":"000791","name":"平野 伸治","department":"","enabled":"有効"},{"employeeNumber":"000792","name":"鈴木 清春","department":"","enabled":"有効"},{"employeeNumber":"000793","name":"樋口 佐登志","department":"","enabled":"有効"},{"employeeNumber":"000794","name":"倉本 和也","department":"","enabled":"有効"},{"employeeNumber":"000795","name":"生田 和也","department":"","enabled":"有効"},{"employeeNumber":"000796","name":"加藤 芳美","department":"","enabled":"有効"},{"employeeNumber":"000797","name":"山口 慎也","department":"","enabled":"有効"},{"employeeNumber":"000798","name":"稲垣 伸一","department":"","enabled":"有効"},{"employeeNumber":"000799","name":"都築 広明","department":"","enabled":"有効"},{"employeeNumber":"000800","name":"長縄 満","department":"","enabled":"有効"},{"employeeNumber":"000801","name":"山田 経二","department":"施設課","enabled":"有効"},{"employeeNumber":"000802","name":"久野 隆史","department":"","enabled":"有効"},{"employeeNumber":"000803","name":"加藤 蓮太","department":"","enabled":"有効"},{"employeeNumber":"000804","name":"大橋 正志","department":"施設課","enabled":"有効"},{"employeeNumber":"000805","name":"杉浦 忠宴","department":"","enabled":"有効"},{"employeeNumber":"000806","name":"大木 雅秀","department":"","enabled":"有効"},{"employeeNumber":"000900","name":"大庭 醇也","department":"","enabled":"有効"},{"employeeNumber":"000901","name":"芹澤 亮","department":"","enabled":"有効"},{"employeeNumber":"000902","name":"川口 優衣","department":"","enabled":"有効"},{"employeeNumber":"000903","name":"鈴木 久範","department":"","enabled":"有効"},{"employeeNumber":"000904","name":"渡邊 良友","department":"","enabled":"有効"},{"employeeNumber":"000905","name":"稲葉 輝彦","department":"","enabled":"有効"},{"employeeNumber":"000906","name":"眞嶌 哲平","department":"","enabled":"有効"},{"employeeNumber":"000907","name":"高橋 一将","department":"","enabled":"有効"},{"employeeNumber":"000908","name":"沼崎 成明","department":"","enabled":"有効"},{"employeeNumber":"000909","name":"神代 貴行","department":"","enabled":"有効"},{"employeeNumber":"000910","name":"齊藤 巧","department":"","enabled":"有効"},{"employeeNumber":"100000","name":"鹿野 尚宏","department":"","enabled":"有効"},{"employeeNumber":"199998","name":"田村 治","department":"","enabled":"有効"},{"employeeNumber":"199999","name":"渡辺 徳樹","department":"","enabled":"有効"},{"employeeNumber":"200001","name":"陽光建物","department":"","enabled":"有効"},{"employeeNumber":"200002","name":"明鏡管理","department":"","enabled":"有効"},{"employeeNumber":"200003","name":"(株)ANY","department":"","enabled":"有効"},{"employeeNumber":"200004","name":"五島","department":"","enabled":"有効"},{"employeeNumber":"777777","name":"シフト仮登録用","department":"","enabled":"有効"},{"employeeNumber":"888888","name":"sample-ST","department":"","enabled":"有効"},{"employeeNumber":"900001","name":"杉村 茂信","department":"","enabled":"有効"},{"employeeNumber":"900002","name":"倉知 正雄","department":"","enabled":"有効"},{"employeeNumber":"900003","name":"（外注）美健","department":"","enabled":"有効"},{"employeeNumber":"900004","name":"（外注）陽光建物","department":"","enabled":"有効"},{"employeeNumber":"900005","name":"（外注）明鏡管理","department":"","enabled":"有効"},{"employeeNumber":"900006","name":"（外注）中日本三愛設備","department":"","enabled":"有効"},{"employeeNumber":"900007","name":"加藤空調","department":"","enabled":"有効"},{"employeeNumber":"900008","name":"ジョイフル設備","department":"","enabled":"有効"},{"employeeNumber":"900009","name":"中央水道","department":"","enabled":"有効"},{"employeeNumber":"900010","name":"寺岡","department":"","enabled":"有効"},{"employeeNumber":"900012","name":"三和総合","department":"","enabled":"有効"},{"employeeNumber":"900014","name":"中部電気保安協会","department":"","enabled":"有効"},{"employeeNumber":"900015","name":"五島","department":"","enabled":"有効"},{"employeeNumber":"900017","name":"愛知県警備業協会","department":"","enabled":"有効"},{"employeeNumber":"900019","name":"ＮＥサンプル（Ｈ30.4～Ｈ30.9）","department":"","enabled":"有効"},{"employeeNumber":"900020","name":"ＮＥサンプル（Ｈ30.4～Ｈ30.9）","department":"","enabled":"有効"},{"employeeNumber":"900021","name":"ＳＴサンプル（Ｈ30.4～Ｈ30.9）","department":"","enabled":"有効"},{"employeeNumber":"900022","name":"ＲＤサンプル（Ｈ30.4～Ｈ30.9）","department":"","enabled":"有効"},{"employeeNumber":"900023","name":"ＳＰサンプル（Ｈ30.4～Ｈ30.9）","department":"","enabled":"有効"},{"employeeNumber":"900024","name":"ＮＥサンプル（Ｈ30.10～）","department":"","enabled":"有効"},{"employeeNumber":"900025","name":"ＳＴサンプル（Ｈ30.10～）","department":"","enabled":"有効"},{"employeeNumber":"900026","name":"ＲＤサンプル（Ｈ30.10～）","department":"","enabled":"有効"}];
+let settings={gasUrl:'',flowUrl:'',liffId:'',adminPin:'1234',staffNames:['山田太郎','佐藤次郎','鈴木三郎'],guards:[{employeeNumber:'001',name:'山田太郎',department:'警備部'},{employeeNumber:'002',name:'佐藤次郎',department:'警備部'},{employeeNumber:'003',name:'鈴木三郎',department:'警備部'}],sites:[{siteCode:'S001',name:'本社ビル'},{siteCode:'S002',name:'中央工事現場'}]};
 let currentStream=null, pendingCheckout=null;
 let lineProfile=null;
+let adminUnlocked=false;
+let selectedGuardNumbers=new Set(),selectedSiteCodes=new Set(),guardBulkEditMode=false,siteBulkEditMode=false;
+let staffCalendarMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+let adminCalendarMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1);
 
 function init(){
-  loadSettings(); renderMasters(); renderHistory(); renderReports(); renderReplies(); renderAdmin(); updateClock();
+  updateClock();
   setInterval(updateClock,1000);
-  document.getElementById('report-date').value=new Date().toISOString().slice(0,10);
+  loadSettings(); renderMasters(); renderHistory(); renderReports(); renderReplies(); renderSlips();
+  initAdminCollapsibles();
+  const today=new Date().toISOString().slice(0,10);
+  document.getElementById('slip-date').value=today;
+  document.getElementById('admin-summary-date').value=today;
+  document.getElementById('admin-summary-month').value=today.slice(0,7);
+  document.getElementById('admin-slip-summary-date').value=today;
+  document.getElementById('admin-slip-summary-month').value=today.slice(0,7);
   document.getElementById('staff-select').addEventListener('change',e=>{updateButtonStatus(e.target.value);fillGuardInfo(e.target.value);});
-  document.getElementById('report-staff').addEventListener('change',e=>fillReportGuardInfo(e.target.value));
   initLIFF();
   if('serviceWorker'in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
 }
 
 function loadSettings(){
   try{const s=JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}');settings={...settings,...s};}catch(e){}
+  mergeImportedEmployeeLedger();
   document.getElementById('gas-url').value=settings.gasUrl||'';
   document.getElementById('liff-id').value=settings.liffId||'';
   document.getElementById('staff-names-input').value=settings.staffNames.join(',');
   document.getElementById('guard-master-input').value=(settings.guards||[]).map(g=>`${g.employeeNumber}:${g.name}:${g.department||''}`).join(',');
   document.getElementById('site-master-input').value=(settings.sites||[]).map(s=>`${s.siteCode}:${s.name}`).join(',');
   document.getElementById('flow-url').value=settings.flowUrl||'';
+  document.getElementById('admin-pin').value=settings.adminPin||'1234';
 }
 
 function saveSettings(){
   settings.gasUrl=document.getElementById('gas-url').value.trim();
   settings.liffId=document.getElementById('liff-id').value.trim();
   settings.flowUrl=document.getElementById('flow-url').value.trim();
+  settings.adminPin=document.getElementById('admin-pin').value.trim()||'1234';
   settings.staffNames=document.getElementById('staff-names-input').value.split(',').map(s=>s.trim()).filter(Boolean);
   settings.guards=parseMaster(document.getElementById('guard-master-input').value,parts=>({employeeNumber:parts[0],name:parts[1],department:parts[2]||''}));
   settings.sites=parseMaster(document.getElementById('site-master-input').value,parts=>({siteCode:parts[0],name:parts[1]}));
@@ -286,25 +435,51 @@ function toggleSettings(){document.getElementById('settings-panel').classList.to
 
 function parseMaster(text,mapper){return text.split(',').map(v=>v.trim()).filter(Boolean).map(v=>mapper(v.split(':').map(x=>x.trim()))).filter(v=>Object.values(v).some(Boolean));}
 function renderMasters(){
-  fillSelect('staff-select',settings.staffNames,'-- 氏名を選択 --',true);
-  fillSelect('report-staff',settings.staffNames,'-- 氏名を選択 --',true);
+  renderDepartmentSelect();
+  renderAttendanceStaffSelect();
   fillSelect('site-select',(settings.sites||[]).map(s=>s.name),'-- 現場を選択 --',true);
-  fillSelect('report-site',(settings.sites||[]).map(s=>s.name),'-- 現場を選択 --',true);
+  fillSelect('slip-staff',settings.staffNames,'-- 氏名を選択 --',true);
+  fillSelect('slip-site',(settings.sites||[]).map(s=>s.name),'-- 現場を選択 --',true);
+}
+function mergeImportedEmployeeLedger(){
+  const seedVersion='qualification-ledger-20260601';
+  if(!IMPORTED_EMPLOYEE_LEDGER.length||settings.employeeLedgerSeedVersion===seedVersion)return;
+  const current=new Map((settings.guards||[]).map(g=>[String(g.employeeNumber),g]));
+  IMPORTED_EMPLOYEE_LEDGER.forEach(g=>{const old=current.get(g.employeeNumber)||{};current.set(g.employeeNumber,{...old,...g,phone:old.phone||g.phone||'',lineUserId:old.lineUserId||g.lineUserId||''});});
+  settings.guards=[...current.values()];
+  settings.staffNames=[...new Set(settings.guards.filter(g=>(g.enabled||'有効')!=='無効').map(g=>g.name))];
+  settings.employeeLedgerSeedVersion=seedVersion;
+  localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));
+}
+function renderDepartmentSelect(){
+  const sel=document.getElementById('department-select');if(!sel)return;
+  const current=sel.value,departments=[...new Set((settings.guards||[]).map(g=>g.department).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'ja'));
+  sel.innerHTML='<option value="">-- すべての所属 --</option>'+departments.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('')+'<option value="__none__">所属未登録</option>';
+  if([...sel.options].some(option=>option.value===current))sel.value=current;
+  sel.onchange=renderAttendanceStaffSelect;
+}
+function renderAttendanceStaffSelect(){
+  const department=document.getElementById('department-select')?.value||'';
+  const guards=(settings.guards||[]).filter(g=>(g.enabled||'有効')!=='無効').filter(g=>!department||(department==='__none__'?!g.department:g.department===department));
+  fillSelect('staff-select',[...new Set(guards.map(g=>g.name))],'-- 自分の名前を選択 --',true);
 }
 function fillSelect(id,items,placeholder,manual){
   const sel=document.getElementById(id),cur=sel.value;
   sel.innerHTML=`<option value="">${placeholder}</option>`+items.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('')+(manual?'<option value="__manual__">手動入力</option>':'');
   if(items.includes(cur))sel.value=cur;
-  sel.onchange=()=>{if(sel.value==='__manual__'){const value=prompt('手動入力してください');if(value){const option=document.createElement('option');option.value=option.textContent=value;sel.insertBefore(option,sel.lastChild);sel.value=value;}else sel.value='';}if(id==='staff-select'){fillGuardInfo(sel.value);updateButtonStatus(sel.value);}if(id==='report-staff')fillReportGuardInfo(sel.value);};
+  sel.onchange=()=>{if(sel.value==='__manual__'){if(id.includes('site'))addManualSiteOption(sel);else addManualStaffOption(sel);}if(id==='staff-select'){fillGuardInfo(sel.value);updateButtonStatus(sel.value);}if(id==='slip-staff')fillSlipGuardInfo(sel.value);};
 }
+function addManualStaffOption(sel){const value=prompt('氏名を手動入力してください');if(!value){sel.value='';return;}const employeeNumber=prompt('社員番号を入力してください')||'',department=prompt('所属を入力してください')||'';if(employeeNumber)upsertGuard({employeeNumber,name:value,department});if(!settings.staffNames.includes(value))settings.staffNames.push(value);saveMasterSettings();appendSelectedOption(sel,value);}
+function addManualSiteOption(sel){const value=prompt('現場名を手動入力してください');if(!value){sel.value='';return;}const siteCode=prompt('現場コードを入力してください')||`MANUAL-${Date.now()}`;upsertSite({siteCode,name:value});saveMasterSettings();appendSelectedOption(sel,value);}
+function appendSelectedOption(sel,value){let option=[...sel.options].find(item=>item.value===value);if(!option){option=document.createElement('option');option.value=option.textContent=value;sel.insertBefore(option,sel.lastChild);}sel.value=value;}
 function fillGuardInfo(name){
   const guard=(settings.guards||[]).find(g=>g.name===name);
   document.getElementById('employee-number').textContent=guard?guard.employeeNumber:'手動入力';
   document.getElementById('department').textContent=guard?guard.department||'未登録':'未登録';
 }
-function fillReportGuardInfo(name){
+function fillSlipGuardInfo(name){
   const guard=(settings.guards||[]).find(g=>g.name===name);
-  document.getElementById('report-employee-number').textContent=guard?guard.employeeNumber:'手動入力';
+  document.getElementById('slip-employee-number').textContent=guard?guard.employeeNumber:'未登録';
 }
 
 async function initLIFF(){
@@ -376,7 +551,6 @@ async function handleCheckin(){
   const name=document.getElementById('staff-select').value;
   if(!name){showToast('担当者を選択してください');return;}
   const site=document.getElementById('site-select').value;
-  if(!site){showToast('現場名を選択してください');return;}
   const gps=await getGps();
   const rec=makeRecord('in',name,new Date(),null,gps);
   saveRecord(rec);localStorage.setItem('st_'+name,'in');
@@ -389,7 +563,6 @@ async function handleCheckout(){
   const name=document.getElementById('staff-select').value;
   if(!name){showToast('担当者を選択してください');return;}
   const site=document.getElementById('site-select').value;
-  if(!site){showToast('現場名を選択してください');return;}
   pendingCheckout={name,time:new Date(),gps:await getGps()};openCamera();
 }
 
@@ -397,9 +570,20 @@ async function finalizeCheckout(photoDataUrl){
   const{name,time}=pendingCheckout;
   const rec=makeRecord('out',name,time,photoDataUrl,pendingCheckout.gps);
   saveRecord(rec);localStorage.setItem('st_'+name,'out');
+  if(photoDataUrl)saveSlip({date:rec.date,name:rec.name,employeeNumber:rec.employeeNumber,siteName:rec.siteName,fileData:photoDataUrl,fileName:makeSlipFileName(rec.date,rec.time,rec.employeeNumber,rec.name,rec.siteName,'jpg'),source:'退勤時撮影'});
+  saveDiaryFromCheckout(rec);
   updateButtonStatus(name);renderHistory();
   showToast(`✓ 退勤打刻：${rec.time}`,'success');
   await sendToGAS(rec);pendingCheckout=null;
+}
+
+function saveDiaryFromCheckout(record){
+  const work=document.getElementById('attendance-diary').value.trim();
+  if(!work)return;
+  const reports=getReports(),id=`${record.date}::${record.employeeNumber||record.name}::${record.siteName}`,existing=reports.findIndex(r=>r.id===id);
+  const report={id,action:'dailyReport',workDate:record.date,employeeNumber:record.employeeNumber||'',name:record.name,siteName:record.siteName,shift:'日報',work,incident:'なし',incidentDetail:'',handover:'',submittedAt:formatDatetime(new Date()),reply:'',replier:'',repliedAt:'',replyRead:false};
+  if(existing>=0)reports[existing]={...reports[existing],...report};else reports.push(report);
+  saveReports(reports);document.getElementById('attendance-diary').value='';sendGeneric(report);
 }
 
 async function sendToGAS(rec){
@@ -461,6 +645,7 @@ function saveRecord(rec){const h=getHistory();h.push(rec);localStorage.setItem(S
 
 function renderHistory(){
   const history=getHistory(),el=document.getElementById('history-list');
+  if(!el){renderAdminHistory();return;}
   if(!history.length){el.innerHTML='<div class="history-empty">打刻履歴がありません</div>';return;}
   el.innerHTML=[...history].reverse().map(r=>`
     <div class="history-item">
@@ -469,6 +654,89 @@ function renderHistory(){
       ${r.photo?`<img class="history-photo" src="${r.photo}" onclick="showPhotoPreview(this.src)">`:'<span style="width:42px;flex-shrink:0"></span>'}
     </div>`).join('');
 }
+
+function renderAdminHistory(){
+  const el=document.getElementById('admin-history-list');if(!el)return;
+  const history=getHistory();
+  el.innerHTML=history.length?[...history].reverse().map(r=>`<div class="history-item"><span class="history-badge ${r.type==='in'?'badge-in':'badge-out'}">${r.type==='in'?'出勤':'退勤'}</span><div class="history-detail"><div class="history-name">${esc(r.name)}　${esc(r.siteName||'')}</div><div class="history-time">${esc(r.datetime)}　社員番号: ${esc(r.employeeNumber||'未登録')}</div></div></div>`).join(''):'<div class="history-empty">打刻履歴がありません</div>';
+}
+
+function getAdminAttendanceRows(period){
+  const dateInput=document.getElementById('admin-summary-date'),monthInput=document.getElementById('admin-summary-month');
+  const selected=period==='day'?(dateInput?dateInput.value.replace(/-/g,'/'):''):(monthInput?monthInput.value.replace(/-/g,'/'):'');
+  if(!selected)return[];
+  const map={};
+  getHistory().filter(r=>period==='day'?r.date===selected:r.date.startsWith(selected+'/')).forEach(r=>{
+    const siteName=r.siteName||'現場未選択',employeeNumber=r.employeeNumber||'',key=`${r.date}::${siteName}::${employeeNumber||r.name}`;
+    if(!map[key])map[key]={date:r.date,siteName,employeeNumber,name:r.name,inTime:'',outTime:'',note:''};
+    if(r.type==='in')map[key].inTime=r.time;
+    if(r.type==='out')map[key].outTime=r.time;
+    if(r.note)map[key].note=r.note;
+  });
+  return Object.values(map).sort((a,b)=>(a.date+a.siteName+a.name).localeCompare(b.date+b.siteName+b.name,'ja'));
+}
+function summaryEmptyRow(colspan){return`<tr><td colspan="${colspan}">該当する打刻はありません</td></tr>`;}
+function renderAdminAttendanceSummaries(){
+  const dayList=document.getElementById('admin-day-summary-list'),monthList=document.getElementById('admin-month-summary-list');
+  if(!dayList||!monthList)return;
+  const dayRows=getAdminAttendanceRows('day'),monthRows=getAdminAttendanceRows('month');
+  dayList.innerHTML=dayRows.length?dayRows.map(r=>`<tr><td>${esc(r.siteName)}</td><td>${esc(r.employeeNumber||'未登録')}</td><td>${esc(r.name)}</td><td>${esc(r.inTime||'-')}</td><td>${esc(r.outTime||'-')}</td><td>${esc(r.note||'')}</td></tr>`).join(''):summaryEmptyRow(6);
+  monthList.innerHTML=monthRows.length?monthRows.map(r=>`<tr><td>${esc(r.date)}</td><td>${esc(r.siteName)}</td><td>${esc(r.employeeNumber||'未登録')}</td><td>${esc(r.name)}</td><td>${esc(r.inTime||'-')}</td><td>${esc(r.outTime||'-')}</td><td>${esc(r.note||'')}</td></tr>`).join(''):summaryEmptyRow(7);
+}
+function getAdminAttendanceExport(period){
+  const rows=getAdminAttendanceRows(period),dateValue=document.getElementById('admin-summary-date').value,monthValue=document.getElementById('admin-summary-month').value;
+  const isDay=period==='day',label=isDay?dateValue:monthValue,title=isDay?'日ごとの打刻一覧（現場ごと）':'月ごとの打刻一覧';
+  const headers=isDay?['現場','社員番号','氏名','出勤時刻','退勤時刻','備考']:['日付','現場','社員番号','氏名','出勤時刻','退勤時刻','備考'];
+  const values=rows.map(r=>isDay?[r.siteName,r.employeeNumber||'未登録',r.name,r.inTime,r.outTime,r.note]:[r.date,r.siteName,r.employeeNumber||'未登録',r.name,r.inTime,r.outTime,r.note]);
+  return{rows,headers,values,label,title,fileLabel:label.replace(/-/g,'')};
+}
+function exportAdminAttendanceExcel(period){
+  const data=getAdminAttendanceExport(period);
+  if(!data.rows.length){showToast('該当する打刻データがありません');return;}
+  if(!window.XLSX){showToast('Excel出力を読み込めません');return;}
+  const wb=XLSX.utils.book_new(),ws=XLSX.utils.aoa_to_sheet([[data.title],['出力条件',data.label],['出力日時',formatDatetime(new Date())],[],data.headers,...data.values]);
+  ws['!cols']=data.headers.map((header,index)=>({wch:index===0?16:index===2?14:12}));
+  XLSX.utils.book_append_sheet(wb,ws,period==='day'?'日別_現場ごと':'月別一覧');
+  XLSX.writeFile(wb,`${data.title}_${data.fileLabel}.xlsx`);
+  showToast('Excelファイルを出力しました','success');
+}
+function printAdminAttendancePdf(period){
+  const data=getAdminAttendanceExport(period);
+  if(!data.rows.length){showToast('該当する打刻データがありません');return;}
+  const win=window.open('','_blank');
+  if(!win){showToast('PDF画面を開けません。ポップアップを許可してください');return;}
+  const tableRows=data.values.map(row=>`<tr>${row.map(value=>`<td>${esc(value||'-')}</td>`).join('')}</tr>`).join('');
+  win.document.write(`<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>${esc(data.title)}</title><style>@page{size:A4 landscape;margin:12mm}body{font-family:"Yu Gothic","Meiryo",sans-serif;color:#222}h1{font-size:20px;margin:0 0 8px}.meta{font-size:11px;color:#555;margin-bottom:12px}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #999;padding:6px;text-align:left}th{background:#e5f1f8}.sign{margin-top:24px;text-align:right}.sign span{display:inline-block;border:1px solid #777;width:160px;height:44px;text-align:left;padding:4px;font-size:11px}</style></head><body><h1>${esc(data.title)}</h1><div class="meta">対象: ${esc(data.label)}　出力日時: ${esc(formatDatetime(new Date()))}</div><table><thead><tr>${data.headers.map(header=>`<th>${esc(header)}</th>`).join('')}</tr></thead><tbody>${tableRows}</tbody></table><div class="sign"><span>確認署名:</span></div><script>window.onload=()=>window.print();<\/script></body></html>`);
+  win.document.close();
+}
+
+function moveStaffCalendarMonth(offset){staffCalendarMonth=new Date(staffCalendarMonth.getFullYear(),staffCalendarMonth.getMonth()+offset,1);renderStaffCalendar();}
+function moveAdminCalendarMonth(offset){adminCalendarMonth=new Date(adminCalendarMonth.getFullYear(),adminCalendarMonth.getMonth()+offset,1);renderAdminCalendar();}
+function renderCalendar(gridId,titleId,monthDate,getItems,onClickName){
+  const grid=document.getElementById(gridId),title=document.getElementById(titleId);if(!grid||!title)return;
+  const year=monthDate.getFullYear(),month=monthDate.getMonth(),lastDay=new Date(year,month+1,0).getDate(),firstWeekday=new Date(year,month,1).getDay();
+  title.textContent=`${year}年 ${month+1}月`;
+  const weekdays=['日','月','火','水','木','金','土'].map(day=>`<div class="calendar-weekday">${day}</div>`).join('');
+  const blanks='<div></div>'.repeat(firstWeekday);
+  const days=Array.from({length:lastDay},(_,index)=>{const day=index+1,date=`${year}/${pad2(month+1)}/${pad2(day)}`,items=getItems(date);return`<button class="calendar-day ${items.length?'has-work':''}" onclick="${onClickName}('${date}',this)">${day}${items.length?`<span class="calendar-count">${items.length}件</span>`:''}</button>`;}).join('');
+  grid.innerHTML=weekdays+blanks+days;
+}
+function getStaffWorkForDate(date,name){
+  const map={};getHistory().filter(r=>r.date===date&&r.name===name).forEach(r=>{const key=r.siteName||'現場未登録';if(!map[key])map[key]={siteName:key,inTime:'',outTime:''};if(r.type==='in')map[key].inTime=r.time;if(r.type==='out')map[key].outTime=r.time;});return Object.values(map);
+}
+function getAdminWorkForDate(date){
+  const map={};getHistory().filter(r=>r.date===date).forEach(r=>{const key=`${r.employeeNumber||r.name}::${r.siteName||''}`;if(!map[key])map[key]={employeeNumber:r.employeeNumber||'',name:r.name,siteName:r.siteName||'',inTime:'',outTime:''};if(r.type==='in')map[key].inTime=r.time;if(r.type==='out')map[key].outTime=r.time;});return Object.values(map);
+}
+function renderStaffCalendar(){
+  const name=document.getElementById('staff-select').value,note=document.getElementById('staff-calendar-note');
+  note.textContent=name?`${name} さんの勤務日を表示しています。`:'打刻画面で氏名を選択してください。';
+  renderCalendar('staff-calendar-grid','staff-calendar-title',staffCalendarMonth,date=>name?getStaffWorkForDate(date,name):[],'showStaffCalendarDay');
+}
+function renderAdminCalendar(){renderCalendar('admin-calendar-grid','admin-calendar-title',adminCalendarMonth,getAdminWorkForDate,'showAdminCalendarDay');}
+function markCalendarSelected(button){document.querySelectorAll('.calendar-day').forEach(el=>el.classList.remove('selected'));if(button)button.classList.add('selected');}
+function showStaffCalendarDay(date,button){markCalendarSelected(button);const name=document.getElementById('staff-select').value,items=name?getStaffWorkForDate(date,name):[],detail=document.getElementById('staff-calendar-detail');detail.innerHTML=`<strong>${esc(date)} の勤務</strong>`+(items.length?items.map(item=>`<div class="small-note">${esc(item.siteName)}　出勤 ${esc(item.inTime||'-')} ／ 退勤 ${esc(item.outTime||'-')}</div>`).join(''):'<div class="small-note">勤務記録はありません。</div>');}
+function showAdminCalendarDay(date,button){markCalendarSelected(button);const items=getAdminWorkForDate(date),detail=document.getElementById('admin-calendar-detail');detail.innerHTML=`<strong>${esc(date)} の勤務員</strong>`+(items.length?items.map(item=>`<div class="small-note">${esc(item.employeeNumber||'未登録')}　${esc(item.name)}　${esc(item.siteName)}　出勤 ${esc(item.inTime||'-')} ／ 退勤 ${esc(item.outTime||'-')}</div>`).join(''):'<div class="small-note">勤務記録はありません。</div>');}
+
 
 function exportExcel(){
   const history=getHistory();
@@ -541,36 +809,39 @@ function exportCSV(){
 }
 
 function switchPage(page){
+  if(page==='admin'&&!canUseAdmin()){
+    showToast('管理画面はPCから開いてください');
+    return;
+  }
+  if(page==='admin'&&!adminUnlocked){
+    const pin=prompt('管理画面の暗証番号を入力してください');
+    if(pin!==settings.adminPin){showToast('暗証番号が違います');return;}
+    adminUnlocked=true;
+  }
   document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id==='page-'+page));
   document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.dataset.page===page));
-  if(page==='daily')renderReports();
   if(page==='replies')renderReplies();
   if(page==='admin')renderAdmin();
+  if(page==='slips')renderSlips();
+  if(page==='calendar')renderStaffCalendar();
 }
+function canUseAdmin(){return window.innerWidth>=768&&window.matchMedia('(pointer: fine)').matches;}
 
 function getReports(){try{return JSON.parse(localStorage.getItem(REPORT_KEY)||'[]');}catch(e){return[];}}
 function saveReports(items){localStorage.setItem(REPORT_KEY,JSON.stringify(items));}
 function getReplies(){try{return JSON.parse(localStorage.getItem(REPLY_KEY)||'[]');}catch(e){return[];}}
 function saveReplies(items){localStorage.setItem(REPLY_KEY,JSON.stringify(items));}
 
-async function submitDailyReport(){
-  const name=document.getElementById('report-staff').value,siteName=document.getElementById('report-site').value;
-  if(!name||!siteName){showToast('氏名と現場名を選択してください');return;}
-  const guard=(settings.guards||[]).find(g=>g.name===name)||{};
-  const report={action:'dailyReport',id:'report-'+Date.now(),workDate:document.getElementById('report-date').value,name,employeeNumber:guard.employeeNumber||'',siteName,shift:document.getElementById('report-shift').value,work:document.getElementById('report-work').value,incident:document.getElementById('report-incident').value,incidentDetail:document.getElementById('report-incident-detail').value,handover:document.getElementById('report-handover').value,submittedAt:formatDatetime(new Date()),lineUserId:lineProfile?lineProfile.userId:'',reply:'',replyRead:false};
-  const reports=getReports();reports.push(report);saveReports(reports);renderReports();
-  await sendGeneric(report);
-  showToast('日報を保存しました','success');
-}
-
 function renderReports(){
   const el=document.getElementById('report-history'),reports=getReports();
+  if(!el)return;
   if(!reports.length){el.innerHTML='<div class="history-empty">日報履歴がありません</div>';return;}
   el.innerHTML=[...reports].reverse().map(r=>`<div class="reply-item"><strong>${esc(r.workDate)}　${esc(r.siteName)}</strong><div>${esc(r.name)} ／ ${esc(r.shift)}</div><div class="small-note">${esc(r.work||'業務内容なし')}</div>${r.reply?`<div class="${r.replyRead?'':'reply-new'}">管理者返信: ${esc(r.reply)}</div>`:''}</div>`).join('');
 }
 
 function renderReplies(){
   const reports=getReports().filter(r=>r.reply),extra=getReplies(),el=document.getElementById('reply-list');
+  if(!el)return;
   const replies=[...reports.map(r=>({id:r.id,reportId:r.id,siteName:r.siteName,message:r.reply,replier:r.replier||'管理者',repliedAt:r.repliedAt||'',read:r.replyRead})),...extra];
   if(!replies.length){el.innerHTML='<div class="history-empty">管理者からの返信はありません</div>';return;}
   el.innerHTML=replies.map(r=>`<div class="reply-item ${r.read?'':'reply-new'}"><strong>${esc(r.siteName||'日報返信')}</strong><div>${esc(r.message)}</div><div class="small-note">${esc(r.replier||'管理者')}　${esc(r.repliedAt||'')}</div>${r.read?'<span class="small-note">確認済み</span>':`<button class="btn-wide" onclick="confirmReply('${esc(r.reportId||r.id)}')">確認しました</button>`}</div>`).join('');
@@ -588,25 +859,126 @@ async function sendGeneric(data){
   try{await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});}catch(e){showToast('送信できませんでした。端末内には保存済みです');}
 }
 
+function getSlips(){try{return JSON.parse(localStorage.getItem(SLIP_KEY)||'[]');}catch(e){return[];}}
+function saveSlip(data){const slips=getSlips();slips.push({id:'slip-'+Date.now()+'-'+Math.random().toString(36).slice(2),submittedAt:formatDatetime(new Date()),...data});localStorage.setItem(SLIP_KEY,JSON.stringify(slips));renderSlips();}
+function makeSlipFileName(date,time,employeeNumber,name,siteName,extension){return`${String(date||'').replace(/\//g,'')}_${String(time||'').replace(/:/g,'').slice(0,4)}_${employeeNumber||'未登録'}_${name}_${siteName}_伝票.${extension}`.replace(/[\\/:*?"<>|]/g,'_');}
+function addMissedSlip(file){
+  const date=document.getElementById('slip-date').value.replace(/-/g,'/'),name=document.getElementById('slip-staff').value,siteName=document.getElementById('slip-site').value;
+  if(!file||!date||!name||!siteName){showToast('勤務日、氏名、現場、ファイルを選択してください');return;}
+  if(!/\.(jpg|jpeg|png|pdf)$/i.test(file.name)){showToast('jpg、png、pdfを選択してください');return;}
+  const guard=(settings.guards||[]).find(g=>g.name===name)||{},extension=file.name.split('.').pop().toLowerCase(),reader=new FileReader();
+  reader.onload=()=>{saveSlip({date,name,employeeNumber:guard.employeeNumber||'',siteName,fileData:reader.result,fileName:makeSlipFileName(date,formatTime(new Date()),guard.employeeNumber||'',name,siteName,extension),source:'送り忘れ追加'});showToast('伝票を現場日に追加しました','success');};
+  reader.readAsDataURL(file);
+}
+function openQuickSlipCamera(){
+  const name=document.getElementById('staff-select').value,siteName=document.getElementById('site-select').value;
+  if(!name){showToast('先に名前を選択してください');return;}
+  if(!siteName){showToast('先に現場を選択してください');return;}
+  const input=document.getElementById('quick-slip-file');
+  input.value='';
+  input.click();
+}
+function addQuickMissedSlip(file){
+  if(!file)return;
+  const name=document.getElementById('staff-select').value,siteName=document.getElementById('site-select').value,date=formatDate(new Date());
+  if(!name||!siteName){showToast('名前と現場を選択してください');return;}
+  if(!/\.(jpg|jpeg|png)$/i.test(file.name)){showToast('写真を選択してください');return;}
+  const guard=(settings.guards||[]).find(g=>g.name===name)||{},extension=file.name.split('.').pop().toLowerCase(),reader=new FileReader();
+  reader.onload=()=>{saveSlip({date,name,employeeNumber:guard.employeeNumber||'',siteName,fileData:reader.result,fileName:makeSlipFileName(date,formatTime(new Date()),guard.employeeNumber||'',name,siteName,extension),source:'打刻画面から追加'});showToast('伝票の写真を今日の現場へ追加しました','success');};
+  reader.readAsDataURL(file);
+}
+function renderSlips(){
+  const slips=getSlips(),history=document.getElementById('slip-history'),admin=document.getElementById('admin-slip-list');
+  const groups={};slips.forEach(s=>{const key=`${s.date}::${s.siteName}`;(groups[key]||(groups[key]=[])).push(s);});
+  const html=Object.keys(groups).sort().reverse().map(key=>{const [date,siteName]=key.split('::');return`<div class="reply-item"><strong>${esc(date)}　${esc(siteName)}</strong>${groups[key].map(s=>`<div class="small-note">${esc(s.name)} ／ ${esc(s.source)} ／ ${esc(s.submittedAt)}<br><a href="${s.fileData}" target="_blank" download="${esc(s.fileName)}">${esc(s.fileName)}</a></div>`).join('')}</div>`;}).join('')||'<div class="history-empty">伝票はありません</div>';
+  if(history)history.innerHTML=html;if(admin)admin.innerHTML=html;
+  renderAdminSlipSummaries();
+}
+function getAdminSlipRows(period){
+  const dateInput=document.getElementById('admin-slip-summary-date'),monthInput=document.getElementById('admin-slip-summary-month');
+  const selected=period==='day'?(dateInput?dateInput.value.replace(/-/g,'/'):''):(monthInput?monthInput.value.replace(/-/g,'/'):'');
+  if(!selected)return[];
+  return getSlips().filter(s=>period==='day'?s.date===selected:s.date.startsWith(selected+'/')).sort((a,b)=>(a.date+a.siteName+a.name).localeCompare(b.date+b.siteName+b.name,'ja'));
+}
+function renderAdminSlipSummaries(){
+  const dayList=document.getElementById('admin-slip-day-list'),monthList=document.getElementById('admin-slip-month-list');
+  if(!dayList||!monthList)return;
+  const dayRows=getAdminSlipRows('day'),monthRows=getAdminSlipRows('month');
+  const photoLink=s=>`<a href="${s.fileData}" target="_blank" download="${esc(s.fileName)}">開く</a>`;
+  dayList.innerHTML=dayRows.length?dayRows.map(s=>`<tr><td>${esc(s.siteName||'現場未選択')}</td><td>${esc(s.employeeNumber||'未登録')}</td><td>${esc(s.name)}</td><td>${esc(s.submittedAt||'')}</td><td>${photoLink(s)}</td></tr>`).join(''):summaryEmptyRow(5);
+  monthList.innerHTML=monthRows.length?monthRows.map(s=>`<tr><td>${esc(s.date)}</td><td>${esc(s.siteName||'現場未選択')}</td><td>${esc(s.employeeNumber||'未登録')}</td><td>${esc(s.name)}</td><td>${esc(s.submittedAt||'')}</td><td>${photoLink(s)}</td></tr>`).join(''):summaryEmptyRow(6);
+}
+function getAdminSlipExport(period){
+  const rows=getAdminSlipRows(period),dateValue=document.getElementById('admin-slip-summary-date').value,monthValue=document.getElementById('admin-slip-summary-month').value;
+  const isDay=period==='day',label=isDay?dateValue:monthValue,title=isDay?'日ごとの伝票写真一覧（現場ごと）':'月ごとの伝票写真一覧';
+  const headers=isDay?['現場','社員番号','氏名','提出日時','追加方法','ファイル名']:['勤務日','現場','社員番号','氏名','提出日時','追加方法','ファイル名'];
+  const values=rows.map(s=>isDay?[s.siteName||'現場未選択',s.employeeNumber||'未登録',s.name,s.submittedAt||'',s.source||'',s.fileName||'']:[s.date,s.siteName||'現場未選択',s.employeeNumber||'未登録',s.name,s.submittedAt||'',s.source||'',s.fileName||'']);
+  return{rows,headers,values,label,title,fileLabel:label.replace(/-/g,'')};
+}
+function exportAdminSlipExcel(period){
+  const data=getAdminSlipExport(period);
+  if(!data.rows.length){showToast('該当する伝票写真がありません');return;}
+  if(!window.XLSX){showToast('Excel出力を読み込めません');return;}
+  const wb=XLSX.utils.book_new(),ws=XLSX.utils.aoa_to_sheet([[data.title],['出力条件',data.label],['出力日時',formatDatetime(new Date())],[],data.headers,...data.values]);
+  ws['!cols']=data.headers.map((header,index)=>({wch:index===data.headers.length-1?42:index===0?16:14}));
+  XLSX.utils.book_append_sheet(wb,ws,period==='day'?'日別_現場ごと':'月別一覧');
+  XLSX.writeFile(wb,`${data.title}_${data.fileLabel}.xlsx`);
+  showToast('伝票一覧のExcelを出力しました','success');
+}
+function printAdminSlipPdf(period){
+  const data=getAdminSlipExport(period);
+  if(!data.rows.length){showToast('該当する伝票写真がありません');return;}
+  const win=window.open('','_blank');
+  if(!win){showToast('PDF画面を開けません。ポップアップを許可してください');return;}
+  const tableRows=data.values.map(row=>`<tr>${row.map(value=>`<td>${esc(value||'-')}</td>`).join('')}</tr>`).join('');
+  win.document.write(`<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>${esc(data.title)}</title><style>@page{size:A4 landscape;margin:12mm}body{font-family:"Yu Gothic","Meiryo",sans-serif;color:#222}h1{font-size:20px;margin:0 0 8px}.meta{font-size:11px;color:#555;margin-bottom:12px}table{width:100%;border-collapse:collapse;font-size:10px}th,td{border:1px solid #999;padding:6px;text-align:left;word-break:break-all}th{background:#fff0ce}.note{font-size:11px;margin-top:12px;color:#555}.sign{margin-top:24px;text-align:right}.sign span{display:inline-block;border:1px solid #777;width:160px;height:44px;text-align:left;padding:4px;font-size:11px}</style></head><body><h1>${esc(data.title)}</h1><div class="meta">対象: ${esc(data.label)}　出力日時: ${esc(formatDatetime(new Date()))}</div><table><thead><tr>${data.headers.map(header=>`<th>${esc(header)}</th>`).join('')}</tr></thead><tbody>${tableRows}</tbody></table><div class="note">写真本体は管理画面の一覧から開いて確認してください。</div><div class="sign"><span>確認署名:</span></div><script>window.onload=()=>window.print();<\/script></body></html>`);
+  win.document.close();
+}
+
 function renderAdmin(){
   const guardList=document.getElementById('admin-guard-list'),siteList=document.getElementById('admin-site-list'),reportList=document.getElementById('admin-report-list');
   if(!guardList)return;
-  guardList.innerHTML=(settings.guards||[]).map((g,index)=>`<tr><td>${esc(g.employeeNumber||'')}</td><td>${esc(g.name||'')}</td><td>${esc(g.department||'')}</td><td><button class="btn-mini btn-danger" onclick="deleteGuard(${index})">削除</button></td></tr>`).join('')||'<tr><td colspan="4">登録がありません</td></tr>';
-  siteList.innerHTML=(settings.sites||[]).map((s,index)=>`<tr><td>${esc(s.siteCode||'')}</td><td>${esc(s.name||'')}</td><td><button class="btn-mini btn-danger" onclick="deleteSite(${index})">削除</button></td></tr>`).join('')||'<tr><td colspan="3">登録がありません</td></tr>';
+  guardList.innerHTML=(settings.guards||[]).map((g,index)=>`<tr class="guard-edit-row" data-index="${index}"><td><input class="admin-check guard-check" type="checkbox" data-key="${esc(g.employeeNumber||'')}" ${selectedGuardNumbers.has(g.employeeNumber)?'checked':''} onchange="toggleGuardSelection(this)"></td><td>${guardBulkEditMode?`<input type="text" data-field="employeeNumber" value="${esc(g.employeeNumber||'')}">`:esc(g.employeeNumber||'')}</td><td>${guardBulkEditMode?`<input type="text" data-field="name" value="${esc(g.name||'')}">`:esc(g.name||'')}</td><td>${guardBulkEditMode?`<input type="text" data-field="department" value="${esc(g.department||'')}">`:esc(g.department||'')}</td><td>${guardBulkEditMode?`<input type="text" data-field="phone" value="${esc(g.phone||'')}">`:esc(g.phone||'')}</td><td>${guardBulkEditMode?`<input type="text" data-field="lineUserId" value="${esc(g.lineUserId||'')}">`:esc(g.lineUserId||'')}</td><td>${guardBulkEditMode?`<input type="text" data-field="enabled" value="${esc(g.enabled||'有効')}">`:esc(g.enabled||'有効')}</td><td><button class="btn-mini btn-danger" onclick="deleteGuard(${index})">削除</button></td></tr>`).join('')||'<tr><td colspan="8">登録がありません</td></tr>';
+  siteList.innerHTML=(settings.sites||[]).map((s,index)=>`<tr class="site-edit-row" data-index="${index}"><td><input class="admin-check site-check" type="checkbox" data-key="${esc(s.siteCode||'')}" ${selectedSiteCodes.has(s.siteCode)?'checked':''} onchange="toggleSiteSelection(this)"></td><td>${siteBulkEditMode?`<input type="text" data-field="siteCode" value="${esc(s.siteCode||'')}">`:esc(s.siteCode||'')}</td><td>${siteBulkEditMode?`<input type="text" data-field="name" value="${esc(s.name||'')}">`:esc(s.name||'')}</td><td><button class="btn-mini btn-danger" onclick="deleteSite(${index})">削除</button></td></tr>`).join('')||'<tr><td colspan="4">登録がありません</td></tr>';
+  document.getElementById('guard-bulk-edit-button').textContent=guardBulkEditMode?'編集を保存':'一覧を一括編集';
+  document.getElementById('site-bulk-edit-button').textContent=siteBulkEditMode?'編集を保存':'一覧を一括編集';
   const reports=getReports();
-  reportList.innerHTML=reports.length?[...reports].reverse().map(r=>`<div class="reply-item"><strong>${esc(r.workDate)}　${esc(r.name)}　${esc(r.siteName)}</strong><div>${esc(r.work||'感想・業務内容なし')}</div><div class="small-note">異常: ${esc(r.incident||'なし')} ／ 引継ぎ: ${esc(r.handover||'なし')}</div><div class="field"><label>管理者返信</label><textarea id="admin-reply-${esc(r.id)}">${esc(r.reply||'')}</textarea></div><button class="btn-mini" onclick="saveAdminReply('${esc(r.id)}')">返信を保存</button></div>`).join(''):'<div class="history-empty">日報はありません</div>';
+  reportList.innerHTML=reports.length?[...reports].reverse().map(r=>`<div class="reply-item"><strong>${esc(r.workDate)}　${esc(r.name)}　${esc(r.siteName||'現場未選択')}</strong><div><b>今日の感想:</b> ${esc(r.work||'なし')}</div><div class="admin-reply-box"><label>この感想への返事</label><textarea id="admin-reply-${esc(r.id)}" placeholder="隊員への返事を入力してください">${esc(r.reply||'')}</textarea><button class="btn-wide" onclick="saveAdminReply('${esc(r.id)}')">返事を保存</button>${r.reply?`<div class="admin-reply-meta">保存済み: ${esc(r.replier||'管理者')}　${esc(r.repliedAt||'')}</div>`:''}</div></div>`).join(''):'<div class="history-empty">今日の感想はまだありません</div>';
+  renderAdminHistory();renderAdminCalendar();renderAdminAttendanceSummaries();
+  initAdminCollapsibles();
+}
+
+function initAdminCollapsibles(){
+  document.querySelectorAll('#page-admin .card').forEach((card,index)=>{
+    const header=card.querySelector(':scope > .history-header');if(!header)return;
+    card.classList.add('collapsible-card');
+    if(!card.dataset.collapseKey)card.dataset.collapseKey=card.id||`admin-list-${index}`;
+    const saved=localStorage.getItem('collapse_'+card.dataset.collapseKey)==='1';
+    card.classList.toggle('collapsed',saved);
+    let button=header.querySelector('.btn-collapse');
+    if(!button){button=document.createElement('button');button.type='button';button.className='btn-collapse';button.onclick=()=>toggleAdminCollapse(card);header.appendChild(button);}
+    button.textContent=card.classList.contains('collapsed')?'開く':'閉じる';
+  });
+}
+function toggleAdminCollapse(card){
+  card.classList.toggle('collapsed');
+  localStorage.setItem('collapse_'+card.dataset.collapseKey,card.classList.contains('collapsed')?'1':'0');
+  const button=card.querySelector(':scope > .history-header .btn-collapse');if(button)button.textContent=card.classList.contains('collapsed')?'開く':'閉じる';
 }
 
 function saveAdminReply(id){
-  const reports=getReports().map(r=>r.id===id?{...r,reply:document.getElementById('admin-reply-'+id).value,replier:'管理者',repliedAt:formatDatetime(new Date()),replyRead:false}:r);
-  saveReports(reports);renderAdmin();renderReports();renderReplies();showToast('管理者返信を保存しました','success');
+  const input=document.getElementById('admin-reply-'+id),reply=input?input.value.trim():'';
+  if(!reply){showToast('返事を入力してください');return;}
+  const reports=getReports().map(r=>r.id===id?{...r,reply,replier:'管理者',repliedAt:formatDatetime(new Date()),replyRead:false}:r);
+  saveReports(reports);renderAdmin();renderReports();renderReplies();showToast('今日の感想への返事を保存しました','success');
 }
 
 function addGuardManual(){
   const employeeNumber=prompt('社員番号を入力してください');if(!employeeNumber)return;
   const name=prompt('氏名を入力してください');if(!name)return;
   const department=prompt('所属を入力してください')||'';
-  upsertGuard({employeeNumber,name,department});saveMasterSettings();showToast('勤務員情報を保存しました','success');
+  const phone=prompt('電話番号を入力してください')||'',lineUserId=prompt('LINEユーザーIDを入力してください')||'',enabled=prompt('有効または無効を入力してください','有効')||'有効';
+  upsertGuard({employeeNumber,name,department,phone,lineUserId,enabled});saveMasterSettings();showToast('社員台帳へ保存しました','success');
 }
 function addSiteManual(){
   const siteCode=prompt('現場コードを入力してください');if(!siteCode)return;
@@ -615,20 +987,37 @@ function addSiteManual(){
 }
 function deleteGuard(index){if(confirm('この勤務員情報を削除しますか？')){settings.guards.splice(index,1);saveMasterSettings();}}
 function deleteSite(index){if(confirm('この現場情報を削除しますか？')){settings.sites.splice(index,1);saveMasterSettings();}}
+function toggleGuardSelection(input){input.checked?selectedGuardNumbers.add(input.dataset.key):selectedGuardNumbers.delete(input.dataset.key);}
+function toggleSiteSelection(input){input.checked?selectedSiteCodes.add(input.dataset.key):selectedSiteCodes.delete(input.dataset.key);}
+function selectAllGuards(checked){selectedGuardNumbers=new Set(checked?(settings.guards||[]).map(g=>g.employeeNumber):[]);renderAdmin();}
+function selectAllSites(checked){selectedSiteCodes=new Set(checked?(settings.sites||[]).map(s=>s.siteCode):[]);renderAdmin();}
+function requireGuardSelection(){if(!selectedGuardNumbers.size){showToast('対象の社員をチェックしてください');return false;}return true;}
+function requireSiteSelection(){if(!selectedSiteCodes.size){showToast('対象の現場をチェックしてください');return false;}return true;}
+function bulkChangeGuardDepartment(){if(!requireGuardSelection())return;const value=prompt('選択した社員の所属を入力してください');if(value===null)return;settings.guards.forEach(g=>{if(selectedGuardNumbers.has(g.employeeNumber))g.department=value.trim();});saveMasterSettings();showToast('所属を一括変更しました','success');}
+function bulkChangeGuardEnabled(){if(!requireGuardSelection())return;const value=prompt('選択した社員へ「有効」または「無効」を入力してください','有効');if(value===null)return;if(!['有効','無効'].includes(value.trim())){showToast('有効または無効を入力してください');return;}settings.guards.forEach(g=>{if(selectedGuardNumbers.has(g.employeeNumber))g.enabled=value.trim();});saveMasterSettings();showToast('有効無効を一括変更しました','success');}
+function bulkChangeSiteName(){if(!requireSiteSelection())return;const value=prompt('選択した現場に設定する現場名を入力してください');if(value===null||!value.trim())return;settings.sites.forEach(s=>{if(selectedSiteCodes.has(s.siteCode))s.name=value.trim();});saveMasterSettings();showToast('現場名を一括変更しました','success');}
+function bulkDeleteGuards(){if(!requireGuardSelection())return;if(!confirm(`選択した社員 ${selectedGuardNumbers.size}件を削除しますか？`))return;settings.guards=settings.guards.filter(g=>!selectedGuardNumbers.has(g.employeeNumber));selectedGuardNumbers.clear();saveMasterSettings();showToast('選択した社員を削除しました','success');}
+function bulkDeleteSites(){if(!requireSiteSelection())return;if(!confirm(`選択した現場 ${selectedSiteCodes.size}件を削除しますか？`))return;settings.sites=settings.sites.filter(s=>!selectedSiteCodes.has(s.siteCode));selectedSiteCodes.clear();saveMasterSettings();showToast('選択した現場を削除しました','success');}
+function toggleGuardBulkEdit(){if(guardBulkEditMode){saveGuardBulkEdits();return;}guardBulkEditMode=true;renderAdmin();showToast('社員台帳を直接編集できます。完了後に同じボタンを押してください');}
+function toggleSiteBulkEdit(){if(siteBulkEditMode){saveSiteBulkEdits();return;}siteBulkEditMode=true;renderAdmin();showToast('現場一覧を直接編集できます。完了後に同じボタンを押してください');}
+function saveGuardBulkEdits(){document.querySelectorAll('.guard-edit-row').forEach(row=>{const item=settings.guards[Number(row.dataset.index)];if(!item)return;row.querySelectorAll('[data-field]').forEach(input=>item[input.dataset.field]=input.value.trim());});guardBulkEditMode=false;selectedGuardNumbers.clear();saveMasterSettings();showToast('社員台帳の一括編集を保存しました','success');}
+function saveSiteBulkEdits(){document.querySelectorAll('.site-edit-row').forEach(row=>{const item=settings.sites[Number(row.dataset.index)];if(!item)return;row.querySelectorAll('[data-field]').forEach(input=>item[input.dataset.field]=input.value.trim());});siteBulkEditMode=false;selectedSiteCodes.clear();saveMasterSettings();showToast('現場一覧の一括編集を保存しました','success');}
 function upsertGuard(guard){const index=settings.guards.findIndex(g=>g.employeeNumber===guard.employeeNumber);if(index>=0)settings.guards[index]={...settings.guards[index],...guard};else settings.guards.push(guard);}
 function upsertSite(site){const index=settings.sites.findIndex(s=>s.siteCode===site.siteCode);if(index>=0)settings.sites[index]={...settings.sites[index],...site};else settings.sites.push(site);}
-function saveMasterSettings(){settings.staffNames=[...new Set([...(settings.staffNames||[]),...(settings.guards||[]).map(g=>g.name)])];localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));renderMasters();renderAdmin();}
+function saveMasterSettings(){settings.staffNames=[...new Set((settings.guards||[]).filter(g=>(g.enabled||'有効')!=='無効').map(g=>g.name))];localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));renderMasters();renderAdmin();}
 
-async function importMasterFile(file){
+function scrollAdminTo(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+function importEmployeeLedgerFile(file){return importMasterFile(file,'employee-ledger-import-result','guards');}
+async function importMasterFile(file,resultId='admin-import-result',kindOverride=''){
   if(!file)return;
-  const result=document.getElementById('admin-import-result');
+  const result=document.getElementById(resultId);
   try{
     result.textContent='読込中...';
     const rows=await readImportRows(file);
-    const kind=document.getElementById('admin-import-kind').value;
+    const kind=kindOverride||document.getElementById('admin-import-kind').value;
     const summary=kind==='guards'?importGuardRows(rows):importSiteRows(rows);
     saveMasterSettings();
-    result.textContent=`新規追加: ${summary.added}件\n更新: ${summary.updated}件\nエラー: ${summary.errors.length}件${summary.errors.length?'\n'+summary.errors.join('\n'):''}`;
+    result.textContent=`台帳へ反映しました\n新規追加: ${summary.added}件\n更新: ${summary.updated}件\nエラー: ${summary.errors.length}件${summary.errors.length?'\n'+summary.errors.join('\n'):''}`;
   }catch(e){result.textContent='取込エラー: '+(e.message||e);showToast('取込に失敗しました');}
 }
 
@@ -655,7 +1044,7 @@ function parseCsv(text){
 function headerIndex(rows,aliases){let best=-1,score=0;rows.slice(0,10).forEach((row,index)=>{const current=Object.values(aliases).filter(names=>columnIndex(row,names)>=0).length;if(current>score){score=current;best=index;}});if(score<2)throw new Error('ヘッダー行を判定できません。列名を確認してください');return best;}
 function columnIndex(headers,names){return headers.findIndex(value=>names.includes(String(value||'').replace(/\s+/g,'')));}
 function rowValue(row,headers,names){const index=columnIndex(headers,names);return index<0?'':String(row[index]||'').trim();}
-function importGuardRows(rows){const aliases={employeeNumber:['社員番号','隊員番号','従業員番号'],name:['氏名','名前','隊員名'],department:['所属','部署']},start=headerIndex(rows,aliases),headers=rows[start],summary={added:0,updated:0,errors:[]};rows.slice(start+1).forEach((row,index)=>{const employeeNumber=rowValue(row,headers,aliases.employeeNumber),name=rowValue(row,headers,aliases.name);if(!employeeNumber||!name){summary.errors.push(`${start+index+2}行目: 社員番号と氏名が必要です`);return;}const exists=settings.guards.some(g=>g.employeeNumber===employeeNumber);upsertGuard({employeeNumber,name,department:rowValue(row,headers,aliases.department)});exists?summary.updated++:summary.added++;});return summary;}
+function importGuardRows(rows){const aliases={employeeNumber:['社員番号','隊員番号','従業員番号'],name:['氏名','名前','隊員名'],department:['所属','部署'],phone:['電話番号','電話','携帯番号'],lineUserId:['LINEユーザーID','LINEID','LINEユーザーＩＤ'],enabled:['有効無効','状態','有効／無効','有効/無効']},start=headerIndex(rows,aliases),headers=rows[start],summary={added:0,updated:0,errors:[]};rows.slice(start+1).forEach((row,index)=>{const employeeNumber=rowValue(row,headers,aliases.employeeNumber),name=rowValue(row,headers,aliases.name);if(!employeeNumber||!name){summary.errors.push(`${start+index+2}行目: 社員番号と氏名が必要です`);return;}const exists=settings.guards.some(g=>g.employeeNumber===employeeNumber);upsertGuard({employeeNumber,name,department:rowValue(row,headers,aliases.department),phone:rowValue(row,headers,aliases.phone),lineUserId:rowValue(row,headers,aliases.lineUserId),enabled:rowValue(row,headers,aliases.enabled)||'有効'});exists?summary.updated++:summary.added++;});return summary;}
 function importSiteRows(rows){const aliases={siteCode:['現場コード','現場番号'],name:['現場名','名称']},start=headerIndex(rows,aliases),headers=rows[start],summary={added:0,updated:0,errors:[]};rows.slice(start+1).forEach((row,index)=>{const siteCode=rowValue(row,headers,aliases.siteCode),name=rowValue(row,headers,aliases.name);if(!siteCode||!name){summary.errors.push(`${start+index+2}行目: 現場コードと現場名が必要です`);return;}const exists=settings.sites.some(s=>s.siteCode===siteCode);upsertSite({siteCode,name});exists?summary.updated++:summary.added++;});return summary;}
 
 async function getGps(){
@@ -691,3 +1080,4 @@ document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>
+
