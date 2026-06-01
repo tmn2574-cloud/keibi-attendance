@@ -12,6 +12,7 @@
   <title>警備 出退勤管理</title>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
     :root {
@@ -109,7 +110,7 @@
     .field { margin-top: 10px; }
     .field label { display: block; color: var(--text-muted); font-size: 11px; margin-bottom: 5px; }
     .readonly { color: #b6d2ff; font-size: 13px; background: #102d52; border-radius: 8px; padding: 9px 11px; min-height: 34px; }
-    .tabs { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin: 12px 14px 0; }
+    .tabs { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin: 12px 14px 0; }
     .tab { border: 1px solid #1a4a7a; background: #102d52; color: #aaa; border-radius: 10px; padding: 10px 4px; font-size: 13px; font-weight: 700; }
     .tab.active { background: var(--accent-blue); color: white; border-color: var(--red); }
     .page { display: none; }
@@ -118,6 +119,14 @@
     .reply-item { border-top: 1px solid #0f2a50; padding: 12px 0; font-size: 13px; line-height: 1.6; }
     .reply-new { color: #ffd166; }
     .small-note { color: var(--text-muted); font-size: 11px; margin-top: 6px; line-height: 1.5; }
+    .admin-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .admin-table-wrap { overflow-x: auto; }
+    .admin-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .admin-table th, .admin-table td { border-bottom: 1px solid #0f2a50; padding: 9px 6px; text-align: left; white-space: nowrap; }
+    .admin-table th { color: #88aadd; }
+    .btn-mini { border: 1px solid #1a4a7a; background: #102d52; color: #b6d2ff; border-radius: 8px; padding: 7px 10px; font-size: 12px; }
+    .btn-danger { border-color: #7a2636; color: #ff9bac; }
+    .import-result { margin-top: 10px; color: #9fd7a8; font-size: 12px; line-height: 1.7; white-space: pre-wrap; }
   </style>
 </head>
 <body>
@@ -140,6 +149,7 @@
     <button class="tab active" data-page="attendance" onclick="switchPage('attendance')">打刻</button>
     <button class="tab" data-page="daily" onclick="switchPage('daily')">日報</button>
     <button class="tab" data-page="replies" onclick="switchPage('replies')">返信</button>
+    <button class="tab" data-page="admin" onclick="switchPage('admin')">管理</button>
   </div>
   <div class="page active" id="page-attendance">
   <div class="card">
@@ -194,6 +204,27 @@
   <div class="page" id="page-replies">
     <div class="card"><div class="history-header"><h2>管理者からの返信</h2></div><div id="reply-list"></div></div>
   </div>
+  <div class="page" id="page-admin">
+    <div class="card">
+      <div class="section-label">管理画面</div>
+      <p class="small-note">Excel、CSV、テキストPDFから隊員・現場マスタを取り込めます。PDFが画像のみの場合は手動登録を使ってください。</p>
+      <div class="field"><label>取込対象</label><select id="admin-import-kind"><option value="guards">勤務員情報</option><option value="sites">現場名</option></select></div>
+      <label class="btn-wide" style="display:block;text-align:center">Excel・CSV・PDFを選択<input type="file" accept=".xlsx,.xls,.csv,.pdf" hidden onchange="importMasterFile(this.files[0])"></label>
+      <div class="import-result" id="admin-import-result"></div>
+    </div>
+    <div class="card">
+      <div class="history-header"><h2>勤務員情報</h2><button class="btn-mini" onclick="addGuardManual()">手動登録</button></div>
+      <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>社員番号</th><th>氏名</th><th>所属</th><th></th></tr></thead><tbody id="admin-guard-list"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="history-header"><h2>現場マスタ</h2><button class="btn-mini" onclick="addSiteManual()">手動登録</button></div>
+      <div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>現場コード</th><th>現場名</th><th></th></tr></thead><tbody id="admin-site-list"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="history-header"><h2>提出された日報</h2></div>
+      <div id="admin-report-list"></div>
+    </div>
+  </div>
 </div>
 <div id="camera-modal">
   <div class="camera-header"><div class="cam-title">📷 伝票を撮影してください</div><div class="cam-sub">退勤時の伝票・書類をカメラで撮影します</div></div>
@@ -217,7 +248,7 @@ let currentStream=null, pendingCheckout=null;
 let lineProfile=null;
 
 function init(){
-  loadSettings(); renderMasters(); renderHistory(); renderReports(); renderReplies(); updateClock();
+  loadSettings(); renderMasters(); renderHistory(); renderReports(); renderReplies(); renderAdmin(); updateClock();
   setInterval(updateClock,1000);
   document.getElementById('report-date').value=new Date().toISOString().slice(0,10);
   document.getElementById('staff-select').addEventListener('change',e=>{updateButtonStatus(e.target.value);fillGuardInfo(e.target.value);});
@@ -514,6 +545,7 @@ function switchPage(page){
   document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.dataset.page===page));
   if(page==='daily')renderReports();
   if(page==='replies')renderReplies();
+  if(page==='admin')renderAdmin();
 }
 
 function getReports(){try{return JSON.parse(localStorage.getItem(REPORT_KEY)||'[]');}catch(e){return[];}}
@@ -555,6 +587,76 @@ async function sendGeneric(data){
   const url=settings.flowUrl||settings.gasUrl;if(!url)return;
   try{await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});}catch(e){showToast('送信できませんでした。端末内には保存済みです');}
 }
+
+function renderAdmin(){
+  const guardList=document.getElementById('admin-guard-list'),siteList=document.getElementById('admin-site-list'),reportList=document.getElementById('admin-report-list');
+  if(!guardList)return;
+  guardList.innerHTML=(settings.guards||[]).map((g,index)=>`<tr><td>${esc(g.employeeNumber||'')}</td><td>${esc(g.name||'')}</td><td>${esc(g.department||'')}</td><td><button class="btn-mini btn-danger" onclick="deleteGuard(${index})">削除</button></td></tr>`).join('')||'<tr><td colspan="4">登録がありません</td></tr>';
+  siteList.innerHTML=(settings.sites||[]).map((s,index)=>`<tr><td>${esc(s.siteCode||'')}</td><td>${esc(s.name||'')}</td><td><button class="btn-mini btn-danger" onclick="deleteSite(${index})">削除</button></td></tr>`).join('')||'<tr><td colspan="3">登録がありません</td></tr>';
+  const reports=getReports();
+  reportList.innerHTML=reports.length?[...reports].reverse().map(r=>`<div class="reply-item"><strong>${esc(r.workDate)}　${esc(r.name)}　${esc(r.siteName)}</strong><div>${esc(r.work||'感想・業務内容なし')}</div><div class="small-note">異常: ${esc(r.incident||'なし')} ／ 引継ぎ: ${esc(r.handover||'なし')}</div><div class="field"><label>管理者返信</label><textarea id="admin-reply-${esc(r.id)}">${esc(r.reply||'')}</textarea></div><button class="btn-mini" onclick="saveAdminReply('${esc(r.id)}')">返信を保存</button></div>`).join(''):'<div class="history-empty">日報はありません</div>';
+}
+
+function saveAdminReply(id){
+  const reports=getReports().map(r=>r.id===id?{...r,reply:document.getElementById('admin-reply-'+id).value,replier:'管理者',repliedAt:formatDatetime(new Date()),replyRead:false}:r);
+  saveReports(reports);renderAdmin();renderReports();renderReplies();showToast('管理者返信を保存しました','success');
+}
+
+function addGuardManual(){
+  const employeeNumber=prompt('社員番号を入力してください');if(!employeeNumber)return;
+  const name=prompt('氏名を入力してください');if(!name)return;
+  const department=prompt('所属を入力してください')||'';
+  upsertGuard({employeeNumber,name,department});saveMasterSettings();showToast('勤務員情報を保存しました','success');
+}
+function addSiteManual(){
+  const siteCode=prompt('現場コードを入力してください');if(!siteCode)return;
+  const name=prompt('現場名を入力してください');if(!name)return;
+  upsertSite({siteCode,name});saveMasterSettings();showToast('現場情報を保存しました','success');
+}
+function deleteGuard(index){if(confirm('この勤務員情報を削除しますか？')){settings.guards.splice(index,1);saveMasterSettings();}}
+function deleteSite(index){if(confirm('この現場情報を削除しますか？')){settings.sites.splice(index,1);saveMasterSettings();}}
+function upsertGuard(guard){const index=settings.guards.findIndex(g=>g.employeeNumber===guard.employeeNumber);if(index>=0)settings.guards[index]={...settings.guards[index],...guard};else settings.guards.push(guard);}
+function upsertSite(site){const index=settings.sites.findIndex(s=>s.siteCode===site.siteCode);if(index>=0)settings.sites[index]={...settings.sites[index],...site};else settings.sites.push(site);}
+function saveMasterSettings(){settings.staffNames=[...new Set([...(settings.staffNames||[]),...(settings.guards||[]).map(g=>g.name)])];localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));renderMasters();renderAdmin();}
+
+async function importMasterFile(file){
+  if(!file)return;
+  const result=document.getElementById('admin-import-result');
+  try{
+    result.textContent='読込中...';
+    const rows=await readImportRows(file);
+    const kind=document.getElementById('admin-import-kind').value;
+    const summary=kind==='guards'?importGuardRows(rows):importSiteRows(rows);
+    saveMasterSettings();
+    result.textContent=`新規追加: ${summary.added}件\n更新: ${summary.updated}件\nエラー: ${summary.errors.length}件${summary.errors.length?'\n'+summary.errors.join('\n'):''}`;
+  }catch(e){result.textContent='取込エラー: '+(e.message||e);showToast('取込に失敗しました');}
+}
+
+async function readImportRows(file){
+  const extension=file.name.split('.').pop().toLowerCase();
+  if(extension==='pdf')return readPdfRows(file);
+  if(extension==='csv')return parseCsv(await file.text());
+  if(!window.XLSX)throw new Error('Excel読込ライブラリを読み込めません');
+  const data=await file.arrayBuffer(),workbook=XLSX.read(data,{type:'array'}),sheet=workbook.Sheets[workbook.SheetNames[0]];
+  return XLSX.utils.sheet_to_json(sheet,{header:1,defval:''});
+}
+async function readPdfRows(file){
+  if(!window.pdfjsLib)throw new Error('PDF読込ライブラリを読み込めません。CSVまたはExcelを使ってください');
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise,lines=[];
+  for(let pageNumber=1;pageNumber<=pdf.numPages;pageNumber++){const page=await pdf.getPage(pageNumber),content=await page.getTextContent();lines.push(content.items.map(item=>item.str).join('\t'));}
+  const rows=lines.map(line=>line.split(/\t|,/).map(v=>v.trim())).filter(row=>row.some(Boolean));
+  if(rows.length<2)throw new Error('PDFの文字を表として読み取れません。手動登録を使ってください');
+  return rows;
+}
+function parseCsv(text){
+  return text.replace(/^\uFEFF/,'').split(/\r?\n/).filter(Boolean).map(line=>{const row=[];let value='',quoted=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'&&line[i+1]==='"'){value+='"';i++;}else if(c==='"')quoted=!quoted;else if(c===','&&!quoted){row.push(value);value='';}else value+=c;}row.push(value);return row;});
+}
+function headerIndex(rows,aliases){let best=-1,score=0;rows.slice(0,10).forEach((row,index)=>{const current=Object.values(aliases).filter(names=>columnIndex(row,names)>=0).length;if(current>score){score=current;best=index;}});if(score<2)throw new Error('ヘッダー行を判定できません。列名を確認してください');return best;}
+function columnIndex(headers,names){return headers.findIndex(value=>names.includes(String(value||'').replace(/\s+/g,'')));}
+function rowValue(row,headers,names){const index=columnIndex(headers,names);return index<0?'':String(row[index]||'').trim();}
+function importGuardRows(rows){const aliases={employeeNumber:['社員番号','隊員番号','従業員番号'],name:['氏名','名前','隊員名'],department:['所属','部署']},start=headerIndex(rows,aliases),headers=rows[start],summary={added:0,updated:0,errors:[]};rows.slice(start+1).forEach((row,index)=>{const employeeNumber=rowValue(row,headers,aliases.employeeNumber),name=rowValue(row,headers,aliases.name);if(!employeeNumber||!name){summary.errors.push(`${start+index+2}行目: 社員番号と氏名が必要です`);return;}const exists=settings.guards.some(g=>g.employeeNumber===employeeNumber);upsertGuard({employeeNumber,name,department:rowValue(row,headers,aliases.department)});exists?summary.updated++:summary.added++;});return summary;}
+function importSiteRows(rows){const aliases={siteCode:['現場コード','現場番号'],name:['現場名','名称']},start=headerIndex(rows,aliases),headers=rows[start],summary={added:0,updated:0,errors:[]};rows.slice(start+1).forEach((row,index)=>{const siteCode=rowValue(row,headers,aliases.siteCode),name=rowValue(row,headers,aliases.name);if(!siteCode||!name){summary.errors.push(`${start+index+2}行目: 現場コードと現場名が必要です`);return;}const exists=settings.sites.some(s=>s.siteCode===siteCode);upsertSite({siteCode,name});exists?summary.updated++:summary.added++;});return summary;}
 
 async function getGps(){
   const info=document.getElementById('gps-info');
