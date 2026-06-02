@@ -1,4 +1,4 @@
-const CACHE_NAME = 'keibi-attendance-v39';
+const CACHE_NAME = 'keibi-attendance-v41';
 const ASSETS = ['./index.html', './keibi_attendance.html', './manifest.json'];
 
 self.addEventListener('install', e => {
