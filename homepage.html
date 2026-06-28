@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ニットーケイビ株式会社 | トップページ見本</title>
+  <meta name="description" content="ニットーケイビ株式会社のホームページ刷新見本。列車見張警備と施設警備を中心に、交通誘導警備・イベント警備・医療関連サービスまで対応する総合警備会社のトップページサンプルです。" />
+  <style>
+    :root{
+      --navy:#0d2b52;
+      --navy2:#133b6f;
+      --navy3:#081b34;
+      --orange:#f28c28;
+      --orange2:#d97516;
+      --bg:#f5f8fc;
+      --text:#1b2b3b;
+      --muted:#627285;
+      --line:#dbe4ef;
+      --white:#fff;
+      --shadow:0 14px 40px rgba(8,27,52,.12);
+      --radius:20px;
+      --header-h:78px;
+      --container:min(1180px,calc(100% - 32px));
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 16px)}
+    body{
+      margin:0;
+      font-family:"Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
+      color:var(--text);
+      background:var(--white);
+      line-height:1.7;
+      -webkit-font-smoothing:antialiased;
+    }
+    img{max-width:100%;display:block}
+    a{text-decoration:none;color:inherit}
+    button,input,textarea{font:inherit}
+    section{padding:84px 0}
+    .alt{background:linear-gradient(180deg,#f8fbff 0%,#eef4fb 100%)}
+    .container{width:var(--container);margin:auto}
+    .sec-head{max-width:760px;margin:0 0 36px}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;
+      font-size:.82rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+      color:var(--orange2);margin-bottom:12px
+    }
+    .eyebrow:before{content:"";width:30px;height:2px;background:var(--orange);border-radius:9px}
+    h1,h2,h3,p{margin:0}
+    .title{font-size:clamp(2rem,4vw,3rem);line-height:1.25;color:var(--navy3);margin-bottom:12px}
+    .lead{color:var(--muted)}
+    .grid{display:grid;gap:24px}
+    .card{
+      background:var(--white);border:1px solid rgba(13,43,82,.08);
+      border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden
+    }
+    .card-body{padding:24px}
+    .tag{
+      display:inline-block;padding:7px 12px;border-radius:999px;
+      background:rgba(19,59,111,.08);color:var(--navy2);font-size:.84rem;font-weight:800;margin-bottom:12px
+    }
+    .btns{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      min-height:50px;padding:0 20px;border-radius:999px;font-weight:800;
+      transition:.25s ease;cursor:pointer;border:1px solid transparent
+    }
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:linear-gradient(135deg,var(--orange),#ffab57);color:#fff;box-shadow:0 10px 28px rgba(242,140,40,.28)}
+    .btn-primary:hover{background:linear-gradient(135deg,var(--orange2),var(--orange))}
+    .btn-secondary{background:#fff;color:var(--navy);border-color:rgba(13,43,82,.12)}
+    .btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.22)}
+    .num{
+      width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+      background:var(--navy);color:#fff;font-weight:800;margin-bottom:14px
+    }
+
+    .header{
+      position:fixed;inset:0 0 auto 0;height:var(--header-h);z-index:1000;
+      background:rgba(8,27,52,.72);backdrop-filter:blur(14px);transition:.25s
+    }
+    .header.scrolled{background:rgba(8,27,52,.94);box-shadow:0 10px 30px rgba(8,27,52,.22)}
+    .header-inner{width:var(--container);height:100%;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:14px;min-width:0}
+    .logo{
+      width:46px;height:46px;border-radius:14px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--orange),#ffb86c);color:#fff;font-weight:900;letter-spacing:.08em;flex:0 0 auto
+    }
+    .brand h1{font-size:1rem;color:#fff;line-height:1.2}
+    .brand small{display:block;color:rgba(255,255,255,.72);font-size:.74rem}
+    .nav{display:flex;align-items:center;gap:20px}
+    .nav-links{display:flex;gap:18px}
+    .nav-links a{color:rgba(255,255,255,.92);font-size:.95rem;font-weight:700}
+    .nav-cta{display:flex;gap:10px}
+    .nav-cta .btn{min-height:42px;padding:0 16px}
+    .menu-btn{
+      display:none;width:46px;height:46px;border:none;border-radius:14px;
+      background:rgba(255,255,255,.12);position:relative;cursor:pointer
+    }
+    .menu-btn span,.menu-btn:before,.menu-btn:after{
+      content:"";position:absolute;left:11px;right:11px;height:2px;background:#fff;border-radius:9px;transition:.25s
+    }
+    .menu-btn span{top:22px}
+    .menu-btn:before{top:15px}
+    .menu-btn:after{bottom:15px}
+    .menu-btn.active span{opacity:0}
+    .menu-btn.active:before{top:22px;transform:rotate(45deg)}
+    .menu-btn.active:after{bottom:22px;transform:rotate(-45deg)}
+    .mobile-menu{
+      display:none;position:fixed;top:calc(var(--header-h) + 10px);left:16px;right:16px;z-index:999;
+      background:rgba(8,27,52,.98);border:1px solid rgba(255,255,255,.08);
+      border-radius:22px;box-shadow:0 18px 44px rgba(8,27,52,.28);padding:16px
+    }
+    .mobile-menu.open{display:block}
+    .mobile-menu a{
+      display:block;color:#fff;padding:12px 14px;margin:0 0 8px;
+      border-radius:14px;background:rgba(255,255,255,.05);font-weight:700
+    }
+    .mobile-menu .btn{width:100%;margin-top:8px}
+
+    .hero{
+      padding-top:calc(var(--header-h) + 36px);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(242,140,40,.16), transparent 20%),
+        linear-gradient(135deg,var(--navy3),var(--navy) 55%,var(--navy2));
+      color:#fff;position:relative;overflow:hidden
+    }
+    .hero:after{
+      content:"";position:absolute;left:-5%;right:-5%;bottom:-78px;height:160px;
+      background:#fff;border-radius:50% 50% 0 0 / 100% 100% 0 0
+    }
+    .hero-inner{
+      width:var(--container);margin:auto;display:grid;grid-template-columns:1.05fr .95fr;
+      gap:34px;align-items:center;min-height:700px;padding-bottom:110px;position:relative;z-index:1
+    }
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;padding:10px 15px;border-radius:999px;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+      font-size:.88rem;font-weight:800;margin-bottom:18px
+    }
+    .hero h2{
+      font-size:clamp(2.4rem,5vw,4.6rem);line-height:1.15;letter-spacing:.02em;margin-bottom:18px
+    }
+    .hero h2 .accent{color:#ffc27c}
+    .hero p{color:rgba(255,255,255,.82);max-width:640px}
+    .hero-points{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+    .hero-point{
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);
+      border-radius:18px;padding:16px
+    }
+    .hero-point strong{display:block;color:#ffd5a8;margin-bottom:4px}
+    .hero-visual{
+      position:relative;background:rgba(255,255,255,.06);border-radius:28px;overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);box-shadow:0 26px 64px rgba(0,0,0,.24)
+    }
+    .hero-visual img{width:100%;height:560px;object-fit:cover}
+    .float-card{
+      position:absolute;right:18px;bottom:18px;max-width:320px;background:rgba(255,255,255,.96);
+      color:var(--text);border-radius:18px;padding:20px;box-shadow:var(--shadow)
+    }
+    .float-card b{
+      display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(242,140,40,.14);
+      color:var(--orange2);font-size:.8rem;margin-bottom:10px
+    }
+
+    .pillars{grid-template-columns:repeat(2,1fr)}
+    .pillar-img img,.svc-img img{width:100%;object-fit:cover}
+    .pillar-img img{height:260px}
+    .svc{grid-template-columns:repeat(3,1fr)}
+    .svc-img img{height:220px}
+    .reasons{grid-template-columns:repeat(4,1fr)}
+    .reason{padding:24px}
+    .reason .icon{
+      width:56px;height:56px;border-radius:18px;display:grid;place-items:center;
+      background:linear-gradient(135deg,rgba(13,43,82,.08),rgba(242,140,40,.14));
+      color:var(--navy);font-weight:900;margin-bottom:16px
+    }
+    .fields{grid-template-columns:1fr .95fr}
+    .panel{padding:26px}
+    .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+    .chip{
+      padding:10px 14px;border-radius:999px;background:#f2f6fb;border:1px solid rgba(13,43,82,.08);
+      color:var(--navy2);font-weight:700;font-size:.92rem
+    }
+    .steps{display:grid;gap:18px}
+    .step{display:grid;grid-template-columns:54px 1fr;gap:14px}
+    .step-no{
+      width:54px;height:54px;border-radius:16px;display:grid;place-items:center;
+      background:var(--navy);color:#fff;font-weight:900
+    }
+
+    .recruit{
+      background:
+        radial-gradient(circle at 10% 20%, rgba(242,140,40,.16), transparent 18%),
+        linear-gradient(135deg,var(--navy3),var(--navy) 60%,var(--navy2));
+      color:#fff;position:relative;overflow:hidden
+    }
+    .recruit .title,.recruit .lead{color:#fff}
+    .recruit .lead{color:rgba(255,255,255,.8)}
+    .recruit-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
+    .recruit-box{
+      padding:26px;border-radius:24px;background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px)
+    }
+    .recruit-box ul{margin:0;padding-left:1.2em}
+    .recruit-box li{margin:.45em 0;color:rgba(255,255,255,.92)}
+
+    .contact{grid-template-columns:.95fr 1.05fr}
+    .contact-side{
+      padding:28px;border-radius:24px;color:#fff;
+      background:linear-gradient(180deg,var(--navy),var(--navy3));box-shadow:var(--shadow)
+    }
+    .contact-side p{color:rgba(255,255,255,.8)}
+    .info-list{display:grid;gap:12px;margin-top:20px}
+    .info{
+      padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.08)
+    }
+    .info strong{display:block;color:#ffd9b1;font-size:.9rem;margin-bottom:2px}
+    .form{padding:28px}
+    .form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .field{display:grid;gap:8px}
+    .field.full{grid-column:1/-1}
+    label{font-weight:800;color:var(--navy3);font-size:.95rem}
+    input,textarea{
+      width:100%;padding:14px 16px;border-radius:14px;border:1px solid rgba(13,43,82,.14);
+      background:#fbfdff;color:var(--text)
+    }
+    input:focus,textarea:focus{
+      outline:none;border-color:rgba(242,140,40,.85);box-shadow:0 0 0 4px rgba(242,140,40,.12);background:#fff
+    }
+    .note{font-size:.88rem;color:var(--muted)}
+    .status{
+      display:none;padding:14px 16px;border-radius:14px;background:rgba(19,145,94,.1);
+      color:#177b54;font-weight:800
+    }
+    .status.show{display:block}
+
+    footer{
+      background:var(--navy3);color:rgba(255,255,255,.82);padding:26px 0 34px
+    }
+    .foot-top,.foot-bottom{display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;align-items:center}
+    .foot-top{padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:16px}
+    .foot-links{display:flex;flex-wrap:wrap;gap:16px}
+    .foot-links a{color:rgba(255,255,255,.86);font-size:.94rem}
+
+    .replaceable{background:#e7edf5}
+
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s,transform .7s}
+    .reveal.show{opacity:1;transform:none}
+    .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+    .mobile-cta{
+      display:none;position:fixed;left:12px;right:12px;bottom:12px;z-index:990;
+      gap:10px;padding:10px;border-radius:18px;background:rgba(8,27,52,.92);
+      backdrop-filter:blur(14px);box-shadow:0 16px 36px rgba(8,27,52,.28)
+    }
+    .mobile-cta .btn{flex:1;min-height:48px;padding:0 14px}
+
+    @media (max-width:1080px){
+      .hero-inner,.fields,.recruit-wrap,.contact{grid-template-columns:1fr}
+      .svc{grid-template-columns:repeat(2,1fr)}
+      .reasons{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:920px){
+      .nav-links,.nav-cta{display:none}
+      .menu-btn{display:block}
+    }
+    @media (max-width:780px){
+      section{padding:72px 0}
+      .pillars,.svc,.reasons,.form-grid,.hero-points{grid-template-columns:1fr}
+      .hero-inner{min-height:auto;padding-bottom:100px}
+      .hero-visual img{height:360px}
+      .float-card{position:static;max-width:none;margin:14px}
+      .mobile-cta{display:flex}
+      body{padding-bottom:86px}
+    }
+    @media (max-width:560px){
+      :root{--header-h:72px;--container:min(1180px,calc(100% - 24px))}
+      .logo{width:42px;height:42px}
+      .brand h1{font-size:.95rem}
+      .hero h2{font-size:clamp(2rem,9vw,3rem)}
+      .card-body,.panel,.form,.contact-side,.recruit-box{padding:22px}
+      .foot-top,.foot-bottom{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <header class="header" id="header">
+    <div class="header-inner">
+      <a href="#top" class="brand" aria-label="トップへ戻る">
+        <div class="logo">NK</div>
+        <div>
+          <h1>ニットーケイビ株式会社</h1>
+          <small>Train Watch / Facility Security</small>
+        </div>
+      </a>
+      <div class="nav">
+        <nav class="nav-links" aria-label="グローバルナビゲーション">
+          <a href="#pillars">2本柱</a>
+          <a href="#services">専門サービス</a>
+          <a href="#reasons">選ばれる理由</a>
+          <a href="#fields">対応分野</a>
+          <a href="#recruit">採用</a>
+          <a href="#contact">お問い合わせ</a>
+        </nav>
+        <div class="nav-cta">
+          <a class="btn btn-secondary" href="#contact">お問い合わせ</a>
+          <a class="btn btn-primary" href="#recruit">採用情報</a>
+        </div>
+        <button class="menu-btn" id="menuBtn" aria-label="メニューを開く" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <a href="#pillars">2本柱</a>
+    <a href="#services">専門サービス</a>
+    <a href="#reasons">選ばれる理由</a>
+    <a href="#fields">対応分野</a>
+    <a href="#recruit">採用</a>
+    <a href="#contact">お問い合わせ</a>
+    <a class="btn btn-secondary" href="#contact">お問い合わせ</a>
+    <a class="btn btn-primary" href="#recruit">採用情報</a>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="reveal show">
+          <div class="badge">総合警備会社 / 列車見張警備・施設警備を中心に対応</div>
+          <h2>列車を守る。<br>施設を守る。<br><span class="accent">地域の安心を守る。</span></h2>
+          <p>
+            ニットーケイビは、列車見張警備と施設警備を中心に、交通誘導、イベント警備、医療関連サービスまで、
+            地域社会の安全を支える総合警備会社です。
+          </p>
+          <div class="btns" style="margin-top:26px">
+            <a class="btn btn-primary" href="#contact">お問い合わせはこちら</a>
+            <a class="btn btn-ghost" href="#recruit">採用メッセージを見る</a>
+          </div>
+          <div class="hero-points">
+            <div class="hero-point"><strong>主力業務</strong><span>列車見張警備 / 施設警備</span></div>
+            <div class="hero-point"><strong>追加対応</strong><span>交通誘導 / イベント / 医療関連</span></div>
+            <div class="hero-point"><strong>提供価値</strong><span>安全・信頼・地域貢献</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal show d1">
+          <img class="replaceable" src="https://placehold.co/1000x760/0d2b52/ffffff?text=MAIN+VISUAL" alt="メインビジュアルの仮画像">
+          <div class="float-card">
+            <b>2本柱</b>
+            <h3 style="margin-bottom:8px;color:var(--navy3)">列車見張警備と施設警備を軸に、現場に応じた安全体制を構築</h3>
+            <p style="color:var(--muted)">公共性の高い現場から日常の安心を支える施設まで、誠実で安定した警備体制を目指す会社像を表現しています。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pillars">
+      <div class="container">
+        <div class="sec-head reveal">
+          <div class="eyebrow">Core Services</div>
+          <h2 class="title">ニットーケイビを支える、2つの主力サービス</h2>
+          <p class="lead">
+            安全性と安定運用が求められる現場に対して、専門性の高い警備サービスを提供。
+            列車見張警備と施設警備を核に、地域の安心を支えます。
+          </p>
+        </div>
+
+        <div class="grid pillars">
+          <article class="card reveal d1">
+            <div class="pillar-img">
+              <img class="replaceable" src="https://placehold.co/900x520/153a6b/ffffff?text=TRAIN+WATCH+SECURITY" alt="列車見張警備の仮画像">
+            </div>
+            <div class="card-body">
+              <div class="num">01</div>
+              <h3 style="font-size:1.35rem;color:var(--navy3);margin-bottom:10px">列車見張警備</h3>
+              <p class="lead">
+                線路周辺や鉄道関連現場において、安全確認と監視体制を徹底し、
+                作業員・関係者・交通インフラの安全確保に貢献します。
+              </p>
+              <ul style="margin:16px 0 0;padding-left:1.2em;color:var(--muted)">
+                <li>鉄道関連現場に求められる安全意識</li>
+                <li>現場状況に応じた見張体制の設計</li>
+                <li>関係者との連携を意識した運用イメージ</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="card reveal d2">
+            <div class="pillar-img">
+              <img class="replaceable" src="https://placehold.co/900x520/0d2b52/ffffff?text=FACILITY+SECURITY" alt="施設警備の仮画像">
+            </div>
+            <div class="card-body">
+              <div class="num">02</div>
+              <h3 style="font-size:1.35rem;color:var(--navy3);margin-bottom:10px">施設警備</h3>
+              <p class="lead">
+                オフィス、商業施設、各種拠点などの安全管理を支える施設警備。
+                入退館対応や巡回、監視などを通じて、安定した日常運営を支援します。
+              </p>
+              <ul style="margin:16px 0 0;padding-left:1.2em;color:var(--muted)">
+                <li>来訪者にも安心感を与える対応</li>
+                <li>巡回・監視・受付を想定した構成</li>
+                <li>施設特性に応じた柔軟な体制づくり</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="alt" id="services">
+      <div class="container">
+        <div class="sec-head reveal">
+          <div class="eyebrow">Additional Services</div>
+          <h2 class="title">現場の多様な課題に応える専門サービス</h2>
+          <p class="lead">
+            主力の2本柱に加え、交通誘導警備、イベント警備、医療関連サービスまで幅広く掲載。
+            現場ごとの課題に応じて相談できる総合力を伝えます。
+          </p>
+        </div>
+
+        <div class="grid svc">
+          <article class="card reveal d1">
+            <div class="svc-img">
+              <img class="replaceable" src="https://placehold.co/800x520/f28c28/ffffff?text=TRAFFIC+CONTROL" alt="交通誘導警備の仮画像">
+            </div>
+            <div class="card-body">
+              <div class="tag">交通誘導警備</div>
+              <h3 style="font-size:1.2rem;color:var(--navy3);margin-bottom:8px">車両・歩行者の安全を円滑にサポート</h3>
+              <p class="lead">工事現場や出入口周辺などで、歩行者・車両の動線を整理し、安全でスムーズな通行環境づくりを支えます。</p>
+            </div>
+          </article>
+
+          <article class="card reveal d2">
+            <div class="svc-img">
+              <img class="replaceable" src="https://placehold.co/800x520/133b6f/ffffff?text=EVENT+SECURITY" alt="イベント警備の仮画像">
+            </div>
+            <div class="card-body">
+              <div class="tag">イベント警備</div>
+              <h3 style="font-size:1.2rem;color:var(--navy3);margin-bottom:8px">人が集まる場に、安心できる運営体制を</h3>
+              <p class="lead">会場内外の導線整理や安全確認を通じて、地域イベントや催事などの円滑な開催を支援します。</p>
+            </div>
+          </article>
+
+          <article class="card reveal d3">
+            <div class="svc-img">
+              <img class="replaceable" src="https://placehold.co/800x520/0d2b52/ffffff?text=MEDICAL+SERVICE" alt="医療関連サービスの仮画像">
+            </div>
+            <div class="card-body">
+              <div class="tag">医療関連サービス</div>
+              <h3 style="font-size:1.2rem;color:var(--navy3);margin-bottom:8px">医療現場周辺にも配慮したサービス展開</h3>
+              <p class="lead">安全・安心・配慮が求められる医療関連分野に向けて、落ち着いた対応と丁寧な現場支援を想定した見せ方です。</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="reasons">
+      <div class="container">
+        <div class="sec-head reveal">
+          <div class="eyebrow">Why Choose Us</div>
+          <h2 class="title">ニットーケイビが選ばれる理由</h2>
+          <p class="lead">
+            現場に求められる安全水準はさまざまです。だからこそ、基本を徹底しながら、
+            誠実で柔軟な対応を積み重ねる会社像が伝わるデザインにしています。
+          </p>
+        </div>
+
+        <div class="grid reasons">
+          <article class="card reason reveal d1">
+            <div class="icon">01</div>
+            <h3 style="margin-bottom:8px;color:var(--navy3)">主力サービスの明確さ</h3>
+            <p class="lead">列車見張警備と施設警備を中核に据え、強みがすぐ伝わる構成です。</p>
+          </article>
+          <article class="card reason reveal d2">
+            <div class="icon">02</div>
+            <h3 style="margin-bottom:8px;color:var(--navy3)">現場に合わせた柔軟性</h3>
+            <p class="lead">交通誘導、イベント、医療関連まで、幅広いニーズへの対応力を表現しています。</p>
+          </article>
+          <article class="card reason reveal d3">
+            <div class="icon">03</div>
+            <h3 style="margin-bottom:8px;color:var(--navy3)">信頼感あるデザイン</h3>
+            <p class="lead">ネイビー基調で落ち着きと誠実さを、オレンジで視認性と行動喚起を高めています。</p>
+          </article>
+          <article class="card reason reveal d4">
+            <div class="icon">04</div>
+            <h3 style="margin-bottom:8px;color:var(--navy3)">採用導線も強化</h3>
+            <p class="lead">会社案内だけでなく、求職者にも魅力が伝わるよう採用メッセージを配置しています。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="alt" id="fields">
+      <div class="container">
+        <div class="sec-head reveal">
+          <div class="eyebrow">Coverage</div>
+          <h2 class="title">対応分野とご相談イメージ</h2>
+          <p class="lead">
+            鉄道関連、施設、工事、イベント、医療関連など、それぞれの現場に応じた
+            警備体制のご相談を想定した見せ方です。
+          </p>
+        </div>
+
+        <div class="grid fields">
+          <div class="card panel reveal d1">
+            <h3 style="font-size:1.2rem;color:var(--navy3);margin-bottom:8px">主な対応分野</h3>
+            <p class="lead">幅広い現場に対し、必要な安全配慮や運用体制を想定してサービスを提案します。</p>
+            <div class="chips">
+              <span class="chip">鉄道関連現場</span>
+              <span class="chip">オフィス・施設</span>
+              <span class="chip">商業施設</span>
+              <span class="chip">工事現場</span>
+              <span class="chip">イベント会場</span>
+              <span class="chip">医療関連分野</span>
+              <span class="chip">地域行事</span>
+              <span class="chip">出入口管理</span>
+              <span class="chip">巡回・監視</span>
+              <span class="chip">来訪者対応</span>
+            </div>
+          </div>
+
+          <div class="card panel reveal d2">
+            <h3 style="font-size:1.2rem;color:var(--navy3);margin-bottom:14px">ご相談から運用まで</h3>
+            <div class="steps">
+              <div class="step">
+                <div class="step-no">01</div>
+                <div>
+                  <h3 style="margin-bottom:4px;color:var(--navy3)">お問い合わせ</h3>
+                  <p class="lead">現場の種類やご希望の体制、期間などをヒアリングする想定です。</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-no">02</div>
+                <div>
+                  <h3 style="margin-bottom:4px;color:var(--navy3)">体制のご提案</h3>
+                  <p class="lead">列車見張、施設警備、交通誘導など、目的に応じた構成を検討します。</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-no">03</div>
+                <div>
+                  <h3 style="margin-bottom:4px;color:var(--navy3)">運用開始</h3>
+                  <p class="lead">現場に応じた安全配慮のもと、円滑な運用イメージを持てる構成です。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="recruit" id="recruit">
+      <div class="container">
+        <div class="recruit-wrap">
+          <div class="reveal">
+            <div class="eyebrow" style="color:#ffca93">Recruit</div>
+            <h2 class="title">守る仕事に、誇りを。<br>地域の安心を支える仲間を募集。</h2>
+            <p class="lead">
+              ニットーケイビは、列車見張警備・施設警備をはじめとした現場で、
+              責任感と信頼を大切にする人材を求めています。
+              未経験からでも挑戦しやすい会社像を伝えるための採用メッセージです。
+            </p>
+            <div class="btns" style="margin-top:26px">
+              <a class="btn btn-primary" href="#contact">採用について問い合わせる</a>
+              <a class="btn btn-ghost" href="#pillars">仕事内容を見る</a>
+            </div>
+          </div>
+
+          <div class="recruit-box reveal d1">
+            <h3 style="margin-bottom:14px">こんな魅力を伝える想定です</h3>
+            <ul>
+              <li>地域の安全を守る社会的意義のある仕事</li>
+              <li>列車見張警備・施設警備を中心に幅広い現場経験が積める</li>
+              <li>丁寧な教育や連携を大切にする企業姿勢</li>
+              <li>安定感・誠実さ・信頼性を感じられる採用導線</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="sec-head reveal">
+          <div class="eyebrow">Contact</div>
+          <h2 class="title">お問い合わせ</h2>
+          <p class="lead">
+            会社案内、サービスのご相談、採用に関するお問い合わせなどを受け付ける想定のセクションです。
+            必要に応じて文言や宛先を実際の内容に合わせて変更してください。
+          </p>
+        </div>
+
+        <div class="grid contact">
+          <div class="contact-side reveal d1">
+            <h3 style="font-size:1.4rem;margin-bottom:10px">安心してご相談ください</h3>
+            <p>
+              列車見張警備、施設警備、交通誘導警備、イベント警備、医療関連サービスなど、
+              現場に応じたご相談を想定した案内表示です。
+            </p>
+            <div class="btns" style="margin-top:22px">
+              <a class="btn btn-primary" href="tel:000-0000-0000">お電話で相談</a>
+              <a class="btn btn-ghost" href="#recruit">採用の相談</a>
+            </div>
+            <div class="info-list">
+              <div class="info"><strong>電話</strong><span>000-0000-0000</span></div>
+              <div class="info"><strong>受付時間</strong><span>平日 9:00 - 18:00</span></div>
+              <div class="info"><strong>所在地</strong><span>〒000-0000 ○○県○○市○○町 0-0-0</span></div>
+            </div>
+          </div>
+
+          <div class="card form reveal d2">
+            <form id="contactForm">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="name">お名前</label>
+                  <input id="name" name="name" type="text" placeholder="例）山田 太郎" required>
+                </div>
+                <div class="field">
+                  <label for="company">会社名</label>
+                  <input id="company" name="company" type="text" placeholder="例）株式会社サンプル">
+                </div>
+                <div class="field">
+                  <label for="email">メールアドレス</label>
+                  <input id="email" name="email" type="email" placeholder="example@example.com" required>
+                </div>
+                <div class="field">
+                  <label for="tel">電話番号</label>
+                  <input id="tel" name="tel" type="tel" placeholder="000-0000-0000">
+                </div>
+                <div class="field full">
+                  <label for="type">お問い合わせ種別</label>
+                  <input id="type" name="type" type="text" placeholder="例）施設警備について / 採用について">
+                </div>
+                <div class="field full">
+                  <label for="message">お問い合わせ内容</label>
+                  <textarea id="message" name="message" rows="6" placeholder="ご相談内容をご記入ください。"></textarea>
+                </div>
+              </div>
+
+              <p class="note" style="margin:14px 0 18px">
+                ※ このフォームはデザイン見本用です。実運用する場合は送信先の設定やバリデーションを追加してください。
+              </p>
+
+              <div class="status" id="formStatus">送信見本：入力内容を受け付けた想定です。実運用時は送信処理を接続してください。</div>
+
+              <div class="btns" style="margin-top:18px">
+                <button class="btn btn-primary" type="submit">送信する</button>
+                <a class="btn btn-secondary" href="#top">ページ上部へ戻る</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="foot-top">
+        <div class="brand">
+          <div class="logo" style="width:42px;height:42px;border-radius:12px">NK</div>
+          <div>
+            <h3 style="font-size:1rem;color:#fff;line-height:1.2">ニットーケイビ株式会社</h3>
+            <small style="color:rgba(255,255,255,.68)">列車見張警備 / 施設警備 / 交通誘導 / イベント警備 / 医療関連サービス</small>
+          </div>
+        </div>
+        <nav class="foot-links" aria-label="フッターナビゲーション">
+          <a href="#pillars">2本柱</a>
+          <a href="#services">専門サービス</a>
+          <a href="#reasons">選ばれる理由</a>
+          <a href="#fields">対応分野</a>
+          <a href="#recruit">採用</a>
+          <a href="#contact">お問い合わせ</a>
+        </nav>
+      </div>
+      <div class="foot-bottom">
+        <div>&copy; Nitto Keibi Co., Ltd. All Rights Reserved.</div>
+        <div>このページは社内説明用のデザイン見本です。</div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-cta">
+    <a class="btn btn-secondary" href="#contact">お問い合わせ</a>
+    <a class="btn btn-primary" href="#recruit">採用情報</a>
+  </div>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    function closeMenu(){
+      menuBtn.classList.remove('active');
+      mobileMenu.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    }
+
+    menuBtn.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      menuBtn.classList.toggle('active', isOpen);
+      menuBtn.setAttribute('aria-expanded', String(isOpen));
+      mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    const header = document.getElementById('header');
+    const onScroll = () => {
+      header.classList.toggle('scrolled', window.scrollY > 10);
+    };
+    window.addEventListener('scroll', onScroll);
+    onScroll();
+
+    const reveals = document.querySelectorAll('.reveal:not(.show)');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(el => observer.observe(el));
+
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('formStatus');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      status.classList.add('show');
+      form.reset();
+    });
+
+    document.addEventListener('click', (e) => {
+      const insideMenu = mobileMenu.contains(e.target);
+      const insideBtn = menuBtn.contains(e.target);
+      if(!insideMenu && !insideBtn && mobileMenu.classList.contains('open')){
+        closeMenu();
+      }
+    });
+  </script>
+</body>
+</html>
